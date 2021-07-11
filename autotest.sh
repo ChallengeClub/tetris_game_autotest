@@ -86,6 +86,8 @@ function do_game(){
 	GAME_TIME=10
 	sleep $GAME_TIME	
     done
+
+    cat ${RESULT_LOG}
 }
 
 do_game
