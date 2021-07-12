@@ -65,7 +65,7 @@ class Window(QMainWindow):
                                label_width_height[0], label_width_height[1]) 
         self.label.setStyleSheet("border : 4px solid black;") 
         self.label.setText(self.gettimertext())
-        self.label.setFont(QFont('Arial', 40))
+        self.label.setFont(QFont('Arial', 32))
         self.label.setAlignment(Qt.AlignCenter) 
 
         # creating a timer object 
