@@ -36,10 +36,12 @@ CURRENT_DIR=`pwd`
 TMP_LOG="${CURRENT_DIR}/tmp.log"
 RESULT_LOG="${CURRENT_DIR}/result.log"
 
+# ffmpeg -i *.mp4 -ac 1 *.wav
+# ffmpeg -i *.mp3 *.wav
 SOUNDFILE_LIST=(
-    "~/Downloads/technotris.mp3"
-    "~/Downloads/troika.mp3"
-    "~/Downloads/kalinka.mp3"
+    "~/Downloads/technotris.wav"
+    "~/Downloads/troika.wav"
+    "~/Downloads/kalinka.wav"
 )
 
 # function
