@@ -59,12 +59,16 @@ function do_game(){
     do
 	REPOSITORY_OWNER=`echo ${CLONE_REPOSITORY_LIST[$i]} | cut -d' ' -f1 | cut -d'/' -f4`
 	LEVEL=1
-	RAND_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value
-	SOUNDFILE_NAME=${SOUNDFILE_LIST[$RAND_NUMBER]}
+	#SOUND_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value
+	SOUND_NUMBER=`echo $[i]`
+	SOUND_NUMBER=`echo $(( $[SOUND_NUMBER] % ${#CLONE_REPOSITORY_LIST[@]} ))`
+	SOUNDFILE_NAME=${SOUNDFILE_LIST[$SOUND_NUMBER]}
 
 	if [ ${REPOSITORY_OWNER} == "kyad" ];then
 	    LEVEL=777
 	fi
+
+	# prepare
 	echo "git clone ${CLONE_REPOSITORY_LIST[$i]}"
 	echo "REPOSITORY_OWNER: ${REPOSITORY_OWNER}"
 	echo "LEVEL: ${LEVEL}"
@@ -78,7 +82,10 @@ function do_game(){
 	pushd tetris_game
 	play ${SOUNDFILE_NAME} &
 	bash start.sh -l${LEVEL} > ${TMP_LOG}
+
+	# get result
 	SCORE=`grep "YOUR_RESULT" ${TMP_LOG} -2 | grep score | cut -d, -f1 | cut -d: -f2`
+	echo "${REPOSITORY_OWNER}, ${LEVEL}, ${SCORE}"
 	echo "${REPOSITORY_OWNER}, ${LEVEL}, ${SCORE}" >> ${RESULT_LOG}
 	popd
 
