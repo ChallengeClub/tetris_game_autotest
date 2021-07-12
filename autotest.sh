@@ -1,39 +1,10 @@
 #!/bin/bash -x
 
-#cd $HOME/catkin_ws/src/burger_war_kit
-#CATKIN_WS_DIR=$HOME/catkin_ws
-#BURGER_WAR_KIT_REPOSITORY=$HOME/catkin_ws/src/burger_war_kit
-#BURGER_WAR_DEV_REPOSITORY=$HOME/catkin_ws/src/burger_war_dev
-#BURGER_WAR_AUTOTEST_LOG_REPOSITORY=$HOME/catkin_ws/src/burger_war_autotest
-#RESULTLOG=$BURGER_WAR_KIT_REPOSITORY/autotest/result.log
-#SRC_LOG=$RESULTLOG
-#TODAY=`date +"%Y%m%d"`
-#DST_LOG=$BURGER_WAR_AUTOTEST_LOG_REPOSITORY/result/result-${TODAY}.log
-#LATEST_GITLOG_HASH="xxxx"
-
-echo "repository_name, level, score" > $RESULTLOG
-
-# get option
-#LOOP_TIMES=10
-#IS_CAPTURE_VIDEO="false"
-#while getopts l:c: OPT
-#do
-#  case $OPT in
-#    "l" ) LOOP_TIMES="$OPTARG" ;;
-#    "c" ) IS_CAPTURE_VIDEO="$OPTARG" ;;
-#  esac
-#done
-## echo option parameter
-#echo "LOOP_TIMES: ${LOOP_TIMES}"
-#echo "IS_CAPTURE_VIDEO: ${IS_CAPTURE_VIDEO}"
-#
-#
-#pushd ${BURGER_WAR_KIT_REPOSITORY}
-#source autotest/slack.sh
-#popd
+echo "repository_name, level, score, line, gameover, 1line, 2line, 3line, 4line" > $RESULTLOG
 
 CURRENT_DIR=`pwd`
 TMP_LOG="${CURRENT_DIR}/tmp.log"
+DISPLAY_PY="${CURRENT_DIR}/display.py"
 RESULT_LOG="${CURRENT_DIR}/result.log"
 
 # ffmpeg -i *.mp4 -ac 1 *.wav
@@ -83,12 +54,21 @@ function do_game(){
 	git clone ${CLONE_REPOSITORY_LIST[$i]}
 	pushd tetris_game
 	play ${SOUNDFILE_NAME} &
+	python3 ${DISPLAY_PY} --player_name ${REPOSITORY_OWNER} --level ${LEVEL} &
 	bash start.sh -l${LEVEL} > ${TMP_LOG}
+	sleep 2
 
 	# get result
 	SCORE=`grep "YOUR_RESULT" ${TMP_LOG} -2 | grep score | cut -d, -f1 | cut -d: -f2`
-	echo "${REPOSITORY_OWNER}, ${LEVEL}, ${SCORE}"
-	echo "${REPOSITORY_OWNER}, ${LEVEL}, ${SCORE}" >> ${RESULT_LOG}
+	LINE_CNT=`grep "YOUR_RESULT" ${TMP_LOG} -2 | grep score | cut -d, -f2 | cut -d: -f2`
+	GAMEOVER_CNT=`grep "YOUR_RESULT" ${TMP_LOG} -2 | grep score | cut -d, -f3 | cut -d: -f2`
+	_1LINE_CNT=`grep "SCORE DETAIL" ${TMP_LOG} -5 | grep "1 line" | cut -d= -f2`
+	_2LINE_CNT=`grep "SCORE DETAIL" ${TMP_LOG} -5 | grep "2 line" | cut -d= -f2`
+	_3LINE_CNT=`grep "SCORE DETAIL" ${TMP_LOG} -5 | grep "3 line" | cut -d= -f2`
+	_4LINE_CNT=`grep "SCORE DETAIL" ${TMP_LOG} -5 | grep "4 line" | cut -d= -f2`
+	RESULT_STR="${REPOSITORY_OWNER}, ${LEVEL}, ${SCORE}, ${LINE_CNT}, ${GAMEOVER_CNT}, ${_1LINE_CNT}, ${_2LINE_CNT}, ${_3LINE_CNT}, ${_4LINE_CNT}"
+	echo ${RESULT_STR}
+	echo ${RESULT_STR} >> ${RESULT_LOG}
 	popd
 
         # wait game finish
@@ -97,6 +77,8 @@ function do_game(){
     done
 
     cat ${RESULT_LOG}
+
+    return 0
 }
 
 do_game
