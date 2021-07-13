@@ -5,8 +5,13 @@
 # pyenv virtualenv 3.7.7 myenv3.7.7
 # pyenv virtualenv 3.6.9 myenv3.6.9
 
-function test_install() {
-    # sue-robo
+function install_myenv3_6_9() {
+    pip3 install --upgrade pip
+    python3 -m pip install PyQt5
+}
+
+function install_sue-robo_env() {
+    # sue-robo_env
     pip3 install --upgrade pip
     python3 -m pip install PyQt5
     pip3 install torch torchvision torchaudio -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
