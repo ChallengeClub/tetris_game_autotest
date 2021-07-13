@@ -5,7 +5,7 @@ from PyQt5.QtCore import *
 import sys 
 from argparse import ArgumentParser
 
-def get_option(player_name, level):
+def get_option(player_name, level, sound_name):
     argparser = ArgumentParser()
     argparser.add_argument('--player_name', type=str,
                            default=player_name,
@@ -13,6 +13,9 @@ def get_option(player_name, level):
     argparser.add_argument('--level', type=int,
                            default=level,
                            help='level')
+    argparser.add_argument('--sound_name', type=str,
+                           default=sound_name,
+                           help='sound_name')
     return argparser.parse_args()
 
 class Window(QMainWindow): 
@@ -26,18 +29,22 @@ class Window(QMainWindow):
         # show information
         self.player_name = "testuser"
         self.level = 1
+        self.sound_name = "xxx"
         self.max_timer_count = 1800 # seconds = max_timer_count * 0.1[s]
 
         args = get_option(self.player_name,
-                          self.level)
+                          self.level,
+                          self.sound_name)
         if len(args.player_name) != 0:
             self.player_name = args.player_name
         if args.level >= 0:
             self.level = args.level
+        if len(args.sound_name) != 0:
+            self.sound_name = args.sound_name
 
         # setting geometry
         upper_left = (100,100)
-        width_height = (480, 200)
+        width_height = (480, 240)
         self.setGeometry(upper_left[0], upper_left[1],
                          width_height[0], width_height[1]) 
 
@@ -60,12 +67,12 @@ class Window(QMainWindow):
         # creating a label to show the time 
         self.label = QLabel(self)
         label_upper_left = (20, 20)
-        label_width_height = (440, 160)
+        label_width_height = (440, 200)
         self.label.setGeometry(label_upper_left[0], label_upper_left[1], 
                                label_width_height[0], label_width_height[1]) 
         self.label.setStyleSheet("border : 4px solid black;") 
         self.label.setText(self.gettimertext())
-        self.label.setFont(QFont('Arial', 32))
+        self.label.setFont(QFont('Arial', 30))
         self.label.setAlignment(Qt.AlignCenter) 
 
         # creating a timer object 
@@ -89,7 +96,9 @@ class Window(QMainWindow):
     def gettimertext(self):
         text = "Player: " + self.player_name + "\n" \
         + "LEVEL: " + str(self.level) + "\n" \
-        + "TIME: " + str('{:.01f}'.format(self.timer_count / 10)) + " (s)"
+        + "TIME: " + str('{:.01f}'.format(self.timer_count / 10)) + " (s)" + "\n" \
+        + "SOUND: " + self.sound_name
+
         return text
 
 # create pyqt5 app 

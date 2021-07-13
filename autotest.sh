@@ -35,8 +35,14 @@ function do_game(){
 	    "http://github.com/hirov2/tetris_game"
 	)
     elif [ ${LEVEL} == 2 ]; then
+	# level 2
 	CLONE_REPOSITORY_LIST=(
 	    "http://github.com/sue-robo/tetris_game -b dev3"
+	)
+    elif [ ${LEVEL} == 3 ]; then
+	# level 3
+	CLONE_REPOSITORY_LIST=(
+	    "xxx"
 	)
     elif [ ${LEVEL} == 777 ]; then
 	# forever branch
@@ -60,7 +66,8 @@ function do_game(){
 	#SOUND_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value
 	SOUND_NUMBER=`echo $[i]`
 	SOUND_NUMBER=`echo $(( $[SOUND_NUMBER] % ${#CLONE_REPOSITORY_LIST[@]} ))`
-	SOUNDFILE_NAME=${SOUNDFILE_LIST[$SOUND_NUMBER]}
+	SOUNDFILE_PATH=${SOUNDFILE_LIST[$SOUND_NUMBER]}
+	SOUNDFILE_NAME=`echo ${SOUNDFILE_PATH} | cut -d/ -f3`
 	GAMETIME=180
 
 	# pyenv select
@@ -81,7 +88,7 @@ function do_game(){
 	echo "REPOSITORY_OWNER: ${REPOSITORY_OWNER}"
 	echo "LEVEL: ${LEVEL}"
 	echo "SOUND_NUMBER: ${SOUND_NUMBER}"
-	echo "SOUNDFILE_NAME: ${SOUNDFILE_NAME}"
+	echo "SOUNDFILE_PATH: ${SOUNDFILE_PATH}"
 
 	#############
 	##
@@ -93,8 +100,8 @@ function do_game(){
 	mkdir tetris_game
 	git clone ${CLONE_REPOSITORY_LIST[$i]}
 	pushd tetris_game
-	play ${SOUNDFILE_NAME} &
-	python3 ${DISPLAY_PY} --player_name ${REPOSITORY_OWNER} --level ${LEVEL} &
+	play ${SOUNDFILE_PATH} &
+	python3 ${DISPLAY_PY} --player_name ${REPOSITORY_OWNER} --level ${LEVEL} --sound_name ${SOUNDFILE_NAME} &
 	bash start.sh -l${LEVEL} > ${TMP_LOG} -t ${GAMETIME}
 	sleep 2
 
