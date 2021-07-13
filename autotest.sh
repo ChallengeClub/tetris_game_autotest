@@ -27,10 +27,10 @@ function do_game(){
 
     LEVEL=$1
 
+    # get repository list
     if [ ${LEVEL} == 1 ]; then
 	# level 1
 	CLONE_REPOSITORY_LIST=(
-	    "http://github.com/kyad/tetris_game -b forever-branch"
 	    "http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
 	    "http://github.com/hirov2/tetris_game"
 	)
@@ -38,12 +38,15 @@ function do_game(){
 	CLONE_REPOSITORY_LIST=(
 	    "http://github.com/sue-robo/tetris_game -b dev3"
 	)
+    elif [ ${LEVEL} == 777 ]; then
+	# forever branch
+	CLONE_REPOSITORY_LIST=(
+	    "http://github.com/kyad/tetris_game -b forever-branch"
+	)
     else
 	echo "invalid level ${LEVEL}"
 	return
     fi
-
-    cd ~
 
     # main loop
     for (( i = 0; i < ${#CLONE_REPOSITORY_LIST[@]}; i++ ))
@@ -60,18 +63,18 @@ function do_game(){
 	SOUNDFILE_NAME=${SOUNDFILE_LIST[$SOUND_NUMBER]}
 	GAMETIME=180
 
-	if [ ${REPOSITORY_OWNER} == "kyad" ];then
-	    LEVEL=777
-	fi
-
 	# pyenv select
 	if [ ${LEVEL} == 1 -o ${LEVEL} == 777 ]; then
 	    # other env (python3.6.9)
 	    pyenv activate myenv3.6.9
 	    python -V
-	else
+	elif [ ${REPOSITORY_OWNER} == "sue-robo" ]; then
 	    # sue-robo_env
 	    pyenv activate sue-robo_env
+	else
+	    # default
+	    pyenv activate myenv3.6.9
+	    python -V
 	fi
 	
 	echo "git clone ${CLONE_REPOSITORY_LIST[$i]}"
@@ -85,6 +88,7 @@ function do_game(){
 	##  main
 	##
 	#############
+	cd ~
 	rm -rf tetris_game
 	mkdir tetris_game
 	git clone ${CLONE_REPOSITORY_LIST[$i]}
@@ -125,6 +129,7 @@ function do_game(){
     return 0
 }
 
+do_game 777 # forever branch
 do_game 1
 do_game 2
 
