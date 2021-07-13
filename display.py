@@ -5,7 +5,7 @@ from PyQt5.QtCore import *
 import sys 
 from argparse import ArgumentParser
 
-def get_option(player_name, level, sound_name):
+def get_option(player_name, level, sound_name, max_time):
     argparser = ArgumentParser()
     argparser.add_argument('--player_name', type=str,
                            default=player_name,
@@ -16,6 +16,9 @@ def get_option(player_name, level, sound_name):
     argparser.add_argument('--sound_name', type=str,
                            default=sound_name,
                            help='sound_name')
+    argparser.add_argument('--max_time', type=int,
+                           default=max_time,
+                           help='max_time')
     return argparser.parse_args()
 
 class Window(QMainWindow): 
@@ -30,17 +33,21 @@ class Window(QMainWindow):
         self.player_name = "testuser"
         self.level = 1
         self.sound_name = "xxx"
-        self.max_timer_count = 1800 # seconds = max_timer_count * 0.1[s]
+        self.max_time = 180
+        self.max_timer_count = self.max_time * 10
 
         args = get_option(self.player_name,
                           self.level,
-                          self.sound_name)
+                          self.sound_name,
+                          self.max_time)
         if len(args.player_name) != 0:
             self.player_name = args.player_name
         if args.level >= 0:
             self.level = args.level
         if len(args.sound_name) != 0:
             self.sound_name = args.sound_name
+        if args.max_time >= 0:
+            self.max_timer_count = args.max_time * 10
 
         # setting geometry
         upper_left = (100,100)
@@ -96,7 +103,7 @@ class Window(QMainWindow):
     def gettimertext(self):
         text = "Player: " + self.player_name + "\n" \
         + "LEVEL: " + str(self.level) + "\n" \
-        + "TIME: " + str('{:.01f}'.format(self.timer_count / 10)) + " (s)" + "\n" \
+        + "TIME: " + str('{:.01f}'.format(self.timer_count / 10)) + "/" + str(self.max_timer_count/10) + " (s)" + "\n" \
         + "SOUND: " + self.sound_name
 
         return text

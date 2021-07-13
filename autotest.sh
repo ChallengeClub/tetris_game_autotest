@@ -128,7 +128,8 @@ function do_game(){
 
         # wait game finish
 	GAME_TIME=10
-	sleep $GAME_TIME	
+	sleep $GAME_TIME
+	#python3 ${DISPLAY_PY} --player_name "Waiting..." --level 0 --sound_name "xxx" --max_time 300	
     done
 
     cat ${RESULT_LOG}
