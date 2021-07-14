@@ -37,12 +37,13 @@ function do_game(){
     elif [ ${LEVEL} == 2 ]; then
 	# level 2
 	CLONE_REPOSITORY_LIST=(
+	    "http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
 	    "http://github.com/sue-robo/tetris_game -b dev3"
 	)
     elif [ ${LEVEL} == 3 ]; then
 	# level 3
 	CLONE_REPOSITORY_LIST=(
-	    "xxx"
+	    "http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
 	)
     elif [ ${LEVEL} == 777 ]; then
 	# forever branch
@@ -100,9 +101,19 @@ function do_game(){
 	mkdir tetris_game
 	git clone ${CLONE_REPOSITORY_LIST[$i]}
 	pushd tetris_game
+	if [ ${LEVEL} == 2 -o ${LEVEL} == 3 ]; then
+	    # fix random seed
+	    echo "fix random seed"
+	    TARGET_LINE=`grep --line-number "game_manager.py" start.sh | tail -1 | cut -d: -f1`
+	    sed -e "${TARGET_LINE}i RANDOM_SEED=\"20210721\"" start.sh > start.sh.org
+	    mv start.sh.org start.sh
+	fi
+	
 	play ${SOUNDFILE_PATH} &
 	python3 ${DISPLAY_PY} --player_name ${REPOSITORY_OWNER} --level ${LEVEL} --sound_name ${SOUNDFILE_NAME} &
-	bash start.sh -l${LEVEL} > ${TMP_LOG} -t ${GAMETIME}
+	touch ${TMP_LOG}
+	bash start.sh -l${LEVEL} -t${GAMETIME} > ${TMP_LOG}
+	#stdbuf -o0 bash start.sh -l${LEVEL} -t${GAMETIME} > ${TMP_LOG}
 	sleep 2
 
 	#############
@@ -127,9 +138,9 @@ function do_game(){
 	popd
 
         # wait game finish
-	GAME_TIME=10
-	sleep $GAME_TIME
-	#python3 ${DISPLAY_PY} --player_name "Waiting..." --level 0 --sound_name "xxx" --max_time 300	
+	WAIT_TIME=180
+	#sleep $GAME_TIME
+	python3 ${DISPLAY_PY} --player_name "Waiting..." --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}	
     done
 
     cat ${RESULT_LOG}
@@ -138,8 +149,9 @@ function do_game(){
 }
 
 do_game 777 # forever branch
-do_game 1
-do_game 2
+do_game 1   # level1
+do_game 2   # level2
+do_game 3   # level3
 
 
 echo "ALL GAME FINISH !!!"
