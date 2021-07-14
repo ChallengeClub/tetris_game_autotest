@@ -8,12 +8,14 @@
 function install_myenv3_6_9() {
     pip3 install --upgrade pip
     python3 -m pip install PyQt5
+    pip3 install numpy
 }
 
 function install_sue-robo_env() {
     # sue-robo_env
     pip3 install --upgrade pip
     python3 -m pip install PyQt5
+    pip3 install numpy
     pip3 install torch torchvision torchaudio -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
     pip3 install --upgrade tensorflow
     pip3 install tqdm
