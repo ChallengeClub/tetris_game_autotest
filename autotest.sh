@@ -33,6 +33,10 @@ function do_game(){
 	CLONE_REPOSITORY_LIST=(
 	    "http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
 	    "http://github.com/hirov2/tetris_game"
+	    "http://github.com/YSK-2/tetris_game"
+	    "http://github.com/Git0214/tetris_game"
+	    "http://github.com/tsumekko/tetris_game"
+	    "http://github.com/n-nooobu/tetris_game -b develop-rulebase"
 	)
     elif [ ${LEVEL} == 2 ]; then
 	# level 2
@@ -66,7 +70,7 @@ function do_game(){
 	REPOSITORY_OWNER=`echo ${CLONE_REPOSITORY_LIST[$i]} | cut -d' ' -f1 | cut -d'/' -f4`
 	#SOUND_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value
 	SOUND_NUMBER=`echo $[i]`
-	SOUND_NUMBER=`echo $(( $[SOUND_NUMBER] % ${#CLONE_REPOSITORY_LIST[@]} ))`
+	SOUND_NUMBER=`echo $(( $[SOUND_NUMBER] % ${#SOUNDFILE_LIST[@]} ))`
 	SOUNDFILE_PATH=${SOUNDFILE_LIST[$SOUND_NUMBER]}
 	SOUNDFILE_NAME=`echo ${SOUNDFILE_PATH} | cut -d/ -f3`
 	GAMETIME=180
@@ -91,6 +95,11 @@ function do_game(){
 	echo "SOUND_NUMBER: ${SOUND_NUMBER}"
 	echo "SOUNDFILE_PATH: ${SOUNDFILE_PATH}"
 
+        # wait game start
+	WAIT_TIME=180
+	#sleep $GAME_TIME
+	python3 ${DISPLAY_PY} --player_name "Next... ${REPOSITORY_OWNER}" --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}	
+	
 	#############
 	##
 	##  main
@@ -137,10 +146,6 @@ function do_game(){
 	echo ${RESULT_STR} >> ${RESULT_LOG}
 	popd
 
-        # wait game finish
-	WAIT_TIME=180
-	#sleep $GAME_TIME
-	python3 ${DISPLAY_PY} --player_name "Waiting..." --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}	
     done
 
     cat ${RESULT_LOG}
