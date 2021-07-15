@@ -33,6 +33,7 @@ function do_game(){
 	CLONE_REPOSITORY_LIST=(
 	    "http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
 	    "http://github.com/hirov2/tetris_game"
+	    "http://github.com/isshy-you/tetris_game -b master"
 	    "http://github.com/YSK-2/tetris_game"
 	    "http://github.com/Git0214/tetris_game"
 	    "http://github.com/tsumekko/tetris_game"
@@ -74,6 +75,7 @@ function do_game(){
 	SOUNDFILE_PATH=${SOUNDFILE_LIST[$SOUND_NUMBER]}
 	SOUNDFILE_NAME=`echo ${SOUNDFILE_PATH} | cut -d/ -f3`
 	GAMETIME=180
+	START_SH="start.sh"
 
 	# pyenv select
 	if [ ${LEVEL} == 1 -o ${LEVEL} == 777 ]; then
@@ -96,7 +98,7 @@ function do_game(){
 	echo "SOUNDFILE_PATH: ${SOUNDFILE_PATH}"
 
         # wait game start
-	WAIT_TIME=180
+	WAIT_TIME=120
 	#sleep $GAME_TIME
 	python3 ${DISPLAY_PY} --player_name "Next... ${REPOSITORY_OWNER}" --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}	
 	
@@ -117,11 +119,21 @@ function do_game(){
 	    sed -e "${TARGET_LINE}i RANDOM_SEED=\"20210721\"" start.sh > start.sh.org
 	    mv start.sh.org start.sh
 	fi
+
+	#### each repository setting-->
+	if [ ${REPOSITORY_OWNER} == "isshy-you" ]; then
+	    START_SH="start_03.sh"
+	elif [ ${REPOSITORY_OWNER} == "YSK-2" ]; then
+	    #cp block_controller2.py block_controller.py
+	    sed -e "s/BLOCK_CONTROLLER_SAMPLE/BLOCK_CONTROLLER/g" block_controller2.py > block_controller.py
+	else
+	    echo "no each repository setting"
+	fi	
 	
 	play ${SOUNDFILE_PATH} &
 	python3 ${DISPLAY_PY} --player_name ${REPOSITORY_OWNER} --level ${LEVEL} --sound_name ${SOUNDFILE_NAME} &
 	touch ${TMP_LOG}
-	bash start.sh -l${LEVEL} -t${GAMETIME} > ${TMP_LOG}
+	bash ${START_SH} -l${LEVEL} -t${GAMETIME} > ${TMP_LOG}
 	#stdbuf -o0 bash start.sh -l${LEVEL} -t${GAMETIME} > ${TMP_LOG}
 	sleep 2
 
