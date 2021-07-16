@@ -30,11 +30,17 @@ def res_cmd(cmd):
 def get_line_score():
   #cmd = ("ls -l")
   #cmd0 = ("ls -l") #("touch tmp.log")
-  cmd1 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f1")
-  cmd2 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f2")
-  cmd3 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f3")
-  cmd4 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f4")
-  cmd5 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep -e 'score' | grep -v 'dropdownscore' | grep -v 'line_score' | grep -v 'linescore' | tail -1 | cut -d: -f2 | cut -d} -f1")
+#  cmd1 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f1")
+#  cmd2 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f2")
+#  cmd3 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f3")
+#  cmd4 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f4")
+#  cmd5 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep -e 'score' | grep -v 'dropdownscore' | grep -v 'line_score' | grep -v 'linescore' | tail -1 | cut -d: -f2 | cut -d} -f1")
+
+  cmd1 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f6")
+  cmd2 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f7")
+  cmd3 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f8")
+  cmd4 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f9")
+  cmd5 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f3")
 
   #res0 = res_cmd(cmd0)
   res1 = res_cmd(cmd1)
@@ -72,13 +78,12 @@ def get_line_score():
   #    res5 = 0
 
   try:
-      _1line_score = int(res1)*100
-      _2line_score = int(res2)*300
-      _3line_score = int(res3)*700
-      _4line_score = int(res4)*1200
+      _1line_score = int(res1)#*100
+      _2line_score = int(res2)#*300
+      _3line_score = int(res3)#*700
+      _4line_score = int(res4)#*1200
       _total_score = int(res5)
   except:
-      print('Error')
       return 0, 0, 0, 0, 0
 
   return _1line_score, _2line_score, _3line_score, _4line_score,_total_score
@@ -164,12 +169,12 @@ class Window(QMainWindow):
 
     def gettimertext(self):
 
-        #_1line_score, _2line_score, _3line_score , _4line_score, _total_score = get_line_score()
-        _1line_score = 0
-        _2line_score = 0
-        _3line_score = 0
-        _4line_score = 0
-        _total_score = 0
+        _1line_score, _2line_score, _3line_score , _4line_score, _total_score = get_line_score()
+        #_1line_score = 0
+        #_2line_score = 0
+        #_3line_score = 0
+        #_4line_score = 0
+        #_total_score = 0
         
         text = "Player: " + self.player_name + "\n" \
         + "LEVEL: " + str(self.level) + "\n" \

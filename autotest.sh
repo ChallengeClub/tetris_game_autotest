@@ -1,9 +1,16 @@
 #!/bin/bash -x
 
+# execute requirement
+# 1. install,and prepare pyenv,pyvirtualenv
+# 2. put sound(.WAV) file on ~/Downloads/.
+# 3. put image(.jpg) file on ~/Downloads/.
+#
+
 CURRENT_DIR=`pwd`
 TMP_LOG="${CURRENT_DIR}/tmp.log"
 DISPLAY_PY="${CURRENT_DIR}/display.py"
 RESULT_LOG="${CURRENT_DIR}/result.log"
+DISPLAY_LOG="${CURRENT_DIR}/display.log"
 
 # ffmpeg -i *.mp4 -ac 1 *.wav
 # ffmpeg -i *.mp3 *.wav
@@ -74,6 +81,9 @@ function do_game(){
 	SOUND_NUMBER=`echo $(( $[SOUND_NUMBER] % ${#SOUNDFILE_LIST[@]} ))`
 	SOUNDFILE_PATH=${SOUNDFILE_LIST[$SOUND_NUMBER]}
 	SOUNDFILE_NAME=`echo ${SOUNDFILE_PATH} | cut -d/ -f3`
+	IMAGE_NUMBER=`echo $((RANDOM%+2))` # 0-2 random value	
+	IMAGE_NAME="megen${IMAGE_NUMBER}.jpg"
+	
 	GAMETIME=180
 	START_SH="start.sh"
 
@@ -97,11 +107,6 @@ function do_game(){
 	echo "SOUND_NUMBER: ${SOUND_NUMBER}"
 	echo "SOUNDFILE_PATH: ${SOUNDFILE_PATH}"
 
-        # wait game start
-	WAIT_TIME=120
-	#sleep $GAME_TIME
-	python3 ${DISPLAY_PY} --player_name "Next... ${REPOSITORY_OWNER}" --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}	
-	
 	#############
 	##
 	##  main
@@ -128,13 +133,35 @@ function do_game(){
 	    sed -e "s/BLOCK_CONTROLLER_SAMPLE/BLOCK_CONTROLLER/g" block_controller2.py > block_controller.py
 	else
 	    echo "no each repository setting"
-	fi	
+	fi
+
+        ###### wait game -->
+	WAIT_TIME=30
+	#sleep ${WAIT_TIME}
+	eog ~/Downloads/${IMAGE_NAME} &
+	sleep 1
+	WINDOWID=`xdotool search --onlyvisible --name "${IMAGE_NAME}"`
+	xdotool windowmove ${WINDOWID} 600 100
+	echo -n >| ${DISPLAY_LOG} # create empty file
+	python3 ${DISPLAY_PY} --player_name "Next... ${REPOSITORY_OWNER}" --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}
+	pkill "eog"
+	###### wait game <--
 	
+	###### do game	
+	# start
 	play ${SOUNDFILE_PATH} &
+	eog ~/Downloads/${IMAGE_NAME} &
 	python3 ${DISPLAY_PY} --player_name ${REPOSITORY_OWNER} --level ${LEVEL} --sound_name ${SOUNDFILE_NAME} &
-	touch ${TMP_LOG}
-	bash ${START_SH} -l${LEVEL} -t${GAMETIME} > ${TMP_LOG}
-	#stdbuf -o0 bash start.sh -l${LEVEL} -t${GAMETIME} > ${TMP_LOG}
+	bash ${START_SH} -l${LEVEL} -t${GAMETIME} > ${TMP_LOG} &
+	# move window
+	sleep 1
+	WINDOWID=`xdotool search --onlyvisible --name "Tetris" | tail -1`
+	xdotool windowmove ${WINDOWID} 600 100
+	WINDOWID=`xdotool search --onlyvisible --name "${IMAGE_NAME}"`
+	xdotool windowmove ${WINDOWID} 900 100
+	# wait finish
+	sleep ${GAMETIME}
+	pkill "eog"
 	sleep 2
 
 	#############
@@ -156,6 +183,14 @@ function do_game(){
 	RESULT_STR="${REPOSITORY_OWNER}, ${LEVEL}, ${SCORE}, ${LINE_CNT}, ${GAMEOVER_CNT}, ${_1LINE_CNT}, ${_2LINE_CNT}, ${_3LINE_CNT}, ${_4LINE_CNT}"
 	echo ${RESULT_STR}
 	echo ${RESULT_STR} >> ${RESULT_LOG}
+	echo ${RESULT_STR} > ${DISPLAY_LOG}
+
+        ###### wait game -->
+	WAIT_TIME=30
+	#sleep $GAME_TIME
+	python3 ${DISPLAY_PY} --player_name "Done... ${REPOSITORY_OWNER}" --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}	
+        ###### wait game <--
+
 	popd
 
     done
