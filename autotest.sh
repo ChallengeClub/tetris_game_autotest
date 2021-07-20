@@ -200,11 +200,36 @@ function do_game(){
     return 0
 }
 
+function do_capture(){
+
+    MODE=$1
+    
+    if [ $MODE == "start" ];then
+	# capture start
+	#	gnome-terminal -- recordmydesktop --no-cursor --fps 5 --width 1366 --height 768
+	gnome-terminal -- recordmydesktop --no-cursor
+    elif [ $MODE == "stop" ];then
+	PROCESS_ID=`ps -e -o pid,cmd | grep "recordmydesktop" | grep -v grep | awk '{print $1}'`
+	kill $PROCESS_ID
+	# wait to kill process
+	LOOP_TIMES=3600
+	for i in `seq ${LOOP_TIMES}`
+	do
+	    NUM=`ps -e -o pid,cmd | grep "recordmydesktop" | grep -v grep | wc -l`
+	    if [ $NUM -eq 0 ]; then
+		break;
+	    fi
+	    sleep 1
+	done
+    fi
+}
+
+#do_capture "start"
 do_game 777 # forever branch
 do_game 1   # level1
 do_game 2   # level2
 do_game 3   # level3
-
+#do_capture "stop"
 
 echo "ALL GAME FINISH !!!"
 exit 0
