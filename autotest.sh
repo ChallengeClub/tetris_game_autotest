@@ -39,8 +39,9 @@ function do_game(){
 	# level 1
 	CLONE_REPOSITORY_LIST=(
 	    "http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
-	    "http://github.com/hirov2/tetris_game"
-	    "http://github.com/isshy-you/tetris_game -b master"
+	    "http://github.com/hirov2/tetris_game -b SCENARIO_01"
+	    "http://github.com/hirov2/tetris_game -b FirstStrategy_003"
+	    "http://github.com/isshy-you/tetris_game -b v1.3b"
 	    "http://github.com/YSK-2/tetris_game"
 	    "http://github.com/Git0214/tetris_game"
 	    "http://github.com/tsumekko/tetris_game"
@@ -49,12 +50,19 @@ function do_game(){
     elif [ ${LEVEL} == 2 ]; then
 	# level 2
 	CLONE_REPOSITORY_LIST=(
+	    "http://github.com/hirov2/tetris_game -b SCENARIO_01"
+	    "http://github.com/hirov2/tetris_game -b FirstStrategy_003"
+	    "http://github.com/isshy-you/tetris_game -b v1.3b"
 	    "http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
-	    "http://github.com/sue-robo/tetris_game -b dev3"
+	    "http://github.com/sue-robo/tetris_game -b submit"	    
+	    #"http://github.com/sue-robo/tetris_game -b dev3"
 	)
     elif [ ${LEVEL} == 3 ]; then
 	# level 3
 	CLONE_REPOSITORY_LIST=(
+	    "http://github.com/hirov2/tetris_game -b SCENARIO_01"
+	    "http://github.com/hirov2/tetris_game -b FirstStrategy_003"
+	    "http://github.com/isshy-you/tetris_game -b v1.3b"
 	    "http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
 	)
     elif [ ${LEVEL} == 777 ]; then
@@ -81,7 +89,7 @@ function do_game(){
 	SOUND_NUMBER=`echo $(( $[SOUND_NUMBER] % ${#SOUNDFILE_LIST[@]} ))`
 	SOUNDFILE_PATH=${SOUNDFILE_LIST[$SOUND_NUMBER]}
 	SOUNDFILE_NAME=`echo ${SOUNDFILE_PATH} | cut -d/ -f3`
-	IMAGE_NUMBER=`echo $((RANDOM%+2))` # 0-2 random value	
+	IMAGE_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value	
 	IMAGE_NAME="megen${IMAGE_NUMBER}.jpg"
 	
 	GAMETIME=180
@@ -121,13 +129,14 @@ function do_game(){
 	    # fix random seed
 	    echo "fix random seed"
 	    TARGET_LINE=`grep --line-number "game_manager.py" start.sh | tail -1 | cut -d: -f1`
-	    sed -e "${TARGET_LINE}i RANDOM_SEED=\"20210721\"" start.sh > start.sh.org
+	    sed -e "${TARGET_LINE}i RANDOM_SEED=\"20210804\"" start.sh > start.sh.org
 	    mv start.sh.org start.sh
 	fi
 
 	#### each repository setting-->
 	if [ ${REPOSITORY_OWNER} == "isshy-you" ]; then
-	    START_SH="start_03.sh"
+	    #START_SH="start_03.sh"
+	    echo "do nothing"
 	elif [ ${REPOSITORY_OWNER} == "YSK-2" ]; then
 	    #cp block_controller2.py block_controller.py
 	    sed -e "s/BLOCK_CONTROLLER_SAMPLE/BLOCK_CONTROLLER/g" block_controller2.py > block_controller.py
