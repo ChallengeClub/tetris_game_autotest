@@ -6,11 +6,14 @@ import sys
 from argparse import ArgumentParser
 import subprocess
 
-def get_option(player_name, level, sound_name, max_time):
+def get_option(player_name, program_name, level, sound_name, max_time):
     argparser = ArgumentParser()
     argparser.add_argument('--player_name', type=str,
                            default=player_name,
                            help='player name')
+    argparser.add_argument('--program_name', type=str,
+                           default=program_name,
+                           help='program name')    
     argparser.add_argument('--level', type=int,
                            default=level,
                            help='level')
@@ -36,11 +39,11 @@ def get_line_score():
 #  cmd4 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f4")
 #  cmd5 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep -e 'score' | grep -v 'dropdownscore' | grep -v 'line_score' | grep -v 'linescore' | tail -1 | cut -d: -f2 | cut -d} -f1")
 
-  cmd1 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f6")
-  cmd2 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f7")
-  cmd3 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f8")
-  cmd4 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f9")
-  cmd5 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f3")
+  cmd1 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f7")
+  cmd2 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f8")
+  cmd3 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f9")
+  cmd4 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f10")
+  cmd5 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f4")
 
   #res0 = res_cmd(cmd0)
   res1 = res_cmd(cmd1)
@@ -98,17 +101,21 @@ class Window(QMainWindow):
 
         # show information
         self.player_name = "testuser"
+        self.program_name = "---"
         self.level = 1
         self.sound_name = "xxx"
         self.max_time = 180
         self.max_timer_count = self.max_time * 10
 
         args = get_option(self.player_name,
+                          self.program_name,
                           self.level,
                           self.sound_name,
                           self.max_time)
         if len(args.player_name) != 0:
             self.player_name = args.player_name
+        if len(args.program_name) != 0:
+            self.program_name = args.program_name
         if args.level >= 0:
             self.level = args.level
         if len(args.sound_name) != 0:
@@ -140,13 +147,13 @@ class Window(QMainWindow):
 
         # creating a label to show the time 
         self.label = QLabel(self)
-        label_upper_left = (20, 20)
-        label_width_height = (440, 440)
+        label_upper_left = (10, 10)
+        label_width_height = (460, 460)
         self.label.setGeometry(label_upper_left[0], label_upper_left[1], 
                                label_width_height[0], label_width_height[1]) 
         self.label.setStyleSheet("border : 4px solid black;") 
         self.label.setText(self.gettimertext())
-        self.label.setFont(QFont('Arial', 30))
+        self.label.setFont(QFont('Arial', 28))
         self.label.setAlignment(Qt.AlignCenter) 
 
         # creating a timer object 
@@ -177,6 +184,7 @@ class Window(QMainWindow):
         #_total_score = 0
         
         text = "Player: " + self.player_name + "\n" \
+        + self.program_name + "\n" \
         + "LEVEL: " + str(self.level) + "\n" \
         + "TIME: " + str('{:.01f}'.format(self.timer_count / 10)) + "/" + str(self.max_timer_count/10) + " (s)" + "\n" \
         + "SOUND: " + self.sound_name + "\n" \

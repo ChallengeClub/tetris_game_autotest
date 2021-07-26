@@ -21,7 +21,7 @@ SOUNDFILE_LIST=(
 )
 
 # init RESULT_LOG
-echo "repository_name, level, score, line, gameover, 1line, 2line, 3line, 4line" > $RESULT_LOG
+echo "repository_name, program_name, level, score, line, gameover, 1line, 2line, 3line, 4line" > $RESULT_LOG
 
 # enable pyenv (if necessary)
 export PYENV_ROOT="$HOME/.pyenv"
@@ -38,37 +38,44 @@ function do_game(){
     if [ ${LEVEL} == 1 ]; then
 	# level 1
 	CLONE_REPOSITORY_LIST=(
-	    "http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
-	    "http://github.com/hirov2/tetris_game -b SCENARIO_01"
-	    "http://github.com/hirov2/tetris_game -b FirstStrategy_003"
-	    "http://github.com/isshy-you/tetris_game -b v1.3b"
-	    "http://github.com/YSK-2/tetris_game"
-	    "http://github.com/Git0214/tetris_game"
-	    "http://github.com/tsumekko/tetris_game"
-	    "http://github.com/n-nooobu/tetris_game -b develop-rulebase"
+	    "とことん高得点狙い!http://github.com/OhdachiEriko/tetris_game -b master"
+	    "xxx!http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
+	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
+	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
+	    "さいしょのてとらー３号!http://github.com/isshy-you/tetris_game -b v1.3b"
+	    "xxx!http://github.com/YSK-2/tetris_game"
+	    "xxx!http://github.com/Git0214/tetris_game"
+	    "xxx!http://github.com/n-nooobu/tetris_game -b develop-rulebase"
+	    "xxx!http://github.com/nmurata90/tetris_game -b master"
+	    "xxx!http://github.com/tsumekko/tetris_game -b master"
+	    "xxx!http://github.com/nmurata90/tetris_game -b master"
 	)
     elif [ ${LEVEL} == 2 ]; then
 	# level 2
 	CLONE_REPOSITORY_LIST=(
-	    "http://github.com/hirov2/tetris_game -b SCENARIO_01"
-	    "http://github.com/hirov2/tetris_game -b FirstStrategy_003"
-	    "http://github.com/isshy-you/tetris_game -b v1.3b"
-	    "http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
-	    "http://github.com/sue-robo/tetris_game -b submit"	    
-	    #"http://github.com/sue-robo/tetris_game -b dev3"
+	    "xxx!http://github.com/hirov2/tetris_game -b SCENARIO_01"
+	    "xxx!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
+	    "xxx!http://github.com/isshy-you/tetris_game -b v1.3b"
+	    "xxx!http://github.com/nmurata90/tetris_game -b master"
+	    "xxx!http://github.com/tsumekko/tetris_game -b master"
+	    "xxx!http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
+	    "xxx!http://github.com/sue-robo/tetris_game -b submit"	    
+	    #"xxx!http://github.com/sue-robo/tetris_game -b dev3"
 	)
     elif [ ${LEVEL} == 3 ]; then
 	# level 3
 	CLONE_REPOSITORY_LIST=(
-	    "http://github.com/hirov2/tetris_game -b SCENARIO_01"
-	    "http://github.com/hirov2/tetris_game -b FirstStrategy_003"
-	    "http://github.com/isshy-you/tetris_game -b v1.3b"
-	    "http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
+	    "xxx!http://github.com/hirov2/tetris_game -b SCENARIO_01"
+	    "xxx!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
+	    "xxx!http://github.com/isshy-you/tetris_game -b v1.3b"
+	    "xxx!http://github.com/nmurata90/tetris_game -b master"
+	    "xxx!http://github.com/tsumekko/tetris_game -b master"
+	    "xxx!http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
 	)
     elif [ ${LEVEL} == 777 ]; then
 	# forever branch
 	CLONE_REPOSITORY_LIST=(
-	    "http://github.com/kyad/tetris_game -b forever-branch"
+	    "無限テトリス!http://github.com/kyad/tetris_game -b forever-branch"
 	)
     else
 	echo "invalid level ${LEVEL}"
@@ -84,6 +91,8 @@ function do_game(){
 	##
 	#############
 	REPOSITORY_OWNER=`echo ${CLONE_REPOSITORY_LIST[$i]} | cut -d' ' -f1 | cut -d'/' -f4`
+	CLONE_REPOSITORY=`echo ${CLONE_REPOSITORY_LIST[$i]} | cut -d! -f2-`
+	PROGRAM_NAME=`echo ${CLONE_REPOSITORY_LIST[$i]} | cut -d! -f1`
 	#SOUND_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value
 	SOUND_NUMBER=`echo $[i]`
 	SOUND_NUMBER=`echo $(( $[SOUND_NUMBER] % ${#SOUNDFILE_LIST[@]} ))`
@@ -91,7 +100,8 @@ function do_game(){
 	SOUNDFILE_NAME=`echo ${SOUNDFILE_PATH} | cut -d/ -f3`
 	IMAGE_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value	
 	IMAGE_NAME="megen${IMAGE_NUMBER}.jpg"
-	
+	RAMDOM_SEED="202108041111"
+
 	GAMETIME=180
 	START_SH="start.sh"
 
@@ -109,7 +119,8 @@ function do_game(){
 	    python -V
 	fi
 	
-	echo "git clone ${CLONE_REPOSITORY_LIST[$i]}"
+	echo "git clone ${CLONE_REPOSITORY}"
+	echo "PROGRAM_NAME: ${PROGRAM_NAME}"
 	echo "REPOSITORY_OWNER: ${REPOSITORY_OWNER}"
 	echo "LEVEL: ${LEVEL}"
 	echo "SOUND_NUMBER: ${SOUND_NUMBER}"
@@ -123,13 +134,13 @@ function do_game(){
 	cd ~
 	rm -rf tetris_game
 	mkdir tetris_game
-	git clone ${CLONE_REPOSITORY_LIST[$i]}
+	git clone ${CLONE_REPOSITORY}
 	pushd tetris_game
 	if [ ${LEVEL} == 2 -o ${LEVEL} == 3 ]; then
 	    # fix random seed
 	    echo "fix random seed"
 	    TARGET_LINE=`grep --line-number "game_manager.py" start.sh | tail -1 | cut -d: -f1`
-	    sed -e "${TARGET_LINE}i RANDOM_SEED=\"20210804\"" start.sh > start.sh.org
+	    sed -e "${TARGET_LINE}i RANDOM_SEED=\"${RAMDOM_SEED}\"" start.sh > start.sh.org
 	    mv start.sh.org start.sh
 	fi
 
@@ -152,7 +163,7 @@ function do_game(){
 	WINDOWID=`xdotool search --onlyvisible --name "${IMAGE_NAME}"`
 	xdotool windowmove ${WINDOWID} 600 100
 	echo -n >| ${DISPLAY_LOG} # create empty file
-	python3 ${DISPLAY_PY} --player_name "Next... ${REPOSITORY_OWNER}" --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}
+	python3 ${DISPLAY_PY} --player_name "Next... ${REPOSITORY_OWNER}" --program_name "${PROGRAM_NAME}" --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}
 	pkill "eog"
 	###### wait game <--
 	
@@ -160,7 +171,8 @@ function do_game(){
 	# start
 	play ${SOUNDFILE_PATH} &
 	eog ~/Downloads/${IMAGE_NAME} &
-	python3 ${DISPLAY_PY} --player_name ${REPOSITORY_OWNER} --level ${LEVEL} --sound_name ${SOUNDFILE_NAME} &
+	python3 ${DISPLAY_PY} --player_name ${REPOSITORY_OWNER} --program_name "${PROGRAM_NAME}" --level ${LEVEL} --sound_name ${SOUNDFILE_NAME} --max_time ${GAMETIME} &
+	
 	bash ${START_SH} -l${LEVEL} -t${GAMETIME} > ${TMP_LOG} &
 	# move window
 	sleep 1
@@ -189,7 +201,7 @@ function do_game(){
 	_2LINE_CNT=`grep "SCORE DETAIL" ${TMP_LOG} -5 | grep "2 line" | cut -d= -f2`
 	_3LINE_CNT=`grep "SCORE DETAIL" ${TMP_LOG} -5 | grep "3 line" | cut -d= -f2`
 	_4LINE_CNT=`grep "SCORE DETAIL" ${TMP_LOG} -5 | grep "4 line" | cut -d= -f2`
-	RESULT_STR="${REPOSITORY_OWNER}, ${LEVEL}, ${SCORE}, ${LINE_CNT}, ${GAMEOVER_CNT}, ${_1LINE_CNT}, ${_2LINE_CNT}, ${_3LINE_CNT}, ${_4LINE_CNT}"
+	RESULT_STR="${REPOSITORY_OWNER}, ${PROGRAM_NAME}, ${LEVEL}, ${SCORE}, ${LINE_CNT}, ${GAMEOVER_CNT}, ${_1LINE_CNT}, ${_2LINE_CNT}, ${_3LINE_CNT}, ${_4LINE_CNT}"
 	echo ${RESULT_STR}
 	echo ${RESULT_STR} >> ${RESULT_LOG}
 	echo ${RESULT_STR} > ${DISPLAY_LOG}
@@ -197,7 +209,7 @@ function do_game(){
         ###### wait game -->
 	WAIT_TIME=30
 	#sleep $GAME_TIME
-	python3 ${DISPLAY_PY} --player_name "Done... ${REPOSITORY_OWNER}" --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}	
+	python3 ${DISPLAY_PY} --player_name "Done... ${REPOSITORY_OWNER}" --program_name "${PROGRAM_NAME}" --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}	
         ###### wait game <--
 
 	popd
@@ -234,10 +246,10 @@ function do_capture(){
 }
 
 #do_capture "start"
-do_game 777 # forever branch
+#do_game 777 # forever branch
 do_game 1   # level1
-do_game 2   # level2
-do_game 3   # level3
+#do_game 2   # level2
+#do_game 3   # level3
 #do_capture "stop"
 
 echo "ALL GAME FINISH !!!"
