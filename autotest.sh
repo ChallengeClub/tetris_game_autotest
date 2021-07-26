@@ -53,21 +53,22 @@ function do_game(){
     elif [ ${LEVEL} == 2 ]; then
 	# level 2
 	CLONE_REPOSITORY_LIST=(
-	    "xxx!http://github.com/hirov2/tetris_game -b SCENARIO_01"
-	    "xxx!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
-	    "xxx!http://github.com/isshy-you/tetris_game -b v1.3b"
+	    "xxx!http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
+	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
+	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
+	    "さいしょのてとらー３号!http://github.com/isshy-you/tetris_game -b v1.3b"
 	    "xxx!http://github.com/nmurata90/tetris_game -b master"
 	    "xxx!http://github.com/tsumekko/tetris_game -b master"
-	    "xxx!http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
+
 	    "xxx!http://github.com/sue-robo/tetris_game -b submit"	    
 	    #"xxx!http://github.com/sue-robo/tetris_game -b dev3"
 	)
     elif [ ${LEVEL} == 3 ]; then
 	# level 3
 	CLONE_REPOSITORY_LIST=(
-	    "xxx!http://github.com/hirov2/tetris_game -b SCENARIO_01"
-	    "xxx!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
-	    "xxx!http://github.com/isshy-you/tetris_game -b v1.3b"
+	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
+	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
+	    "さいしょのてとらー３号!http://github.com/isshy-you/tetris_game -b v1.3b"
 	    "xxx!http://github.com/nmurata90/tetris_game -b master"
 	    "xxx!http://github.com/tsumekko/tetris_game -b master"
 	    "xxx!http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
@@ -98,7 +99,7 @@ function do_game(){
 	SOUND_NUMBER=`echo $(( $[SOUND_NUMBER] % ${#SOUNDFILE_LIST[@]} ))`
 	SOUNDFILE_PATH=${SOUNDFILE_LIST[$SOUND_NUMBER]}
 	SOUNDFILE_NAME=`echo ${SOUNDFILE_PATH} | cut -d/ -f3`
-	IMAGE_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value	
+	IMAGE_NUMBER=`echo $((RANDOM%+6))` # 0-2 random value	
 	IMAGE_NAME="megen${IMAGE_NUMBER}.jpg"
 	RAMDOM_SEED="202108041111"
 
@@ -142,6 +143,10 @@ function do_game(){
 	    TARGET_LINE=`grep --line-number "game_manager.py" start.sh | tail -1 | cut -d: -f1`
 	    sed -e "${TARGET_LINE}i RANDOM_SEED=\"${RAMDOM_SEED}\"" start.sh > start.sh.org
 	    mv start.sh.org start.sh
+
+	    # update randint range
+	    sed -e "s/random.randint(1, 7)/random.randint(1, 8)/g" game_manager/board_manager.py > game_manager/board_manager.py.org
+	    mv game_manager/board_manager.py.org game_manager/board_manager.py
 	fi
 
 	#### each repository setting-->
@@ -247,8 +252,8 @@ function do_capture(){
 
 #do_capture "start"
 #do_game 777 # forever branch
-do_game 1   # level1
-#do_game 2   # level2
+#do_game 1   # level1
+do_game 2   # level2
 #do_game 3   # level3
 #do_capture "stop"
 
