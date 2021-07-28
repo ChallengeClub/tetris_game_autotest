@@ -38,9 +38,9 @@ function do_game(){
     if [ ${LEVEL} == 1 ]; then
 	# level 1
 	CLONE_REPOSITORY_LIST=(
+	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
 	    "とことん高得点狙い!http://github.com/OhdachiEriko/tetris_game -b master"
 	    "xxx!http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
-	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
 	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
 	    "さいしょのてとらー３号!http://github.com/isshy-you/tetris_game -b v1.3b"
 	    "xxx!http://github.com/YSK-2/tetris_game"
@@ -53,8 +53,8 @@ function do_game(){
     elif [ ${LEVEL} == 2 ]; then
 	# level 2
 	CLONE_REPOSITORY_LIST=(
-	    "xxx!http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
 	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
+	    "xxx!http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
 	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
 	    "さいしょのてとらー３号!http://github.com/isshy-you/tetris_game -b v1.3b"
 	    "xxx!http://github.com/nmurata90/tetris_game -b master"
@@ -102,7 +102,6 @@ function do_game(){
 	IMAGE_NUMBER=`echo $((RANDOM%+6))` # 0-2 random value	
 	IMAGE_NAME="megen${IMAGE_NUMBER}.jpg"
 	RAMDOM_SEED="202108041111"
-
 	GAMETIME=180
 	START_SH="start.sh"
 
@@ -145,11 +144,18 @@ function do_game(){
 	    mv start.sh.org start.sh
 
 	    # update randint range
-	    sed -e "s/random.randint(1, 7)/random.randint(1, 8)/g" game_manager/board_manager.py > game_manager/board_manager.py.org
-	    mv game_manager/board_manager.py.org game_manager/board_manager.py
+	    if [ ${PROGRAM_NAME} == "必要なのは根気だけ１号" -o ${PROGRAM_NAME} == "奇跡のバランス３号くん" -o ${PROGRAM_NAME} == "さいしょのてとらー３号" ]; then
+		echo "update randint range!!"
+		sed -e "s/random.randint(1, 7)/random.randint(1, 8)/g" game_manager/board_manager.py > game_manager/board_manager.py.org
+		mv game_manager/board_manager.py.org game_manager/board_manager.py
+	    fi
 	fi
 
-	#### each repository setting-->
+	# fix game time
+	sed -e "s/elapsed_time > self.game_time/elapsed_time > self.game_time - 0.5/g" game_manager/game_manager.py > game_manager/game_manager.py.org
+	mv game_manager/game_manager.py.org game_manager/game_manager.py
+
+	# each repository setting
 	if [ ${REPOSITORY_OWNER} == "isshy-you" ]; then
 	    #START_SH="start_03.sh"
 	    echo "do nothing"
@@ -257,6 +263,10 @@ do_game 2   # level2
 #do_game 3   # level3
 #do_capture "stop"
 
+#for i in `seq 100`
+#do
+#    do_game 1   # level1
+#done
 echo "ALL GAME FINISH !!!"
 exit 0
 
