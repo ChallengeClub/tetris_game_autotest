@@ -21,7 +21,7 @@ SOUNDFILE_LIST=(
 )
 
 # init RESULT_LOG
-echo "repository_name, program_name, level, score, line, gameover, 1line, 2line, 3line, 4line" > $RESULT_LOG
+echo "repository_name, program_name, level, score, line, gameover, 1line, 2line, 3line, 4line, RET_GREP_RANDINT_1_8" > $RESULT_LOG
 
 # enable pyenv (if necessary)
 export PYENV_ROOT="$HOME/.pyenv"
@@ -38,40 +38,42 @@ function do_game(){
     if [ ${LEVEL} == 1 ]; then
 	# level 1
 	CLONE_REPOSITORY_LIST=(
+	    "ぴよぴよテトリス!https://github.com/tara938/tetris_game -b v1.0"
+	    "tetris01!http://github.com/YSK-2/tetris_game -b tetris01"
+	    "たまごくらぶK!http://github.com/iceball360/tetris_game -b 1.0"
+	    "トム・クルーズ(仮)!http://github.com/Git0214/tetris_game"
+	    "超超超たまごくらぶ いきものがかり!http://github.com/tsumekko/tetris_game -b master"
+	    "Cracked Egg!http://github.com/yuin0/tetris_game -b v1.0"
+	    "Genelic Algorithm Murata!http://github.com/nmurata90/tetris_game -b master"
+	    "テトリスマン Level1!http://github.com/n-nooobu/tetris_game -b v1.0"	    
+	    "いっしーの２人め４号!http://github.com/isshy-you/tetris_game -b 1.4d"
+	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
 	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
 	    "とことん高得点狙い!http://github.com/OhdachiEriko/tetris_game -b master"
-	    "xxx!http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
-	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
-	    "さいしょのてとらー３号!http://github.com/isshy-you/tetris_game -b v1.3b"
-	    "xxx!http://github.com/YSK-2/tetris_game"
-	    "xxx!http://github.com/Git0214/tetris_game"
-	    "xxx!http://github.com/n-nooobu/tetris_game -b develop-rulebase"
-	    "xxx!http://github.com/nmurata90/tetris_game -b master"
-	    "xxx!http://github.com/tsumekko/tetris_game -b master"
-	    "xxx!http://github.com/nmurata90/tetris_game -b master"
 	)
     elif [ ${LEVEL} == 2 ]; then
 	# level 2
 	CLONE_REPOSITORY_LIST=(
+	    "Cracked Egg!http://github.com/yuin0/tetris_game -b v1.0"
 	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
-	    "xxx!http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
 	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
-	    "さいしょのてとらー３号!http://github.com/isshy-you/tetris_game -b v1.3b"
-	    "xxx!http://github.com/nmurata90/tetris_game -b master"
-	    "xxx!http://github.com/tsumekko/tetris_game -b master"
-
-	    "xxx!http://github.com/sue-robo/tetris_game -b submit"	    
-	    #"xxx!http://github.com/sue-robo/tetris_game -b dev3"
+	    "いっしーの２人め４号!http://github.com/isshy-you/tetris_game -b 1.4d"
+	    "いっしーの２人め５号!http://github.com/isshy-you/tetris_game -b 1.4e"
+	    "チームたいちとだいち２号!http://github.com/sahitaka/tetris_game -b v1.0"
+	    "テトリスマン Level2!http://github.com/n-nooobu/tetris_game -b v1.0"
+	    "sue-robo!http://github.com/sue-robo/tetris_game -b submit"
+	    #"チームたいちとだいち３号!http://github.com/taichofu/tetris_v2 -b v1"
+	    #"チームたいちとだいち４号!http://github.com/neteru141/tetris_game -b v1.1.0"
+	    ###"xxx!http://github.com/sue-robo/tetris_game -b dev3"
 	)
     elif [ ${LEVEL} == 3 ]; then
 	# level 3
 	CLONE_REPOSITORY_LIST=(
 	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
 	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
-	    "さいしょのてとらー３号!http://github.com/isshy-you/tetris_game -b v1.3b"
-	    "xxx!http://github.com/nmurata90/tetris_game -b master"
-	    "xxx!http://github.com/tsumekko/tetris_game -b master"
-	    "xxx!http://github.com/yuin0/tetris_game -b feature/yuin0/improve-controller2"
+	    "いっしーの２人め５号!http://github.com/isshy-you/tetris_game -b 1.4e"
+	    "テトリスマン Level3!http://github.com/n-nooobu/tetris_game -b v1.0"
+	    "Cracked Egg!http://github.com/yuin0/tetris_game -b v1.0"
 	)
     elif [ ${LEVEL} == 777 ]; then
 	# forever branch
@@ -91,7 +93,7 @@ function do_game(){
 	##  prepare
 	##
 	#############
-	REPOSITORY_OWNER=`echo ${CLONE_REPOSITORY_LIST[$i]} | cut -d' ' -f1 | cut -d'/' -f4`
+	REPOSITORY_OWNER=`echo ${CLONE_REPOSITORY_LIST[$i]} | cut -d! -f2- | cut -d' ' -f1 | cut -d'/' -f4`
 	CLONE_REPOSITORY=`echo ${CLONE_REPOSITORY_LIST[$i]} | cut -d! -f2-`
 	PROGRAM_NAME=`echo ${CLONE_REPOSITORY_LIST[$i]} | cut -d! -f1`
 	#SOUND_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value
@@ -101,7 +103,7 @@ function do_game(){
 	SOUNDFILE_NAME=`echo ${SOUNDFILE_PATH} | cut -d/ -f3`
 	IMAGE_NUMBER=`echo $((RANDOM%+6))` # 0-2 random value	
 	IMAGE_NAME="megen${IMAGE_NUMBER}.jpg"
-	RAMDOM_SEED="202108041111"
+	RAMDOM_SEED="202108041234567890"
 	GAMETIME=180
 	START_SH="start.sh"
 
@@ -136,36 +138,46 @@ function do_game(){
 	mkdir tetris_game
 	git clone ${CLONE_REPOSITORY}
 	pushd tetris_game
-	if [ ${LEVEL} == 2 -o ${LEVEL} == 3 ]; then
-	    # fix random seed
-	    echo "fix random seed"
-	    TARGET_LINE=`grep --line-number "game_manager.py" start.sh | tail -1 | cut -d: -f1`
-	    sed -e "${TARGET_LINE}i RANDOM_SEED=\"${RAMDOM_SEED}\"" start.sh > start.sh.org
-	    mv start.sh.org start.sh
-
-	    # update randint range
-	    if [ ${PROGRAM_NAME} == "必要なのは根気だけ１号" -o ${PROGRAM_NAME} == "奇跡のバランス３号くん" -o ${PROGRAM_NAME} == "さいしょのてとらー３号" ]; then
-		echo "update randint range!!"
-		sed -e "s/random.randint(1, 7)/random.randint(1, 8)/g" game_manager/board_manager.py > game_manager/board_manager.py.org
-		mv game_manager/board_manager.py.org game_manager/board_manager.py
-	    fi
-	fi
 
 	# fix game time
 	sed -e "s/elapsed_time > self.game_time/elapsed_time > self.game_time - 0.5/g" game_manager/game_manager.py > game_manager/game_manager.py.org
 	mv game_manager/game_manager.py.org game_manager/game_manager.py
 
-	# each repository setting
-	if [ ${REPOSITORY_OWNER} == "isshy-you" ]; then
-	    #START_SH="start_03.sh"
-	    echo "do nothing"
-	elif [ ${REPOSITORY_OWNER} == "YSK-2" ]; then
-	    #cp block_controller2.py block_controller.py
-	    sed -e "s/BLOCK_CONTROLLER_SAMPLE/BLOCK_CONTROLLER/g" block_controller2.py > block_controller.py
+	# each repository pre-setting
+	if [ ${REPOSITORY_OWNER} == "isshy-you" -a ${PROGRAM_NAME} == "いっしーの２人め４号" ]; then
+	    echo "START_SH=start_04d.sh"
+	    START_SH="start_04d.sh"
+	elif [ ${REPOSITORY_OWNER} == "isshy-you" -a ${PROGRAM_NAME} == "いっしーの２人め５号" ]; then
+	    echo "START_SH=start_04e.sh"
+	    START_SH="start_04e.sh"
+	elif [ ${REPOSITORY_OWNER} == "sahitaka" -a ${PROGRAM_NAME} == "チームたいちとだいち２号" ]; then
+	    echo "START_SH=start.sh"
+	    START_SH="start.sh -s y"
+	elif [ ${REPOSITORY_OWNER} == "tara938" -a ${PROGRAM_NAME} == "ぴよぴよテトリス" ]; then
+	    # copy special files...
+	    cp -rp ${CURRENT_DIR}/tara938/* .
+	#elif [ ${REPOSITORY_OWNER} == "YSK-2" ]; then
+	#    #cp block_controller2.py block_controller.py
+	#    sed -e "s/BLOCK_CONTROLLER_SAMPLE/BLOCK_CONTROLLER/g" block_controller2.py > block_controller.py
 	else
 	    echo "no each repository setting"
 	fi
 
+	# random seed preparation
+	if [ ${LEVEL} == 2 -o ${LEVEL} == 3 ]; then
+	    echo "fix random seed ${RAMDOM_SEED}"
+	    TARGET_LINE=`grep --line-number "game_manager.py" ${START_SH} | tail -1 | cut -d: -f1`
+	    sed -e "${TARGET_LINE}i RANDOM_SEED=\"${RAMDOM_SEED}\"" ${START_SH} > start.sh.org
+	    mv start.sh.org ${START_SH}
+
+	    # update randint range
+	    if [ ${PROGRAM_NAME} == "必要なのは根気だけ１号" -o ${PROGRAM_NAME} == "奇跡のバランス３号くん" ]; then
+		echo "update randint range!!"
+		sed -e "s/random.randint(1, 7)/random.randint(1, 8)/g" game_manager/board_manager.py > game_manager/board_manager.py.org
+		mv game_manager/board_manager.py.org game_manager/board_manager.py
+	    fi
+	fi
+	
         ###### wait game -->
 	WAIT_TIME=30
 	#sleep ${WAIT_TIME}
@@ -174,7 +186,7 @@ function do_game(){
 	WINDOWID=`xdotool search --onlyvisible --name "${IMAGE_NAME}"`
 	xdotool windowmove ${WINDOWID} 600 100
 	echo -n >| ${DISPLAY_LOG} # create empty file
-	python3 ${DISPLAY_PY} --player_name "Next... ${REPOSITORY_OWNER}" --program_name "${PROGRAM_NAME}" --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}
+	python3 ${DISPLAY_PY} --player_name "Next... ${REPOSITORY_OWNER}" --program_name "${PROGRAM_NAME}" --level ${LEVEL} --sound_name "xxx" --max_time ${WAIT_TIME}
 	pkill "eog"
 	###### wait game <--
 	
@@ -212,7 +224,11 @@ function do_game(){
 	_2LINE_CNT=`grep "SCORE DETAIL" ${TMP_LOG} -5 | grep "2 line" | cut -d= -f2`
 	_3LINE_CNT=`grep "SCORE DETAIL" ${TMP_LOG} -5 | grep "3 line" | cut -d= -f2`
 	_4LINE_CNT=`grep "SCORE DETAIL" ${TMP_LOG} -5 | grep "4 line" | cut -d= -f2`
-	RESULT_STR="${REPOSITORY_OWNER}, ${PROGRAM_NAME}, ${LEVEL}, ${SCORE}, ${LINE_CNT}, ${GAMEOVER_CNT}, ${_1LINE_CNT}, ${_2LINE_CNT}, ${_3LINE_CNT}, ${_4LINE_CNT}"
+	# check if update randint() to fix bug...
+	grep -r "np_randomShape.random.randint(1, 8)" *
+	RET_GREP_RANDINT_1_8=$?
+	RESULT_STR="${REPOSITORY_OWNER}, ${PROGRAM_NAME}, ${LEVEL}, ${SCORE}, ${LINE_CNT}, ${GAMEOVER_CNT}, ${_1LINE_CNT}, ${_2LINE_CNT}, ${_3LINE_CNT}, ${_4LINE_CNT}, ${RET_GREP_RANDINT_1_8}"
+
 	echo ${RESULT_STR}
 	echo ${RESULT_STR} >> ${RESULT_LOG}
 	echo ${RESULT_STR} > ${DISPLAY_LOG}
@@ -220,7 +236,7 @@ function do_game(){
         ###### wait game -->
 	WAIT_TIME=30
 	#sleep $GAME_TIME
-	python3 ${DISPLAY_PY} --player_name "Done... ${REPOSITORY_OWNER}" --program_name "${PROGRAM_NAME}" --level 0 --sound_name "xxx" --max_time ${WAIT_TIME}	
+	python3 ${DISPLAY_PY} --player_name "Done... ${REPOSITORY_OWNER}" --program_name "${PROGRAM_NAME}" --level ${LEVEL} --sound_name "xxx" --max_time ${WAIT_TIME}	
         ###### wait game <--
 
 	popd
@@ -258,15 +274,15 @@ function do_capture(){
 
 #do_capture "start"
 #do_game 777 # forever branch
-#do_game 1   # level1
+do_game 1   # level1
 do_game 2   # level2
-#do_game 3   # level3
+do_game 3   # level3
 #do_capture "stop"
 
-#for i in `seq 100`
-#do
-#    do_game 1   # level1
-#done
+for i in `seq 10`
+do
+    do_game 1   # level1
+done
 echo "ALL GAME FINISH !!!"
 exit 0
 
