@@ -41,12 +41,12 @@ function do_game(){
 	    "ぴよぴよテトリス!https://github.com/tara938/tetris_game -b v1.0"
 	    "tetris01!http://github.com/YSK-2/tetris_game -b tetris01"
 	    "たまごくらぶK!http://github.com/iceball360/tetris_game -b 1.0"
-	    "トム・クルーズ(仮)!http://github.com/Git0214/tetris_game"
+	    "トム・クルーズ!http://github.com/Git0214/tetris_game"
 	    "超超超たまごくらぶ いきものがかり!http://github.com/tsumekko/tetris_game -b master"
 	    "Cracked Egg!http://github.com/yuin0/tetris_game -b v1.0"
 	    "Genelic Algorithm Murata!http://github.com/nmurata90/tetris_game -b master"
 	    "テトリスマン Level1!http://github.com/n-nooobu/tetris_game -b v1.0"	    
-	    "いっしーの２人め４号!http://github.com/isshy-you/tetris_game -b 1.4d"
+	    "いっしーの２人め４号!http://github.com/isshy-you/tetris_game -b 1.4e"
 	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
 	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
 	    "とことん高得点狙い!http://github.com/OhdachiEriko/tetris_game -b master"
@@ -54,12 +54,12 @@ function do_game(){
     elif [ ${LEVEL} == 2 ]; then
 	# level 2
 	CLONE_REPOSITORY_LIST=(
-	    "Cracked Egg!http://github.com/yuin0/tetris_game -b v1.0"
+	    "いっしーの２人め４号!http://github.com/isshy-you/tetris_game -b 1.4e"
+	    "いっしーの２人め５号!http://github.com/isshy-you/tetris_game -b 1.4e" # 4号との違いはstart.sh
 	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
 	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
-	    "いっしーの２人め４号!http://github.com/isshy-you/tetris_game -b 1.4d"
-	    "いっしーの２人め５号!http://github.com/isshy-you/tetris_game -b 1.4e"
 	    "チームたいちとだいち２号!http://github.com/sahitaka/tetris_game -b v1.0"
+	    "Cracked Egg!http://github.com/yuin0/tetris_game -b v1.0"
 	    "テトリスマン Level2!http://github.com/n-nooobu/tetris_game -b v1.0"
 	    "sue-robo!http://github.com/sue-robo/tetris_game -b submit"
 	    #"チームたいちとだいち３号!http://github.com/taichofu/tetris_v2 -b v1"
@@ -71,8 +71,7 @@ function do_game(){
 	CLONE_REPOSITORY_LIST=(
 	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
 	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
-	    "いっしーの２人め５号!http://github.com/isshy-you/tetris_game -b 1.4e"
-	    "テトリスマン Level3!http://github.com/n-nooobu/tetris_game -b v1.0"
+	    "いっしーの２人め５号!http://github.com/isshy-you/tetris_game -b 1.4e" # 4号との違いはstart.sh
 	    "Cracked Egg!http://github.com/yuin0/tetris_game -b v1.0"
 	)
     elif [ ${LEVEL} == 777 ]; then
@@ -279,10 +278,10 @@ do_game 2   # level2
 do_game 3   # level3
 #do_capture "stop"
 
-for i in `seq 10`
-do
-    do_game 1   # level1
-done
+#for i in `seq 10`
+#do
+#    do_game 1   # level1
+#done
 echo "ALL GAME FINISH !!!"
 exit 0
 
