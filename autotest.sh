@@ -62,8 +62,8 @@ function do_game(){
 	    "Cracked Egg!http://github.com/yuin0/tetris_game -b v1.0"
 	    "テトリスマン Level2!http://github.com/n-nooobu/tetris_game -b v1.0"
 	    "sue-robo!http://github.com/sue-robo/tetris_game -b submit"
-	    #"チームたいちとだいち３号!http://github.com/taichofu/tetris_v2 -b v1"
-	    #"チームたいちとだいち４号!http://github.com/neteru141/tetris_game -b v1.1.0"
+	    "チームたいちとだいち３号!http://github.com/taichofu/tetris_v2 -b v1"
+	    "チームたいちとだいち４号!http://github.com/neteru141/tetris_game -b v1.1.0"
 	    ###"xxx!http://github.com/sue-robo/tetris_game -b dev3"
 	)
     elif [ ${LEVEL} == 3 ]; then
@@ -105,6 +105,7 @@ function do_game(){
 	RAMDOM_SEED="202108041234567890"
 	GAMETIME=180
 	START_SH="start.sh"
+	START_SH_OPTION=""
 
 	# pyenv select
 	if [ ${LEVEL} == 1 -o ${LEVEL} == 777 ]; then
@@ -117,11 +118,9 @@ function do_game(){
 	    echo "pyenv activate sue-robo_env"
 	    pyenv activate sue-robo_env
 	elif [ ${REPOSITORY_OWNER} == "taichofu" -o ${REPOSITORY_OWNER} == "neteru141" ]; then
-	    # taichofu_neteru141_env
-    	    echo "pyenv activate taichofu_neteru141_env"
-	    #pyenv activate taichofu_neteru141_env
-	    #"チームたいちとだいち３号!http://github.com/taichofu/tetris_v2 -b v1"
-	    #"チームたいちとだいち４号!http://github.com/neteru141/tetris_game -b v1.1.0"
+	    # taichofu_env/neteru141_env
+    	    echo "pyenv activate taichofu_env/neteru141_env"
+	    pyenv activate taichofu_env
 	else
 	    # default
 	    echo "pyenv activate myenv3.6.9"
@@ -152,17 +151,19 @@ function do_game(){
 	mv game_manager/game_manager.py.org game_manager/game_manager.py
 
 	# each repository pre-setting
-	if [ ${REPOSITORY_OWNER} == "isshy-you" -a ${PROGRAM_NAME} == "いっしーの２人め４号" ]; then
+	if [ "${REPOSITORY_OWNER}" == "isshy-you" -a "${PROGRAM_NAME}" == "いっしーの２人め４号" ]; then
 	    echo "START_SH=start_04d.sh"
 	    START_SH="start_04d.sh"
-	elif [ ${REPOSITORY_OWNER} == "isshy-you" -a ${PROGRAM_NAME} == "いっしーの２人め５号" ]; then
+	elif [ "${REPOSITORY_OWNER}" == "isshy-you" -a "${PROGRAM_NAME}" == "いっしーの２人め５号" ]; then
 	    echo "START_SH=start_04e.sh"
 	    START_SH="start_04e.sh"
-	elif [ ${REPOSITORY_OWNER} == "sahitaka" -a ${PROGRAM_NAME} == "チームたいちとだいち２号" ]; then
+	elif [ "${REPOSITORY_OWNER}" == "sahitaka" -a "${PROGRAM_NAME}" == "チームたいちとだいち２号" ]; then
 	    echo "START_SH=start.sh"
-	    START_SH="start.sh -s y"
-	elif [ ${REPOSITORY_OWNER} == "tara938" -a ${PROGRAM_NAME} == "ぴよぴよテトリス" ]; then
+	    START_SH="start.sh"
+	    START_SH_OPTION="-s y"
+	elif [ "${REPOSITORY_OWNER}" == "tara938" -a "${PROGRAM_NAME}" == "ぴよぴよテトリス" ]; then
 	    # copy special files...
+	    echo "copy special files..."
 	    cp -rp ${CURRENT_DIR}/tara938/* .
 	#elif [ ${REPOSITORY_OWNER} == "YSK-2" ]; then
 	#    #cp block_controller2.py block_controller.py
@@ -179,7 +180,7 @@ function do_game(){
 	    mv start.sh.org ${START_SH}
 
 	    # update randint range
-	    if [ ${PROGRAM_NAME} == "必要なのは根気だけ１号" -o ${PROGRAM_NAME} == "奇跡のバランス３号くん" ]; then
+	    if [ "${PROGRAM_NAME}" == "必要なのは根気だけ１号" -o "${PROGRAM_NAME}" == "奇跡のバランス３号くん" ]; then
 		echo "update randint range!!"
 		sed -e "s/random.randint(1, 7)/random.randint(1, 8)/g" game_manager/board_manager.py > game_manager/board_manager.py.org
 		mv game_manager/board_manager.py.org game_manager/board_manager.py
@@ -204,7 +205,7 @@ function do_game(){
 	eog ~/Downloads/${IMAGE_NAME} &
 	python3 ${DISPLAY_PY} --player_name ${REPOSITORY_OWNER} --program_name "${PROGRAM_NAME}" --level ${LEVEL} --sound_name ${SOUNDFILE_NAME} --max_time ${GAMETIME} &
 	
-	bash ${START_SH} -l${LEVEL} -t${GAMETIME} > ${TMP_LOG} &
+	bash ${START_SH} -l${LEVEL} -t${GAMETIME} ${START_SH_OPTION} > ${TMP_LOG} &
 	# move window
 	sleep 1
 	WINDOWID=`xdotool search --onlyvisible --name "Tetris" | tail -1`
@@ -281,7 +282,7 @@ function do_capture(){
 }
 
 #do_capture "start"
-#do_game 777 # forever branch
+do_game 777 # forever branch
 do_game 1   # level1
 do_game 2   # level2
 do_game 3   # level3
