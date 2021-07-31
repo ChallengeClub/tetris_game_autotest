@@ -69,8 +69,8 @@ function do_game(){
     elif [ ${LEVEL} == 3 ]; then
 	# level 3
 	CLONE_REPOSITORY_LIST=(
-	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
 	    "奇跡のバランス３号くん!http://github.com/hirov2/tetris_game -b FirstStrategy_003"
+	    "必要なのは根気だけ１号!http://github.com/hirov2/tetris_game -b SCENARIO_01"
 	    "いっしーの２人め５号!http://github.com/isshy-you/tetris_game -b 1.4e" # 4号との違いはstart.sh
 	    "Cracked Egg!http://github.com/yuin0/tetris_game -b v1.0"
 	)
@@ -109,13 +109,22 @@ function do_game(){
 	# pyenv select
 	if [ ${LEVEL} == 1 -o ${LEVEL} == 777 ]; then
 	    # other env (python3.6.9)
+	    echo "pyenv activate myenv3.6.9"
 	    pyenv activate myenv3.6.9
 	    python -V
 	elif [ ${REPOSITORY_OWNER} == "sue-robo" ]; then
 	    # sue-robo_env
+	    echo "pyenv activate sue-robo_env"
 	    pyenv activate sue-robo_env
+	elif [ ${REPOSITORY_OWNER} == "taichofu" -o ${REPOSITORY_OWNER} == "neteru141" ]; then
+	    # taichofu_neteru141_env
+    	    echo "pyenv activate taichofu_neteru141_env"
+	    #pyenv activate taichofu_neteru141_env
+	    #"チームたいちとだいち３号!http://github.com/taichofu/tetris_v2 -b v1"
+	    #"チームたいちとだいち４号!http://github.com/neteru141/tetris_game -b v1.1.0"
 	else
 	    # default
+	    echo "pyenv activate myenv3.6.9"
 	    pyenv activate myenv3.6.9
 	    python -V
 	fi
@@ -135,7 +144,7 @@ function do_game(){
 	cd ~
 	rm -rf tetris_game
 	mkdir tetris_game
-	git clone ${CLONE_REPOSITORY}
+	git clone ${CLONE_REPOSITORY} tetris_game
 	pushd tetris_game
 
 	# fix game time
