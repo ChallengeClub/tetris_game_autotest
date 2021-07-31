@@ -30,6 +30,7 @@ function install_sue-robo_env() {
 
 function install_taichofu_env() {
     # taichofu env
+    # git clone http://github.com/taichofu/tetris_v2
     # base: docker v1.4
     pip3 install matplotlib
     pip3 install torch torchvision torchaudio -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
@@ -37,6 +38,7 @@ function install_taichofu_env() {
 
 function install_neteru141_env() {
     # neteru141 env
+    # git clone http://github.com/neteru141/tetris_game -b v1.1.0
     # base: docker v1.4
     echo "base: docker v1.4"
 }
