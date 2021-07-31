@@ -28,6 +28,19 @@ function install_sue-robo_env() {
     # https://qiita.com/seigot/items/d4528fc584e4b58b070e
 }
 
+function install_taichofu_env() {
+    # taichofu env
+    # base: docker v1.4
+    pip3 install matplotlib
+    pip3 install torch torchvision torchaudio -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
+}
+
+function install_neteru141_env() {
+    # neteru141 env
+    # base: docker v1.4
+    echo "base: docker v1.4"
+}
+
 source ~/.bashrc
 
 pyenv activate myenv
