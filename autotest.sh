@@ -34,6 +34,9 @@ function do_game(){
 
     LEVEL=$1
 
+    RESULT_LEVEL_LOG="${CURRENT_DIR}/result_level${LEVEL}.log"
+    echo -n >| ${RESULT_LEVEL_LOG} # create empty file
+    
     # get repository list
     if [ ${LEVEL} == 1 ]; then
 	# level 1
@@ -61,7 +64,7 @@ function do_game(){
 	    "チームたいちとだいち２号!http://github.com/sahitaka/tetris_game -b v1.0"
 	    "Cracked Egg!http://github.com/yuin0/tetris_game -b v1.0"
 	    "テトリスマン Level2!http://github.com/n-nooobu/tetris_game -b v1.0"
-	    "sue-robo!http://github.com/sue-robo/tetris_game -b submit"
+	    "強化学習型sue-robo!http://github.com/sue-robo/tetris_game -b submit"
 	    "チームたいちとだいち３号!http://github.com/taichofu/tetris_v2 -b v1"
 	    "チームたいちとだいち４号!http://github.com/neteru141/tetris_game -b v1.1.0"
 	    ###"xxx!http://github.com/sue-robo/tetris_game -b dev3"
@@ -240,6 +243,7 @@ function do_game(){
 
 	echo ${RESULT_STR}
 	echo ${RESULT_STR} >> ${RESULT_LOG}
+	echo ${RESULT_STR} >> ${RESULT_LEVEL_LOG}
 	echo ${RESULT_STR} > ${DISPLAY_LOG}
 
         ###### wait game -->
@@ -252,7 +256,12 @@ function do_game(){
 
     done
 
-    cat ${RESULT_LOG}
+    #cat ${RESULT_LOG}
+    echo "---- LEVEL ${LEVEL} result ----"
+    sort -k 4nr -t , ${RESULT_LEVEL_LOG}
+    echo "----"
+    WAIT_TIME=60
+    python3 ${DISPLAY_PY} --player_name "End, LEVEL ${LEVEL}" --program_name "END, LEVEL ${LEVEL}" --level ${LEVEL} --sound_name "xxx" --max_time ${WAIT_TIME}
 
     return 0
 }
