@@ -218,7 +218,7 @@ function do_game(){
 	# wait finish
 	sleep ${GAMETIME}
 	pkill "eog"
-	sleep 2
+	sleep 5
 
 	#############
 	##
