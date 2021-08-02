@@ -44,7 +44,7 @@ function do_game(){
 	    "ぴよぴよテトリス!https://github.com/tara938/tetris_game -b v1.0"
 	    "tetris01!http://github.com/YSK-2/tetris_game -b tetris01"
 	    "たまごくらぶK!http://github.com/iceball360/tetris_game -b 1.0"
-	    "トム・クルーズ!http://github.com/Git0214/tetris_game"
+	    "超超超たまごくらぶ たまご6号!http://github.com/Git0214/tetris_game"
 	    "超超超たまごくらぶ いきものがかり!http://github.com/tsumekko/tetris_game -b master"
 	    "Cracked Egg!http://github.com/yuin0/tetris_game -b v1.0"
 	    "Genelic Algorithm Murata!http://github.com/nmurata90/tetris_game -b master"
@@ -103,7 +103,7 @@ function do_game(){
 	SOUND_NUMBER=`echo $(( $[SOUND_NUMBER] % ${#SOUNDFILE_LIST[@]} ))`
 	SOUNDFILE_PATH=${SOUNDFILE_LIST[$SOUND_NUMBER]}
 	SOUNDFILE_NAME=`echo ${SOUNDFILE_PATH} | cut -d/ -f3`
-	IMAGE_NUMBER=`echo $((RANDOM%+6))` # 0-2 random value	
+	IMAGE_NUMBER=`echo $((RANDOM%+13))` # 0-12 random value	
 	IMAGE_NAME="megen${IMAGE_NUMBER}.jpg"
 	RAMDOM_SEED="202108041234567890"
 	GAMETIME=180
