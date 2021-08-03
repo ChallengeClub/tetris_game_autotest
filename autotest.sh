@@ -205,10 +205,12 @@ function do_game(){
 	###### do game	
 	# start
 	play ${SOUNDFILE_PATH} &
+	PID_PLAY_SOUND=$!
 	eog ~/Downloads/${IMAGE_NAME} &
 	python3 ${DISPLAY_PY} --player_name ${REPOSITORY_OWNER} --program_name "${PROGRAM_NAME}" --level ${LEVEL} --sound_name ${SOUNDFILE_NAME} --max_time ${GAMETIME} &
 	
 	bash ${START_SH} -l${LEVEL} -t${GAMETIME} ${START_SH_OPTION} > ${TMP_LOG} &
+	PID_START_SH=$!
 	# move window
 	sleep 1
 	WINDOWID=`xdotool search --onlyvisible --name "Tetris" | tail -1`
@@ -216,9 +218,10 @@ function do_game(){
 	WINDOWID=`xdotool search --onlyvisible --name "${IMAGE_NAME}"`
 	xdotool windowmove ${WINDOWID} 900 100
 	# wait finish
-	sleep ${GAMETIME}
+	wait ${PID_START_SH}
+	wait ${PID_PLAY_SOUND}
 	pkill "eog"
-	sleep 5
+	sleep 2
 
 	#############
 	##
@@ -241,9 +244,12 @@ function do_game(){
 	RET_GREP_RANDINT_1_8=$?
 	RESULT_STR="${REPOSITORY_OWNER}, ${PROGRAM_NAME}, ${LEVEL}, ${SCORE}, ${LINE_CNT}, ${GAMEOVER_CNT}, ${_1LINE_CNT}, ${_2LINE_CNT}, ${_3LINE_CNT}, ${_4LINE_CNT}, ${RET_GREP_RANDINT_1_8}"
 
-	echo ${RESULT_STR}
+	#echo ${RESULT_STR}
 	echo ${RESULT_STR} >> ${RESULT_LOG}
 	echo ${RESULT_STR} >> ${RESULT_LEVEL_LOG}
+	echo " ---- Current Score ranking(TOP5), LEVEL ${LEVEL} ----"
+	sort -k 4nr -t , ${RESULT_LEVEL_LOG} | head -5
+	echo " ----"
 	echo ${RESULT_STR} > ${DISPLAY_LOG}
 
         ###### wait game -->
@@ -257,7 +263,7 @@ function do_game(){
     done
 
     #cat ${RESULT_LOG}
-    echo "---- LEVEL ${LEVEL} result ----"
+    echo " ---- Result Score ranking, LEVEL ${LEVEL} ----"
     sort -k 4nr -t , ${RESULT_LEVEL_LOG}
     echo "----"
     WAIT_TIME=60
