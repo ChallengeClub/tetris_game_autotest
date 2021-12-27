@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 from PyQt5.QtWidgets import * 
 from PyQt5 import QtCore, QtGui 
 from PyQt5.QtGui import * 
@@ -6,126 +9,93 @@ import sys
 from argparse import ArgumentParser
 import subprocess
 
-def get_option(player_name, program_name, level, sound_name, max_time):
+def get_option(user_name, program_name, level, max_time):
     argparser = ArgumentParser()
-    argparser.add_argument('--player_name', type=str,
-                           default=player_name,
+    argparser.add_argument('-u', '--user_name', type=str,
+                           default=user_name,
                            help='player name')
-    argparser.add_argument('--program_name', type=str,
+    argparser.add_argument('-p', '--program_name', type=str,
                            default=program_name,
                            help='program name')    
-    argparser.add_argument('--level', type=int,
+    argparser.add_argument('-l', '--level', type=int,
                            default=level,
                            help='level')
-    argparser.add_argument('--sound_name', type=str,
-                           default=sound_name,
-                           help='sound_name')
-    argparser.add_argument('--max_time', type=int,
+    argparser.add_argument('-t', '--max_time', type=int,
                            default=max_time,
                            help='max_time')
     return argparser.parse_args()
 
 def res_cmd(cmd):
-  return subprocess.Popen(
-      cmd, stdout=subprocess.PIPE,
-      shell=True).communicate()[0]
+    return subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True).communicate()[0]
 
 def get_line_score():
-  #cmd = ("ls -l")
-  #cmd0 = ("ls -l") #("touch tmp.log")
-#  cmd1 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f1")
-#  cmd2 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f2")
-#  cmd3 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f3")
-#  cmd4 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep line_score_stat | tail -1 | cut -d: -f2 | cut -d[ -f2 | cut -d] -f1 | cut -d, -f4")
-#  cmd5 = ("tail -n500 /home/ubuntu/tetris_game_autotest/tmp.log | grep -e 'score' | grep -v 'dropdownscore' | grep -v 'line_score' | grep -v 'linescore' | tail -1 | cut -d: -f2 | cut -d} -f1")
+    LOGFILE="/home/ubuntu/tetris/result.json"
+    cmd1 = ("jq .debug_info.line_score_stat[0] " + LOGFILE)
+    cmd2 = ("jq .debug_info.line_score_stat[1] " + LOGFILE)
+    cmd3 = ("jq .debug_info.line_score_stat[2] " + LOGFILE)
+    cmd4 = ("jq .debug_info.line_score_stat[3] " + LOGFILE)
+    cmd5 = ("jq .judge_info.score /home/ubuntu/tetris/result.json")
 
-  cmd1 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f7")
-  cmd2 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f8")
-  cmd3 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f9")
-  cmd4 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f10")
-  cmd5 = ("tail -n1 /home/ubuntu/tetris_game_autotest/display.log | cut -d, -f4")
+    cmd6 = ("jq .debug_info.line_score.\"line1\" " + LOGFILE)
+    cmd7 = ("jq .debug_info.line_score.\"line2\" " + LOGFILE)
+    cmd8 = ("jq .debug_info.line_score.\"line3\" " + LOGFILE)
+    cmd9 = ("jq .debug_info.line_score.\"line4\" " + LOGFILE)
+    
+    res1 = res_cmd(cmd1)
+    res2 = res_cmd(cmd2)
+    res3 = res_cmd(cmd3)
+    res4 = res_cmd(cmd4)
+    res5 = res_cmd(cmd5)
+    
+    res6 = res_cmd(cmd6)
+    res7 = res_cmd(cmd7)
+    res8 = res_cmd(cmd8)
+    res9 = res_cmd(cmd9)
+    
+    try:
+        _1line_score = int(res1)*int(res6)#*100
+        _2line_score = int(res2)*int(res7)#*300
+        _3line_score = int(res3)*int(res8)#*700
+        _4line_score = int(res4)*int(res9)#*1200
+        _total_score = int(res5)
+    except:
+        return -1, -1, -1, -1, -1
 
-  #res0 = res_cmd(cmd0)
-  res1 = res_cmd(cmd1)
-  res2 = res_cmd(cmd2)
-  res3 = res_cmd(cmd3)
-  res4 = res_cmd(cmd4)
-  res5 = res_cmd(cmd5)
-  #res5 = 0
-
-  #print(res0)
-  #print(res_cmd(cmd1))
-  #print(int(res1))
-  #print(int(res2))
-  #print(int(res3))
-  #print(int(res4))
-  #print(int(res5))
-
-  #if res0 is b'':
-  #    print ("none")
-  #    res0 = 0
-  #if res1 == b'':
-  #    print ("none")
-  #    res1 = 0      
-  #if res2 == b'':
-  #    print ("none")
-  #    res2 = 0      
-  #if res3 == b'':
-  #    print ("none")
-  #    res3 = 0
-  #if res4 == b'':
-  #    print ("none")
-  #    res4 = 0
-  #if res5 == b'':
-  #    print ("none")
-  #    res5 = 0
-
-  try:
-      _1line_score = int(res1)#*100
-      _2line_score = int(res2)#*300
-      _3line_score = int(res3)#*700
-      _4line_score = int(res4)#*1200
-      _total_score = int(res5)
-  except:
-      return 0, 0, 0, 0, 0
-
-  return _1line_score, _2line_score, _3line_score, _4line_score,_total_score
+    return _1line_score, _2line_score, _3line_score, _4line_score,_total_score
 
 class Window(QMainWindow): 
 
     def __init__(self): 
         super().__init__() 
 
-        # setting title 
-        self.setWindowTitle("Player information") 
-
         # show information
-        self.player_name = "testuser"
+        self.user_name = "testuser"
         self.program_name = "---"
         self.level = 1
-        self.sound_name = "xxx"
         self.max_time = 180
         self.max_timer_count = self.max_time * 10
-
-        args = get_option(self.player_name,
+        self.current_txt = ""
+        
+        args = get_option(self.user_name,
                           self.program_name,
                           self.level,
-                          self.sound_name,
                           self.max_time)
-        if len(args.player_name) != 0:
-            self.player_name = args.player_name
+        if len(args.user_name) != 0:
+            self.user_name = args.user_name
         if len(args.program_name) != 0:
             self.program_name = args.program_name
         if args.level >= 0:
             self.level = args.level
-        if len(args.sound_name) != 0:
-            self.sound_name = args.sound_name
         if args.max_time >= 0:
             self.max_timer_count = args.max_time * 10
 
+        # setting title
+        windowtitle="Player_" + self.user_name + "_information"
+        self.setWindowTitle(windowtitle)
+
         # setting geometry
         upper_left = (100,100)
-        width_height = (480, 480)
+        width_height = (280, 380)
         self.setGeometry(upper_left[0], upper_left[1],
                          width_height[0], width_height[1]) 
 
@@ -140,20 +110,20 @@ class Window(QMainWindow):
 
         # timer parameter
         self.timer_count = 0.0
-        self.timer_flag = True #False
+        self.timer_flag = True
         # LAP parameter
         self.lap_count = 0
         self.lap_count_max = 3
 
         # creating a label to show the time 
         self.label = QLabel(self)
-        label_upper_left = (10, 10)
-        label_width_height = (460, 460)
+        label_upper_left = (5, 5)
+        label_width_height = (270, 370)
         self.label.setGeometry(label_upper_left[0], label_upper_left[1], 
                                label_width_height[0], label_width_height[1]) 
         self.label.setStyleSheet("border : 4px solid black;") 
         self.label.setText(self.gettimertext())
-        self.label.setFont(QFont('Arial', 28))
+        self.label.setFont(QFont('Arial', 22))
         self.label.setAlignment(Qt.AlignCenter) 
 
         # creating a timer object 
@@ -177,24 +147,20 @@ class Window(QMainWindow):
     def gettimertext(self):
 
         _1line_score, _2line_score, _3line_score , _4line_score, _total_score = get_line_score()
-        #_1line_score = 0
-        #_2line_score = 0
-        #_3line_score = 0
-        #_4line_score = 0
-        #_total_score = 0
+        if _1line_score < 0:
+            return self.current_txt
         
-        text = "Player: " + self.player_name + "\n" \
+        self.current_text = "Player: " + self.user_name + "\n" \
         + self.program_name + "\n" \
         + "LEVEL: " + str(self.level) + "\n" \
-        + "TIME: " + str('{:.01f}'.format(self.timer_count / 10)) + "/" + str(self.max_timer_count/10) + " (s)" + "\n" \
-        + "SOUND: " + self.sound_name + "\n" \
         + "SCORE: " + str(_total_score) + "\n" \
         + "  1line: " + str(_1line_score) + "\n" \
         + "  2line: " + str(_2line_score) + "\n" \
         + "  3line: " + str(_3line_score) + "\n" \
         + "  4line: " + str(_4line_score)
-                          
-        return text
+        #+ "TIME: " + str('{:.01f}'.format(self.timer_count / 10)) + "/" + str(self.max_timer_count/10) + " (s)" + "\n" \
+
+        return self.current_text
 
 # create pyqt5 app 
 App = QApplication(sys.argv) 
