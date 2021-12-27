@@ -9,7 +9,7 @@ import sys
 from argparse import ArgumentParser
 import subprocess
 
-def get_option(user_name, program_name, level, max_time):
+def get_option(user_name, program_name, level, max_time, logfilejson):
     argparser = ArgumentParser()
     argparser.add_argument('-u', '--user_name', type=str,
                            default=user_name,
@@ -23,18 +23,21 @@ def get_option(user_name, program_name, level, max_time):
     argparser.add_argument('-t', '--max_time', type=int,
                            default=max_time,
                            help='max_time')
+    argparser.add_argument('-f', '--logfilejson', type=str,
+                           default=logfilejson,
+                           help='log file (.json) name')
     return argparser.parse_args()
 
 def res_cmd(cmd):
     return subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True).communicate()[0]
 
-def get_line_score():
-    LOGFILE="/home/ubuntu/tetris/result.json"
+def get_line_score(logfile):
+    LOGFILE=logfile #"/home/ubuntu/tetris/result.json"
     cmd1 = ("jq .debug_info.line_score_stat[0] " + LOGFILE)
     cmd2 = ("jq .debug_info.line_score_stat[1] " + LOGFILE)
     cmd3 = ("jq .debug_info.line_score_stat[2] " + LOGFILE)
     cmd4 = ("jq .debug_info.line_score_stat[3] " + LOGFILE)
-    cmd5 = ("jq .judge_info.score /home/ubuntu/tetris/result.json")
+    cmd5 = ("jq .judge_info.score " + LOGFILE)
 
     cmd6 = ("jq .debug_info.line_score.\"line1\" " + LOGFILE)
     cmd7 = ("jq .debug_info.line_score.\"line2\" " + LOGFILE)
@@ -74,12 +77,14 @@ class Window(QMainWindow):
         self.level = 1
         self.max_time = 180
         self.max_timer_count = self.max_time * 10
+        self.logfilejson = "/home/ubuntu/tetris/result.json"
         self.current_txt = ""
         
         args = get_option(self.user_name,
                           self.program_name,
                           self.level,
-                          self.max_time)
+                          self.max_time,
+                          self.logfilejson)
         if len(args.user_name) != 0:
             self.user_name = args.user_name
         if len(args.program_name) != 0:
@@ -88,9 +93,14 @@ class Window(QMainWindow):
             self.level = args.level
         if args.max_time >= 0:
             self.max_timer_count = args.max_time * 10
+        if len(args.logfilejson) != 0:
+            self.logfilejson = args.logfilejson
+            print(args.logfilejson)
 
         # setting title
-        windowtitle="Player_" + self.user_name + "_information"
+        windowtitle="Player_information"
+        if len(args.user_name) != 0:
+            windowtitle="Player_" + self.user_name + "_information"
         self.setWindowTitle(windowtitle)
 
         # setting geometry
@@ -146,7 +156,7 @@ class Window(QMainWindow):
 
     def gettimertext(self):
 
-        _1line_score, _2line_score, _3line_score , _4line_score, _total_score = get_line_score()
+        _1line_score, _2line_score, _3line_score , _4line_score, _total_score = get_line_score(self.logfilejson)
         if _1line_score < 0:
             return self.current_txt
         
