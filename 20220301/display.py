@@ -32,17 +32,19 @@ def res_cmd(cmd):
     return subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True).communicate()[0]
 
 def get_line_score(logfile):
-    LOGFILE=logfile #"/home/ubuntu/tetris/result.json"
+    LOGFILE=logfile
     cmd1 = ("jq .debug_info.line_score_stat[0] " + LOGFILE)
     cmd2 = ("jq .debug_info.line_score_stat[1] " + LOGFILE)
     cmd3 = ("jq .debug_info.line_score_stat[2] " + LOGFILE)
     cmd4 = ("jq .debug_info.line_score_stat[3] " + LOGFILE)
     cmd5 = ("jq .judge_info.score " + LOGFILE)
+    GAMEOVER_COUNT_CMD = ("jq .judge_info.gameover_count " + LOGFILE)
 
     cmd6 = ("jq .debug_info.line_score.\"line1\" " + LOGFILE)
     cmd7 = ("jq .debug_info.line_score.\"line2\" " + LOGFILE)
     cmd8 = ("jq .debug_info.line_score.\"line3\" " + LOGFILE)
     cmd9 = ("jq .debug_info.line_score.\"line4\" " + LOGFILE)
+    GAMEOVER_SCORE_CMD = ("jq .debug_info.line_score.gameover " + LOGFILE)
     
     res1 = res_cmd(cmd1)
     res2 = res_cmd(cmd2)
@@ -54,17 +56,20 @@ def get_line_score(logfile):
     res7 = res_cmd(cmd7)
     res8 = res_cmd(cmd8)
     res9 = res_cmd(cmd9)
-    
+
+    GAMEOVER_COUNT_CMD_RES = res_cmd(GAMEOVER_COUNT_CMD)
+    GAMEOVER_SCORE_CMD_RES = res_cmd(GAMEOVER_SCORE_CMD)
     try:
         _1line_score = int(res1)*int(res6)#*100
         _2line_score = int(res2)*int(res7)#*300
         _3line_score = int(res3)*int(res8)#*700
         _4line_score = int(res4)*int(res9)#*1200
         _total_score = int(res5)
+        _gameover_score = int(GAMEOVER_COUNT_CMD_RES)*int(GAMEOVER_SCORE_CMD_RES)#*1200
     except:
-        return -1, -1, -1, -1, -1
+        return -1, -1, -1, -1, -1, -1
 
-    return _1line_score, _2line_score, _3line_score, _4line_score,_total_score
+    return _1line_score, _2line_score, _3line_score, _4line_score,_total_score, _gameover_score
 
 class Window(QMainWindow): 
 
@@ -85,6 +90,7 @@ class Window(QMainWindow):
                           self.level,
                           self.max_time,
                           self.logfilejson)
+
         if len(args.user_name) != 0:
             self.user_name = args.user_name
         if len(args.program_name) != 0:
@@ -105,7 +111,8 @@ class Window(QMainWindow):
 
         # setting geometry
         upper_left = (100,100)
-        width_height = (280, 380)
+        #width_height = (280, 380)
+        width_height = (100+180, 380)
         self.setGeometry(upper_left[0], upper_left[1],
                          width_height[0], width_height[1]) 
 
@@ -156,19 +163,20 @@ class Window(QMainWindow):
 
     def gettimertext(self):
 
-        _1line_score, _2line_score, _3line_score , _4line_score, _total_score = get_line_score(self.logfilejson)
+        _1line_score, _2line_score, _3line_score , _4line_score, _total_score, _gameover_score = get_line_score(self.logfilejson)
         if _1line_score < 0:
             return self.current_txt
         
         self.current_text = "Player: " + self.user_name + "\n" \
         + self.program_name + "\n" \
+        + "TIME: " + str('{:.01f}'.format(self.timer_count / 10)) + "/" + str(int(self.max_timer_count/10)) + " (s)" + "\n" \
         + "LEVEL: " + str(self.level) + "\n" \
         + "SCORE: " + str(_total_score) + "\n" \
         + "  1line: " + str(_1line_score) + "\n" \
         + "  2line: " + str(_2line_score) + "\n" \
         + "  3line: " + str(_3line_score) + "\n" \
-        + "  4line: " + str(_4line_score)
-        #+ "TIME: " + str('{:.01f}'.format(self.timer_count / 10)) + "/" + str(self.max_timer_count/10) + " (s)" + "\n" \
+        + "  4line: " + str(_4line_score) + "\n" \
+        + "  gameover: " + str(_gameover_score)
 
         return self.current_text
 
