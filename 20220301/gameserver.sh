@@ -5,16 +5,41 @@
 #   - prepare to push to github
 
 function update_result(){
+    # update to github??    
+    # https://github.com/seigot/tetris_score_server
+
+    STR=${1}
+    
+    #git clone https://github.com/seigot/tetris_score_server
+    #pushd tetris_score_server
+    #echo $STR > test.log
+    #git add test.log
+    #git commit -m "test update"
+    #git push
+    #popd
+}
+
+function error_result(){
+
+    # error
+    DATETIME=`date +%Y%m%d_%H%M_%S`
+    REPOSITORY_URL="$1"
+    SCORE="$2"
+    LEVEL="$3"
+    #echo "|  ${DATETIME}  |  ${REPOSITORY_URL}  |  ${SCORE}  |  ${LEVEL}  |  FAIL  |"
+}
+
+function success_result(){
 
     DATETIME=`date +%Y%m%d_%H%M_%S`
     REPOSITORY_URL="$1"
     SCORE="$2"
     LEVEL="$3"
-    
-    echo "|  ${DATETIME}  |  ${REPOSITORY_URL}  |  ${SCORE}  |  ${LEVEL}  |"
 
-    # update to github??
-    
+    echo "|  ${DATETIME}  |  ${REPOSITORY_URL}  |  ${SCORE}  |  ${LEVEL}  |  SUCCESS  |"
+
+    update_result "|  ${DATETIME}  |  ${REPOSITORY_URL}  |  ${SCORE}  |  ${LEVEL}  |  SUCCESS  |"
+
 }
 
 function do_tetris(){
@@ -45,7 +70,7 @@ function do_tetris(){
     # get result score
     SCORE=`cat ${TMP_LOG} | tail -1`
     echo $SCORE
-    update_result ${REPOSITORY_URL} ${SCORE} ${LEVEL}
+    success_result ${REPOSITORY_URL} ${SCORE} ${LEVEL}
 }
 
 function do_polling(){
