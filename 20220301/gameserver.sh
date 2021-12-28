@@ -3,6 +3,7 @@
 # prepare
 #   - install docker
 #   - prepare to push to github
+#       if necessary, https://qiita.com/azusanakano/items/8dc1d7e384b00239d4d9
 
 function update_result(){
     # update to github??    

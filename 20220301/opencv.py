@@ -1,6 +1,11 @@
 import cv2
 import time
 
+
+# curl https://avatars.githubusercontent.com/${USER_NAME} --output output.png
+
+# convert -resize 160x output.png output2.png
+
 # 画像を3チャンネルカラー（BGR）として読み込み
 #img = cv2.imread("test.jpg")
 img = cv2.imread("output2.png")
