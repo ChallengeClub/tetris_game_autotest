@@ -164,7 +164,7 @@ function do_polling(){
 	done
 
     else
-	echo "do nothing"
+	echo "already latest version, do nothing"
     fi
 
     return 0
