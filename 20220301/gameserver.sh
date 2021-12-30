@@ -18,6 +18,9 @@ function update_result(){
     fi
     echo $STR >> result.csv
 
+    #FNAME="result.csv"
+    #cat <(head -2 ${FNAME}) <(tail -n +3 ${FNAME} | sort -nr -t, -k3 | column -t -s,)
+
     #git clone https://github.com/seigot/tetris_score_server
     #pushd tetris_score_server
     #git pull
