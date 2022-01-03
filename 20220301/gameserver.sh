@@ -81,12 +81,12 @@ function do_tetris(){
     docker exec ${CONTAINER_NAME} bash -c "${PRE_COMMAND}"
     if [ $? -ne 0 ]; then
 	error_result "${DATETIME}" "${REPOSITORY_URL}" "0" "-" "pip3_install_-r_requirements.txt_NG"
-	return -1
+	return 0
     fi
     docker exec ${CONTAINER_NAME} bash -c "${DO_COMMAND}"
     if [ $? -ne 0 ]; then
 	error_result "${DATETIME}" "${REPOSITORY_URL}" "0" "-" "python_start.py_NG"
-	return -1
+	return 0
     fi
     docker exec ${CONTAINER_NAME} bash -c "${POST_COMMAND}" > ${TMP_LOG}    
 
@@ -114,7 +114,7 @@ function do_polling(){
     if [ $RET -ne 0 ]; then
 	echo "curl NG"
 	error_result "-" "-" "0" "-" "curl_google_speadsheet_NG"
-	return -1
+	return 0
     fi
     #jq . ${JSONFILE}
     VALUE_LENGTH=`jq .values ${JSONFILE} | jq length`
@@ -122,6 +122,9 @@ function do_polling(){
     CURRENT_IDX="0"
     if [ -f "${CURRENT_IDX_FILE}" ]; then
 	CURRENT_IDX=`cat ${CURRENT_IDX_FILE} | tail -1`
+    else
+	echo "please specify CURRENT_INDEX in ${CURRENT_IDX_FILE}"
+	return -1
     fi
 
     if [ "${CURRENT_IDX}" -ne "${VALUE_IDX}" ]; then
@@ -174,4 +177,11 @@ function do_polling(){
 }
 
 # while every MM minutes
-do_polling
+while true
+do
+    do_polling
+    sleep 300 # 300sec
+done
+
+
+
