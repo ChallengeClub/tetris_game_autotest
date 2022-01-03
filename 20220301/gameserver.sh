@@ -11,16 +11,35 @@ function update_result(){
     # update to github
     # https://github.com/seigot/tetris_score_server
 
-    STR="${1}"
-    if [ ! -e result.csv ]; then
-	echo "DATETIME, REPOSITORY_URL, SCORE, LEVEL, RESULT" >> result.csv
-	echo "---" >> result.csv
+    DATETIME="$1" #`date +%Y%m%d_%H%M_%S`
+    REPOSITORY_URL="$2"
+    SCORE="$3"
+    LEVEL="$4"
+    RESULT="$5"
+    STR="${DATETIME}, ${REPOSITORY_URL}, ${SCORE}, ${LEVEL}, ${RESULT}"    
+
+    RESULT_CSV="result.csv"
+    RESULT_LEVEL_CSV="result_level_${LEVEL}.csv"
+    RESULT_RANKING_CSV="result_ranking_level_${LEVEL}.csv"
+
+    echo $STR >> ${RESULT_CSV}
+
+    if [ "${RESULT}" == "SUCCESS" ]; then
+	if [ ! -e ${RESULT_LEVEL_CSV} ]; then
+	    echo "DATETIME, REPOSITORY_URL, SCORE, LEVEL, RESULT" >> ${RESULT_LEVEL_CSV}
+	    echo "---" >> ${RESULT_LEVEL_CSV}
+	fi
+	echo $STR >> ${RESULT_LEVEL_CSV}
+	cat <(head -2 ${RESULT_LEVEL_CSV}) <(tail -n +3 ${RESULT_LEVEL_CSV} | sort -nr -t, -k3 | column -t -s,) > ${RESULT_RANKING_CSV}
     fi
-    echo $STR >> result.csv
-
-    #FNAME="result.csv"
-    #cat <(head -2 ${FNAME}) <(tail -n +3 ${FNAME} | sort -nr -t, -k3 | column -t -s,)
-
+	
+    echo "--"
+    cat ${RESULT_CSV}
+    echo "--"
+    cat ${RESULT_LEVEL_CSV}
+    echo "--"
+    cat ${RESULT_RANKING_CSV}
+    
     #git clone https://github.com/seigot/tetris_score_server
     #pushd tetris_score_server
     #git pull
@@ -33,36 +52,35 @@ function update_result(){
 
 function error_result(){
 
-    # error
-    DATETIME="$1" #`date +%Y%m%d_%H%M_%S`
-    REPOSITORY_URL="$2"
-    SCORE="$3"
-    LEVEL="$4"
-    RESULT="$5"
-
-    STR="${DATETIME}, ${REPOSITORY_URL}, ${SCORE}, ${LEVEL}, ${RESULT}"
-    update_result "${STR}"
+    #DATETIME="$1" #`date +%Y%m%d_%H%M_%S`
+    #REPOSITORY_URL="$2"
+    #SCORE="$3"
+    #LEVEL="$4"
+    #RESULT="$5"
+    #STR="${DATETIME}, ${REPOSITORY_URL}, ${SCORE}, ${LEVEL}, ${RESULT}"
+    #update_result "${STR}"
+    update_result "$1" "$2" "$3" "$4" "$5"
 }
 
 function success_result(){
 
-    DATETIME="$1" #`date +%Y%m%d_%H%M_%S`
-    REPOSITORY_URL="$2"
-    SCORE="$3"
-    LEVEL="$4"
-
-    STR="${DATETIME}, ${REPOSITORY_URL}, ${SCORE}, ${LEVEL}, SUCCESS"
-    update_result "${STR}"
+    #DATETIME="$1" #`date +%Y%m%d_%H%M_%S`
+    #REPOSITORY_URL="$2"
+    #SCORE="$3"
+    #LEVEL="$4"
+    #STR="${DATETIME}, ${REPOSITORY_URL}, ${SCORE}, ${LEVEL}, SUCCESS"
+    #update_result "${STR}"
+    update_result "$1" "$2" "$3" "$4" "SUCCESS"
 }
 
 function do_tetris(){
 
     DATETIME="$1"
     REPOSITORY_URL="$2"
-    LEVEL="1"
+    LEVEL="$3"
     GAME_TIME="3" # "180"
     PRE_COMMAND="cd ~ && rm -rf tetris && git clone ${REPOSITORY_URL} && cd ~/tetris && pip3 install -r requirements.txt"
-    DO_COMMAND="cd ~/tetris && python3 start.py -l ${LEVEL} -t ${GAME_TIME} && jq . result.json"
+    DO_COMMAND="cd ~/tetris && export DISPLAY=:1 && python3 start.py -l ${LEVEL} -t ${GAME_TIME} && jq . result.json"
     POST_COMMAND="cd ~/tetris && jq .judge_info.score result.json"
 
     TMP_LOG="tmp.log"
@@ -74,10 +92,9 @@ function do_tetris(){
 	docker stop ${CONTAINER_NAME}
 	docker rm ${CONTAINER_NAME}
     fi
-    docker run -d --name ${CONTAINER_NAME} -p 6080:80 -e DISPLAY=$DISPLAY --shm-size=512m seigott/tetris_docker
+    docker run -d --name ${CONTAINER_NAME} -p 6080:80 --shm-size=512m seigott/tetris_docker
 
     # exec command
-    docker exec ${CONTAINER_NAME} bash -c "sudo apt-get install -y xvfb"
     docker exec ${CONTAINER_NAME} bash -c "${PRE_COMMAND}"
     if [ $? -ne 0 ]; then
 	error_result "${DATETIME}" "${REPOSITORY_URL}" "0" "-" "pip3_install_-r_requirements.txt_NG"
@@ -151,22 +168,28 @@ function do_polling(){
 	    if [[ "$VALUE_URL" =~ "http".*"://github.com/".*"tetris" ]]; then
 		echo "url string OK"
 	    else
-		error_result "${VALUE_TIME}" "${VALUE_URL}" "0" "-" "github_url_string_NG"
+		error_result "${VALUE_TIME}" "${VALUE_URL}" "0" "1" "github_url_string_NG"
 		continue
 	    fi
 	    git ls-remote ${VALUE_URL} > /dev/null
 	    RET=$?
 	    if [ $RET -ne 0 ]; then
 		echo "git ls-remote NG"
-		error_result "${VALUE_TIME}" "${VALUE_URL}" "0" "-" "github_url_access_NG"
+		error_result "${VALUE_TIME}" "${VALUE_URL}" "0" "1" "github_url_access_NG"
 		continue
 	    fi
+	    VALUE_LEVEL=`jq .values[${idx}][3] ${JSONFILE} | sed 's/"//g'`
+	    if [ $VALUE_LEVEL == "null" ]; then
+		VALUE_LEVEL=1
+	    fi
+	    
 	    echo $VALUE_TIME
 	    echo $VALUE_URL
+	    echo $VALUE_LEVEL
 
 	    ## do tetris
 	    #do_tetris "20211229" "https://github.com/seigot/tetris"
-	    do_tetris "${VALUE_TIME}" "${VALUE_URL}"
+	    do_tetris "${VALUE_TIME}" "${VALUE_URL}" "${VALUE_LEVEL}"
 	done
 
     else
@@ -180,7 +203,10 @@ function do_polling(){
 while true
 do
     do_polling
-    sleep 300 # 300sec
+
+    SLEEP_SEC=300
+    echo "sleep: ${SLEEP_SEC}"
+    sleep ${SLEEP_SEC}
 done
 
 
