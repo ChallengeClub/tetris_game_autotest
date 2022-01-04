@@ -20,7 +20,7 @@ do
     "m" ) EXEC_MODE="$OPTARG" ;;
   esac
 done
-echo "mode: ${EXEC_MODE}"
+echo "EXEC_MODE: ${EXEC_MODE}"
 
 
 function update_result(){
