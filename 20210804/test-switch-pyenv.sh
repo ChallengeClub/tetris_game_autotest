@@ -75,10 +75,19 @@ function install_neteru141_2_env() {
     pip3 install pillow
     pip3 install matplotlib
     pip3 install torch torchvision torchaudio -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
-    
+    pip3 install tensorboardX
+
+    ## prediction
     git clone http://github.com/neteru141/tetris_game -b v1.1.0
     cd tetris_game
     bash start.sh -l2
+
+    ## train
+    git clone http://github.com/neteru141/tetris_game -b dev4
+    cd tetris_game
+    bash start.sh -l2
+    ### その後、しばらく２０分くらい放置しておく
+    ### train/tetris が学習モデル
 
     ###### same with taichofu_env ###### 
 }
