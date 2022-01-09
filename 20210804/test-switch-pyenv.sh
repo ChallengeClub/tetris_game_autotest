@@ -89,6 +89,11 @@ function install_neteru141_2_env() {
     ### その後、しばらく２０分くらい放置しておく
     ### train/tetris が学習モデル
 
+    ## 以下のようにするとtrainしたモデルが動く
+    git clone http://github.com/neteru141/tetris_game -b submit
+    cd tetris_game
+    bash start.sh -l2
+
     ###### same with taichofu_env ###### 
 }
 
