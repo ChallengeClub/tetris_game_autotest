@@ -62,6 +62,41 @@ function install_neteru141_env() {
     ###### same with taichofu_env ###### 
 }
 
+function install_neteru141_2_env() {
+    # neteru141 env
+    # git clone http://github.com/neteru141/tetris_game -b v1.1.0
+    # base: docker v1.4
+    #echo "base: docker v1.4"
+
+    pip3 --version
+    ## python 3.9.9
+    pip3 install pyqt5
+    pip3 install numpy
+    pip3 install pillow
+    pip3 install matplotlib
+    pip3 install torch torchvision torchaudio -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
+    pip3 install tensorboardX
+
+    ## prediction
+    git clone http://github.com/neteru141/tetris_game -b v1.1.0
+    cd tetris_game
+    bash start.sh -l2
+
+    ## train
+    git clone http://github.com/neteru141/tetris_game -b dev4
+    cd tetris_game
+    bash start.sh -l2
+    ### その後、しばらく２０分くらい放置しておく
+    ### train/tetris が学習モデル
+
+    ## 以下のようにするとtrainしたモデルが動く
+    git clone http://github.com/neteru141/tetris_game -b submit
+    cd tetris_game
+    bash start.sh -l2
+
+    ###### same with taichofu_env ###### 
+}
+
 source ~/.bashrc
 
 pyenv activate myenv
