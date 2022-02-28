@@ -106,7 +106,7 @@ class Window(QMainWindow):
         # setting title
         windowtitle="Player_information"
         if len(args.user_name) != 0:
-            windowtitle="Player_" + self.user_name + "_information"
+            windowtitle="Score_" + self.user_name
         self.setWindowTitle(windowtitle)
 
         # setting geometry
