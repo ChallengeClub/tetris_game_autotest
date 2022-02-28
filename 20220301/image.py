@@ -19,7 +19,7 @@ cv2.imshow(img_string, img)
 # キーボード入力を待つ
 # killで強制終了させる
 # xdotoolで画面を移動させる
-.waitKey(0)
+cv2.waitKey(0)
 time.sleep(10)
 
 # すべてウィンドウを閉じる
