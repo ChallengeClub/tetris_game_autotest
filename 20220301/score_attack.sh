@@ -3,7 +3,9 @@
 function do_game(){
 
     local LEVEL="${1}"
-    local UNAME="${2}"
+    local USER_NAME_BRANCH="${2}"
+    local UNAME=`echo ${USER_NAME_BRANCH} | cut -d'@' -f1`
+    local BRANCH=`echo ${USER_NAME_BRANCH} | cut -d'@' -f2`
     local WINDOW_X="${3}"
     local WINDOW_Y="${4}"
     local IMAGE_WINDOW_X="${5}"
@@ -17,7 +19,16 @@ function do_game(){
     local PROGRAM_NAME="sample_program"
 
     # prepare
-    local COMMAND="source ~/venvtest/bin/activate && cd ~/tetris && python3 start.py -l ${LEVEL} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"
+    TETRIS_DIR="~/tmp/tetris_dir"
+    mkdir -p ${TETRIS_DIR}
+    pushd ${TETRIS_DIR}
+    rm -rf tetris
+    git clone https://github.com/${UNAME}/tetris -b ${BRANCH}
+    popd
+
+    local COMMAND="source ~/venvtest/bin/activate && \
+	    cd ${TETRIS_DIR}/tetris && \
+	    python3 start.py -l ${LEVEL} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"
 
     # start sound
 
@@ -67,7 +78,7 @@ echo "start"
 
 #do_game 1 "sampleA" "sampleB"
 #do_game 2 "seigot" 500 150 100 50 200 300
-do_game 2 "isshy-you" 500 150 100 50 200 300
+do_game 2 "isshy-you@master" 500 150 100 50 200 300
 
 #do_game 2 "seigot" 350 150 100 100 300 100
 
