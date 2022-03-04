@@ -8,6 +8,7 @@ from PyQt5.QtCore import *
 import sys 
 from argparse import ArgumentParser
 import subprocess
+import os
 
 def get_option(user_name, program_name, level, max_time, logfilejson):
     argparser = ArgumentParser()
@@ -33,6 +34,10 @@ def res_cmd(cmd):
 
 def get_line_score(logfile):
     LOGFILE=logfile
+
+    if os.path.exists(LOGFILE) == False:
+        return 0, 0, 0, 0, 0, 0
+
     cmd1 = ("jq .debug_info.line_score_stat[0] " + LOGFILE)
     cmd2 = ("jq .debug_info.line_score_stat[1] " + LOGFILE)
     cmd3 = ("jq .debug_info.line_score_stat[2] " + LOGFILE)
@@ -82,7 +87,7 @@ class Window(QMainWindow):
         self.level = 1
         self.max_time = 180
         self.max_timer_count = self.max_time * 10
-        self.logfilejson = "/home/ubuntu/tetris/result.json"
+        self.logfilejson = "/home/ubuntu/xxx"
         self.current_txt = ""
         
         args = get_option(self.user_name,
@@ -101,7 +106,7 @@ class Window(QMainWindow):
             self.max_timer_count = args.max_time * 10
         if len(args.logfilejson) != 0:
             self.logfilejson = args.logfilejson
-            print(args.logfilejson)
+            print("logfile: " + args.logfilejson)
 
         # setting title
         windowtitle="Player_information"
@@ -126,7 +131,7 @@ class Window(QMainWindow):
     def UiComponents(self): 
 
         # timer parameter
-        self.timer_count = 0.0
+        self.timer_count = 20.0 #0.0
         self.timer_flag = True
         # LAP parameter
         self.lap_count = 0
