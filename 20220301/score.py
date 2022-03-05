@@ -10,7 +10,7 @@ from argparse import ArgumentParser
 import subprocess
 import os
 
-def get_option(user_name, program_name, level, max_time, logfilejson):
+def get_option(user_name, program_name, level, max_time, external_game_time, logfilejson):
     argparser = ArgumentParser()
     argparser.add_argument('-u', '--user_name', type=str,
                            default=user_name,
@@ -24,6 +24,9 @@ def get_option(user_name, program_name, level, max_time, logfilejson):
     argparser.add_argument('-t', '--max_time', type=int,
                            default=max_time,
                            help='max_time')
+    argparser.add_argument('-e', '--external_game_time', type=int,
+                           default=external_game_time,
+                           help='external_game_time')
     argparser.add_argument('-f', '--logfilejson', type=str,
                            default=logfilejson,
                            help='log file (.json) name')
@@ -86,7 +89,9 @@ class Window(QMainWindow):
         self.program_name = "---"
         self.level = 1
         self.max_time = 180
+        self.external_game_time = 0
         self.max_timer_count = self.max_time * 10
+        self.external_game_time_count = self.external_game_time * 10
         self.logfilejson = "/home/ubuntu/xxx"
         self.current_txt = ""
         
@@ -94,6 +99,7 @@ class Window(QMainWindow):
                           self.program_name,
                           self.level,
                           self.max_time,
+                          self.external_game_time,
                           self.logfilejson)
 
         if len(args.user_name) != 0:
@@ -104,6 +110,8 @@ class Window(QMainWindow):
             self.level = args.level
         if args.max_time >= 0:
             self.max_timer_count = args.max_time * 10
+        if args.external_game_time >= 0:
+            self.external_game_time_count = args.external_game_time * 10
         if len(args.logfilejson) != 0:
             self.logfilejson = args.logfilejson
             print("logfile: " + args.logfilejson)
@@ -159,7 +167,7 @@ class Window(QMainWindow):
         if self.timer_flag == True:
             self.timer_count+= 1
 
-        if self.timer_count > self.max_timer_count:
+        if self.timer_count > (self.max_timer_count + self.external_game_time_count):
             # exit app
             sys.exit(App.exec())
 
