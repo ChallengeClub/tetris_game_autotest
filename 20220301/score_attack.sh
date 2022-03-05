@@ -150,8 +150,22 @@ function do_game_main(){
     #   repository_name@branch@free_string
     if [ ${LEVEL} == 1 ]; then    
 	REPOSITORY_LIST=(
-	    "seigot@master@せいご-program"
 	    "isshy-you@master@isshy-program"
+	    "4321623@master@sample-program"
+	    "bushio@master@sample-program"
+	    "churi-maya@master@sample-program"
+	    "EndoNrak@master@sample-program"
+	    "Hbsnisme@master@sample-program"
+	    "isshy-you@master@sample-program"
+	    "matsuiyukari@master@sample-program"
+	    "mattshamrock@master@sample-program"
+	    "mmizu@master@sample-program"
+	    "neteru141@master@sample-program"
+	    "tsucky230@master@sample-program"
+	    "usamin24@master@sample-program"
+	    "yuin0@master@sample-program"
+	    "YutaSakamoto1@master@sample-program"
+	    "yynet21@master@sample-program"
 	)
     elif [ ${LEVEL} == 2 ]; then	
 	REPOSITORY_LIST=(

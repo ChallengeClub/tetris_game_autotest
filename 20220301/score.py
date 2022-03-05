@@ -131,7 +131,7 @@ class Window(QMainWindow):
     def UiComponents(self): 
 
         # timer parameter
-        self.timer_count = 20.0 #0.0
+        self.timer_count = 30.0 #0.0
         self.timer_flag = True
         # LAP parameter
         self.lap_count = 0
