@@ -22,6 +22,7 @@ function stop_process(){
     try_kill_process "gameserver.sh"
     try_kill_process "image.py"
     try_kill_process "score.py"
+    try_kill_process "megen"
 }
 
 stop_process

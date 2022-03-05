@@ -1,5 +1,7 @@
 #!/bin/bash -x
 
+source common_command.sh
+
 # prepare following files
 #  - ~/Downloads/technotris.wav,troika.wav,kalinka.wav
 #  - ~/Downloads/megen1-12.jpg"
@@ -66,9 +68,11 @@ function do_game(){
     eog ${IMAGE_NAME} &
     
     # start game
+    local EXEC_COMMAND=`GET_COMMAND ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME} ${LOGFILE} ${TETRIS_DIR}`
     local COMMAND="source ~/venvtest/bin/activate && \
 	    cd ${TETRIS_DIR}/tetris && \
-	    python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"
+	    ${EXEC_COMMAND}"
+    #python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"
     #gnome-terminal -- bash -c "${COMMAND}" &
     # download github profile image
     curl https://avatars.githubusercontent.com/${UNAME} --output "${UNAME}.png"
