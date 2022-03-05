@@ -22,12 +22,13 @@ function do_game(){
     local UNAME=`echo ${USER_NAME_BRANCH} | cut -d'@' -f1`
     local BRANCH=`echo ${USER_NAME_BRANCH} | cut -d'@' -f2`
     local PROGRAM_NAME=`echo ${USER_NAME_BRANCH} | cut -d'@' -f3`
-    local WINDOW_X="${3}"
-    local WINDOW_Y="${4}"
-    local IMAGE_WINDOW_X="${5}"
-    local IMAGE_WINDOW_Y="${6}"
-    local SCORE_WINDOW_X="${7}"
-    local SCORE_WINDOW_Y="${8}"
+    local DROP_SPEED="${3}"
+    local WINDOW_X="${4}"
+    local WINDOW_Y="${5}"
+    local IMAGE_WINDOW_X="${6}"
+    local IMAGE_WINDOW_Y="${7}"
+    local SCORE_WINDOW_X="${8}"
+    local SCORE_WINDOW_Y="${9}"
 
     local LOGFILE="${HOME}/tmp/resultlog_${UNAME}.json"
     local GAME_TIME=180
@@ -54,8 +55,8 @@ function do_game(){
     popd
 
     ###### wait game -->
-    #WAIT_TIME=30
-    #python score.py -u ${UNAME} -p ${PROGRAM_NAME} -l ${LEVEL} -t ${WAIT_TIME}
+    WAIT_TIME=30
+    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -l ${LEVEL} -t ${WAIT_TIME}
     ###### wait game <--
 
     # start sound
@@ -67,7 +68,7 @@ function do_game(){
     # start game
     local COMMAND="source ~/venvtest/bin/activate && \
 	    cd ${TETRIS_DIR}/tetris && \
-	    python3 start.py -l ${LEVEL} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"    
+	    python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"
     #gnome-terminal -- bash -c "${COMMAND}" &
     # download github profile image
     curl https://avatars.githubusercontent.com/${UNAME} --output "${UNAME}.png"
@@ -110,6 +111,7 @@ function do_game(){
 
     # show result
     SCORE=`jq .judge_info.score ${LOGFILE}`
+    LINE_CNT=`jq .judge_info.line ${LOGFILE}`
     GAMEOVER_CNT=`jq .judge_info.gameover_count ${LOGFILE}`
     _1LINE_CNT=`jq .debug_info.line_score_stat[0] ${LOGFILE}`
     _2LINE_CNT=`jq .debug_info.line_score_stat[1] ${LOGFILE}`
@@ -135,9 +137,17 @@ function do_game(){
 
 function do_game_main(){
     LEVEL=${1} # 1
+    DROP_SPEED=1000
     #UNAME=${2} # "isshy-you@master@isshy-program"
-    
+
+    # create empty file
+    RESULT_LEVEL_LOG="${HOME}/result_level${LEVEL}.log"
+    echo -n >| ${RESULT_LEVEL_LOG}
+    echo -n >| ${RESULT_LOG}
+
     # get repository list
+    # format
+    #   repository_name@branch@free_string
     if [ ${LEVEL} == 1 ]; then    
 	REPOSITORY_LIST=(
 	    "seigot@master@せいご-program"
@@ -148,7 +158,20 @@ function do_game_main(){
 	    "seigot@master@せいご-program"
 	    "isshy-you@master@isshy-program"
 	)
+    elif [ ${LEVEL} == "2_ai" ]; then	
+	LEVEL="2"
+	REPOSITORY_LIST=(
+	    "seigot@master@せいご-program"
+	    "isshy-you@master@isshy-program"
+	)
     elif [ ${LEVEL} == 3 ]; then	
+	REPOSITORY_LIST=(
+	    "seigot@master@せいご-program"
+	    "isshy-you@master@isshy-program"
+	)
+    elif [ ${LEVEL} == "3_ryuo" ]; then
+	LEVEL="3"
+	DROP_SPEED=1
 	REPOSITORY_LIST=(
 	    "seigot@master@せいご-program"
 	    "isshy-you@master@isshy-program"
@@ -167,16 +190,11 @@ function do_game_main(){
     #LEVEL="1"
     #fi
 
-    # create empty file
-    RESULT_LEVEL_LOG="${HOME}/result_level${LEVEL}.log"
-    echo -n >| ${RESULT_LEVEL_LOG}
-    echo -n >| ${RESULT_LOG}
-    
     # main loop
     for (( i = 0; i < ${#REPOSITORY_LIST[@]}; i++ ))
     do
 	echo ${REPOSITORY_LIST[$i]}
-	do_game ${LEVEL} ${REPOSITORY_LIST[$i]} 500 150 100 50 200 300
+	do_game ${LEVEL} ${REPOSITORY_LIST[$i]} ${DROP_SPEED} 500 150 100 50 200 300
     done
 }
 
@@ -192,10 +210,13 @@ do_game_main 1
 do_game_main 2
 
 # level2(AI)
-do_game_main 3
+do_game_main "2_ai"
 
 # level3
 do_game_main 3
+
+# level3(3_ryuo)
+do_game_main "3_ryuo"
 
 echo "end"
 
