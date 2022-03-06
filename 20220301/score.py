@@ -10,7 +10,7 @@ from argparse import ArgumentParser
 import subprocess
 import os
 
-def get_option(user_name, program_name, level, max_time, external_game_time, logfilejson):
+def get_option(user_name, program_name, level, branch_name, max_time, external_game_time, logfilejson):
     argparser = ArgumentParser()
     argparser.add_argument('-u', '--user_name', type=str,
                            default=user_name,
@@ -21,6 +21,9 @@ def get_option(user_name, program_name, level, max_time, external_game_time, log
     argparser.add_argument('-l', '--level', type=int,
                            default=level,
                            help='level')
+    argparser.add_argument('-b', '--branch_name', type=str,
+                           default=branch_name,
+                           help='branch_name')
     argparser.add_argument('-t', '--max_time', type=int,
                            default=max_time,
                            help='max_time')
@@ -88,6 +91,7 @@ class Window(QMainWindow):
         self.user_name = "testuser"
         self.program_name = "---"
         self.level = 1
+        self.branch_name = "---"
         self.max_time = 180
         self.external_game_time = 0
         self.max_timer_count = self.max_time * 10
@@ -98,6 +102,7 @@ class Window(QMainWindow):
         args = get_option(self.user_name,
                           self.program_name,
                           self.level,
+                          self.branch_name,
                           self.max_time,
                           self.external_game_time,
                           self.logfilejson)
@@ -108,6 +113,8 @@ class Window(QMainWindow):
             self.program_name = args.program_name
         if args.level >= 0:
             self.level = args.level
+        if len(args.branch_name) != 0:
+            self.branch_name = args.branch_name
         if args.max_time >= 0:
             self.max_timer_count = args.max_time * 10
         if args.external_game_time >= 0:
@@ -125,7 +132,7 @@ class Window(QMainWindow):
         # setting geometry
         upper_left = (100,100)
         #width_height = (280, 380)
-        width_height = (100+180, 380)
+        width_height = (100+180, 410)
         self.setGeometry(upper_left[0], upper_left[1],
                          width_height[0], width_height[1]) 
 
@@ -139,7 +146,7 @@ class Window(QMainWindow):
     def UiComponents(self): 
 
         # timer parameter
-        self.timer_count = 30.0 #0.0
+        self.timer_count = 40.0 #0.0
         self.timer_flag = True
         # LAP parameter
         self.lap_count = 0
@@ -148,7 +155,7 @@ class Window(QMainWindow):
         # creating a label to show the time 
         self.label = QLabel(self)
         label_upper_left = (5, 5)
-        label_width_height = (270, 370)
+        label_width_height = (270, 400)
         self.label.setGeometry(label_upper_left[0], label_upper_left[1], 
                                label_width_height[0], label_width_height[1]) 
         self.label.setStyleSheet("border : 4px solid black;") 
@@ -181,6 +188,7 @@ class Window(QMainWindow):
             return self.current_txt
         
         self.current_text = "Player: " + self.user_name + "\n" \
+        + self.branch_name + "\n" \
         + self.program_name + "\n" \
         + "TIME: " + str('{:.01f}'.format(self.timer_count / 10)) + "/" + str(int(self.max_timer_count/10)) + " (s)" + "\n" \
         + "LEVEL: " + str(self.level) + "\n" \

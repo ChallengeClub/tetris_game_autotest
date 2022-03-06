@@ -58,7 +58,7 @@ function do_game(){
 
     ###### wait game -->
     WAIT_TIME=30
-    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -l ${LEVEL} -t ${WAIT_TIME}
+    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -l ${LEVEL} -t ${WAIT_TIME}
     ###### wait game <--
 
     # start sound
@@ -78,7 +78,7 @@ function do_game(){
     curl https://avatars.githubusercontent.com/${UNAME} --output "${UNAME}.png"
     convert -resize 160x "${UNAME}.png" "${UNAME}2.png"
     bash -c "${COMMAND}" &
-    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -l ${LEVEL} -f ${LOGFILE} &
+    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -l ${LEVEL} -f ${LOGFILE} -e ${WAIT_TIME} &
     python image.py -u ${UNAME} -i "${UNAME}2.png" &
     sleep 2
 
