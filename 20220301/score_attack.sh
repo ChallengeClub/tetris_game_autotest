@@ -34,11 +34,12 @@ function do_game(){
 
     local LOGFILE="${HOME}/tmp/resultlog_${UNAME}.json"
     local GAME_TIME=180
-    local RANDOM_SEED=1111
+    local RANDOM_SEED=2022031811111
     #local PROGRAM_NAME="sample_program"
 
     # sound name
-    local SOUND_NUMBER=`echo $(( $[SOUND_NUMBER] % ${#SOUNDFILE_LIST[@]} ))`
+    local SOUND_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value
+    #local SOUND_NUMBER=`echo $(( $[SOUND_NUMBER] % ${#SOUNDFILE_LIST[@]} ))`
     local SOUNDFILE_PATH=${SOUNDFILE_LIST[$SOUND_NUMBER]}
     # image name
     local IMAGE_NUMBER=`echo $((RANDOM%+13))` # 0-12 random value
@@ -152,49 +153,51 @@ function do_game_main(){
     # get repository list
     # format
     #   repository_name@branch@free_string
-    if [ ${LEVEL} == 1 ]; then    
+    if [ "${LEVEL}" == "1" ]; then    
 	REPOSITORY_LIST=(
+	    "mattshamrock@master@アマルフォイ"
+	    "usamin24@master@１号"
 	    "isshy-you@master@isshy-program"
-	    "4321623@master@sample-program"
-	    "bushio@master@sample-program"
-	    "churi-maya@master@sample-program"
-	    "EndoNrak@master@sample-program"
-	    "Hbsnisme@master@sample-program"
-	    "isshy-you@master@sample-program"
-	    "matsuiyukari@master@sample-program"
-	    "mattshamrock@master@sample-program"
-	    "mmizu@master@sample-program"
-	    "neteru141@master@sample-program"
-	    "tsucky230@master@sample-program"
-	    "usamin24@master@sample-program"
-	    "yuin0@master@sample-program"
-	    "YutaSakamoto1@master@sample-program"
-	    "yynet21@master@sample-program"
+#	    "4321623@master@sample-program"
+#	    "bushio@master@sample-program"
+#	    "churi-maya@master@sample-program"
+#	    "EndoNrak@master@sample-program"
+#	    "Hbsnisme@master@sample-program"
+#	    "isshy-you@master@sample-program"
+#	    "matsuiyukari@master@sample-program"
+#	    "mmizu@master@sample-program"
+#	    "neteru141@master@sample-program"
+#	    "tsucky230@master@sample-program"
+#	    "yuin0@master@sample-program"
+#	    "YutaSakamoto1@master@sample-program"
+#	    "yynet21@master@sample-program"
 	)
-    elif [ ${LEVEL} == 2 ]; then	
+    elif [ "${LEVEL}" == "2" ]; then	
 	REPOSITORY_LIST=(
-	    "seigot@master@せいご-program"
+	    "mattshamrock@master@高まるフォイ"
+	    "usamin24@master@１号"
 	    "isshy-you@master@isshy-program"
 	)
-    elif [ ${LEVEL} == "2_ai" ]; then	
+    elif [ "${LEVEL}" == "2_ai" ]; then	
 	LEVEL="2"
 	REPOSITORY_LIST=(
-	    "seigot@master@せいご-program"
-	    "isshy-you@master@isshy-program"
+	    "neteru141@master@強化学習最強伝説"
+	    "seigot@master@neteru141先生ありがとうスペシャル"
 	)
-    elif [ ${LEVEL} == 3 ]; then	
+    elif [ "${LEVEL}" == "3" ]; then	
 	REPOSITORY_LIST=(
-	    "seigot@master@せいご-program"
+	    "mattshamrock@master@高まるフォイ"
+	    "usamin24@master@１号"
 	    "isshy-you@master@isshy-program"
 	)
-    elif [ ${LEVEL} == "3_ryuo" ]; then
+    elif [ "${LEVEL}" == "3_ryuo" ]; then
 	LEVEL="3"
 	DROP_SPEED=1
 	REPOSITORY_LIST=(
 	    "seigot@master@せいご-program"
 	    "isshy-you@master@isshy-program"
 	)
-    elif [ ${LEVEL} == 777 ]; then
+    elif [ "${LEVEL}" == "777" ]; then
 	# forever branch
 	REPOSITORY_LIST=(
 	    "kyad@forever-branch@無限テトリス"
@@ -222,7 +225,7 @@ echo "start"
 # do_game_main 777
 
 # level1
-do_game_main 1
+#do_game_main 1
 
 # level2
 do_game_main 2
@@ -231,10 +234,10 @@ do_game_main 2
 do_game_main "2_ai"
 
 # level3
-do_game_main 3
+#do_game_main 3
 
 # level3(3_ryuo)
-do_game_main "3_ryuo"
+#do_game_main "3_ryuo"
 
 echo "end"
 
