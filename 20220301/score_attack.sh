@@ -163,8 +163,7 @@ function do_game_main(){
 	    "isshy-you@ish05b@いっしー5号Lv1変異株"
 	    "usamin24@v1.0.0@チョコ&レート1号"
 	    "churi-maya@master@スリザリンのchuriさん"
-
-#	    "4321623@master@sample-program"
+	    "4321623@v1.0@勇者ちゃんv1.0"
 #	    "bushio@master@sample-program"
 #	    "churi-maya@master@sample-program"
 #	    "EndoNrak@master@sample-program"
@@ -194,16 +193,16 @@ function do_game_main(){
 	)
     elif [ "${LEVEL}" == "3" ]; then	
 	REPOSITORY_LIST=(
+	    "bushio@submit_level3@AIでテトリス"
 	    "usamin24@Lv2@チョコ&レート2号"
 	    "isshy-you@ish05c@いっしー5号"
-	    "bushio@submit_level3@AIでテトリス"
 	)
     elif [ "${LEVEL}" == "3_ryuo" ]; then
 	LEVEL="3"
 	DROP_SPEED=1
 	REPOSITORY_LIST=(
 	    "seigot@master@せいご-program"
-	    "isshy-you@master@isshy-program"
+	    "isshy-you@ish05c@いっしー5号"
 	)
     elif [ "${LEVEL}" == "777" ]; then
 	# forever branch
@@ -233,10 +232,10 @@ echo "start"
 #do_game_main 777
 
 # level1
-do_game_main 1
+#do_game_main 1
 
 # level2
-do_game_main 2
+#do_game_main 2
 
 # level2(AI)
 do_game_main "2_ai"
