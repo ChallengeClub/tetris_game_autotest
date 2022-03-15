@@ -51,7 +51,8 @@ function do_game(){
 
     local GAME_TIME=180
     local EXTERNAL_SLEEP_TIME=30
-    local RANDOM_SEED=1111
+    #local RANDOM_SEED=1111
+    local RANDOM_SEED=${RANDOM}
     #local PROGRAM_NAME="sample_program"
 
     # sound name
@@ -221,8 +222,10 @@ function do_game_main(){
     #do
     #echo ${REPOSITORY_LIST[$i]}
     LEVEL="2"
+    #PLAYER1="seigot@master@せいご-program"
+    #PLAYER2="isshy-you@master@isshy-program"    
     PLAYER1="seigot@master@せいご-program"
-    PLAYER2="isshy-you@master@isshy-program"    
+    PLAYER2="neteru141@master@neteru-program"    
     DROP_SPEED="1000"
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
 }
