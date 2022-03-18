@@ -35,7 +35,7 @@ function do_game(){
     local LOGFILE="${HOME}/tmp/resultlog_${UNAME}.json"
     local GAME_TIME=180
     local RANDOM_SEED=2022031811111
-    if [ "${LEVEL}" == "1" ]; then    
+    if [ "${LEVEL}" == "1" ]; then
 	RANDOM_SEED=0
     fi
     #local PROGRAM_NAME="sample_program"
@@ -62,7 +62,7 @@ function do_game(){
 
     ###### wait game -->
     WAIT_TIME=30
-    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -l ${LEVEL} -t ${WAIT_TIME}
+#    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -l ${LEVEL} -t ${WAIT_TIME}
     ###### wait game <--
 
     # start sound
@@ -156,52 +156,42 @@ function do_game_main(){
     # get repository list
     # format
     #   repository_name@branch@free_string
-    if [ "${LEVEL}" == "1" ]; then    
+    if [ "${LEVEL}" == "1" ]; then
 	REPOSITORY_LIST=(
-	    "mattshamrock@master@あまるフォイ"
-	    "usamin24@master@送別会なので欠席します1号"
-	    "isshy-you@ish05b@いっしー5号Lv1変異株"
-	    "usamin24@v1.0.0@チョコ&レート1号"
 	    "churi-maya@master@スリザリンのchuriさん"
+	    "mattshamrock@master@あまるフォイ"
 	    "4321623@v1.0@勇者ちゃんv1.0"
-#	    "bushio@master@sample-program"
-#	    "churi-maya@master@sample-program"
-#	    "EndoNrak@master@sample-program"
-#	    "Hbsnisme@master@sample-program"
-#	    "isshy-you@master@sample-program"
-#	    "matsuiyukari@master@sample-program"
-#	    "mmizu@master@sample-program"
-#	    "neteru141@master@sample-program"
-#	    "tsucky230@master@sample-program"
-#	    "yuin0@master@sample-program"
-#	    "YutaSakamoto1@master@sample-program"
-#	    "yynet21@master@sample-program"
+	    "usamin24@v1.0.0@チョコ&レート1号"
+	    "isshy-you@ish05b@いっしー5号Lv1変異株"
 	)
-    elif [ "${LEVEL}" == "2" ]; then	
+    elif [ "${LEVEL}" == "2" ]; then
 	REPOSITORY_LIST=(
 	    "mattshamrock@master@高まるフォイ"
-	    "usamin24@master@送別会なので欠席します1号"
 	    "usamin24@Lv2@チョコ&レート2号"
 	    "isshy-you@ish05c@いっしー5号"
+	    "yuin0@tetris_second@CrackedEgg_v1.9"
 	)
-    elif [ "${LEVEL}" == "2_ai" ]; then	
+    elif [ "${LEVEL}" == "2_ai" ]; then
 	LEVEL="2"
 	REPOSITORY_LIST=(
-	    "bushio@submit_level2@AIでテトリス"
 	    "neteru141@master@たいちとだいち４号"
-	    "seigot@master@neteru141さんリスペクトAI"
+	    "EndoNrak@submit1@bushioさんありがとう"
+	    "bushio@submit_level2@AIでテトリス"
+#	    "seigot@master@neteru141さんリスペクトAI"
 	)
-    elif [ "${LEVEL}" == "3" ]; then	
+    elif [ "${LEVEL}" == "3" ]; then
 	REPOSITORY_LIST=(
-	    "bushio@submit_level3@AIでテトリス"
 	    "usamin24@Lv2@チョコ&レート2号"
 	    "isshy-you@ish05c@いっしー5号"
+	    "yuin0@tetris_second@CrackedEgg_v1.9"
+	    "bushio@submit_level3@AIでテトリス"
 	)
     elif [ "${LEVEL}" == "3_ryuo" ]; then
 	LEVEL="3"
 	DROP_SPEED=1
 	REPOSITORY_LIST=(
-	    "seigot@master@せいご-program"
+	    "bushio@submit_level3@AIでテトリス"
+	    "yuin0@tetris_second@tetris_second"
 	    "isshy-you@ish05c@いっしー5号"
 	)
     elif [ "${LEVEL}" == "777" ]; then
@@ -241,7 +231,7 @@ echo "start"
 do_game_main "2_ai"
 
 # level3
-do_game_main 3
+#do_game_main 3
 
 # level3(3_ryuo)
 #do_game_main "3_ryuo"

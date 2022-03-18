@@ -42,7 +42,7 @@ def get_line_score(logfile):
     LOGFILE=logfile
 
     if os.path.exists(LOGFILE) == False:
-        return 0, 0, 0, 0, 0, 0
+        return 0, 0, 0, 0, 0, 0, 0
 
     cmd1 = ("jq .debug_info.line_score_stat[0] " + LOGFILE)
     cmd2 = ("jq .debug_info.line_score_stat[1] " + LOGFILE)
@@ -56,6 +56,7 @@ def get_line_score(logfile):
     cmd8 = ("jq .debug_info.line_score.\"line3\" " + LOGFILE)
     cmd9 = ("jq .debug_info.line_score.\"line4\" " + LOGFILE)
     GAMEOVER_SCORE_CMD = ("jq .debug_info.line_score.gameover " + LOGFILE)
+    BLOCK_INDEX_CMD= ("jq .judge_info.block_index " + LOGFILE)
     
     res1 = res_cmd(cmd1)
     res2 = res_cmd(cmd2)
@@ -70,6 +71,7 @@ def get_line_score(logfile):
 
     GAMEOVER_COUNT_CMD_RES = res_cmd(GAMEOVER_COUNT_CMD)
     GAMEOVER_SCORE_CMD_RES = res_cmd(GAMEOVER_SCORE_CMD)
+    BLOCK_INDEX_CMD_RES = res_cmd(BLOCK_INDEX_CMD)
     try:
         _1line_score = int(res1)*int(res6)#*100
         _2line_score = int(res2)*int(res7)#*300
@@ -77,10 +79,11 @@ def get_line_score(logfile):
         _4line_score = int(res4)*int(res9)#*1200
         _total_score = int(res5)
         _gameover_score = int(GAMEOVER_COUNT_CMD_RES)*int(GAMEOVER_SCORE_CMD_RES)#*1200
+        block_index = int(BLOCK_INDEX_CMD_RES)
     except:
-        return -1, -1, -1, -1, -1, -1
+        return -1, -1, -1, -1, -1, -1, -1
 
-    return _1line_score, _2line_score, _3line_score, _4line_score,_total_score, _gameover_score
+    return _1line_score, _2line_score, _3line_score, _4line_score,_total_score, _gameover_score, block_index
 
 class Window(QMainWindow): 
 
@@ -132,7 +135,7 @@ class Window(QMainWindow):
         # setting geometry
         upper_left = (100,100)
         #width_height = (280, 380)
-        width_height = (100+180, 410)
+        width_height = (100+180, 450)
         self.setGeometry(upper_left[0], upper_left[1],
                          width_height[0], width_height[1]) 
 
@@ -155,12 +158,12 @@ class Window(QMainWindow):
         # creating a label to show the time 
         self.label = QLabel(self)
         label_upper_left = (5, 5)
-        label_width_height = (270, 400)
+        label_width_height = (270, 440)
         self.label.setGeometry(label_upper_left[0], label_upper_left[1], 
                                label_width_height[0], label_width_height[1]) 
         self.label.setStyleSheet("border : 4px solid black;") 
         self.label.setText(self.gettimertext())
-        self.label.setFont(QFont('Arial', 22))
+        self.label.setFont(QFont('Arial', 20))
         self.label.setAlignment(Qt.AlignCenter) 
 
         # creating a timer object 
@@ -183,7 +186,7 @@ class Window(QMainWindow):
 
     def gettimertext(self):
 
-        _1line_score, _2line_score, _3line_score , _4line_score, _total_score, _gameover_score = get_line_score(self.logfilejson)
+        _1line_score, _2line_score, _3line_score , _4line_score, _total_score, _gameover_score, block_index = get_line_score(self.logfilejson)
         if _1line_score < 0:
             return self.current_txt
         
@@ -191,6 +194,7 @@ class Window(QMainWindow):
         + self.branch_name + "\n" \
         + self.program_name + "\n" \
         + "TIME: " + str('{:.01f}'.format(self.timer_count / 10)) + "/" + str(int(self.max_timer_count/10)) + " (s)" + "\n" \
+        + "BLOCK: " + str(block_index) + "\n" \
         + "LEVEL: " + str(self.level) + "\n" \
         + "SCORE: " + str(_total_score) + "\n" \
         + "  1line: " + str(_1line_score) + "\n" \
