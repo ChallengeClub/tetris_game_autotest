@@ -149,107 +149,46 @@ function do_game(){
 }
 
 function do_game_main(){
-    #LEVEL=${1} # 1
-    #DROP_SPEED=1000
-    #UNAME=${2} # "isshy-you@master@isshy-program"
 
-    # create empty file
-    #RESULT_LEVEL_LOG="${HOME}/result_level${LEVEL}.log"
-    #echo -n >| ${RESULT_LEVEL_LOG}
     echo -n >| ${RESULT_LOG}
 
-    # get repository list
-    # format
-    #   repository_name@branch@free_string
-#    if [ ${LEVEL} == 1 ]; then    
-#	REPOSITORY_LIST=(
-#	    "isshy-you@master@isshy-program"
-#	    "4321623@master@sample-program"
-#	    "bushio@master@sample-program"
-#	    "churi-maya@master@sample-program"
-#	    "EndoNrak@master@sample-program"
-#	    "Hbsnisme@master@sample-program"
-#	    "isshy-you@master@sample-program"
-#	    "matsuiyukari@master@sample-program"
-#	    "mattshamrock@master@sample-program"
-#	    "mmizu@master@sample-program"
-#	    "neteru141@master@sample-program"
-#	    "tsucky230@master@sample-program"
-#	    "usamin24@master@sample-program"
-#	    "yuin0@master@sample-program"
-#	    "YutaSakamoto1@master@sample-program"
-#	    "yynet21@master@sample-program"
-#	)
-#    elif [ ${LEVEL} == 2 ]; then	
-#	REPOSITORY_LIST=(
-#	    "seigot@master@せいご-program"
-#	    "isshy-you@master@isshy-program"
-#	)
-#    elif [ ${LEVEL} == "2_ai" ]; then	
-#	LEVEL="2"
-#	REPOSITORY_LIST=(
-#	    "seigot@master@せいご-program"
-#	    "isshy-you@master@isshy-program"
-#	)
-#    elif [ ${LEVEL} == 3 ]; then	
-#	REPOSITORY_LIST=(
-#	    "seigot@master@せいご-program"
-#	    "isshy-you@master@isshy-program"
-#	)
-#    elif [ ${LEVEL} == "3_ryuo" ]; then
-#	LEVEL="3"
-#	DROP_SPEED=1
-#	REPOSITORY_LIST=(
-#	    "seigot@master@せいご-program"
-#	    "isshy-you@master@isshy-program"
-#	)
-#    elif [ ${LEVEL} == 777 ]; then
-#	# forever branch
-#	REPOSITORY_LIST=(
-#	    "kyad@forever-branch@無限テトリス"
-#	)
-#    else
-#	echo "invalid level ${LEVEL}"
-#	return
-#    fi
+    ## 2
+    PLAYER1="mattshamrock@master@高まるフォイ"
+    PLAYER2="usamin24@Lv2@チョコ&レート2号"
+    #PLAYER1="isshy-you@ish05c@いっしー5号"
+    #PLAYER1="yuin0@tetris_second@CrackedEgg_v1.9"
 
-    #if [ ${LEVEL} == "777" ];then
-    #LEVEL="1"
-    #fi
+    ## 2_ai
+    #PLAYER1="neteru141@master@たいちとだいち４号"
+    #PLAYER1="EndoNrak@submit1@bushioさんありがとう"
+    #PLAYER1="bushio@submit_level2@AIでテトリス"
 
-    # main loop
-    #for (( i = 0; i < ${#REPOSITORY_LIST[@]}; i++ ))
-    #do
-    #echo ${REPOSITORY_LIST[$i]}
+    ## 3
+    #PLAYER1="usamin24@Lv2@チョコ&レート2号"
+    #PLAYER1="isshy-you@ish05c@いっしー5号"
+    #PLAYER1="yuin0@tetris_second@CrackedEgg_v1.9"
+    #PLAYER1="bushio@submit_level3@AIでテトリス"
+
+    #---
     LEVEL="2"
+    DROP_SPEED="1000"   #"1"#"1000"
+    #---
+    #PLAYER1="bushio@submit_level3@AIでテトリス"
+    #PLAYER1="yuin0@tetris_second@tetris_second"
+    #PLAYER1="isshy-you@ish05c@いっしー5号"
     #PLAYER1="seigot@master@せいご-program"
-    #PLAYER2="isshy-you@master@isshy-program"    
-    PLAYER1="seigot@master@せいご-program"
-    PLAYER2="neteru141@master@neteru-program"    
-    DROP_SPEED="1000"
+    #PLAYER2="isshy-you@master@isshy-program"
+    #PLAYER1=
+    #PLAYER2=
+    #PLAYER1="EndoNrak@submit1@bushioさんありがとう"
+    #PLAYER1="bushio@submit_level3@AIでテトリス"
+    #PLAYER2="isshy-you@ish05c@いっしー5号"
+
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
 }
 
 echo "start"
-
-# level777
-# do_game_main 777
-
-# level1
-#do_game_main 1
-
-# level2
-do_game_main 2
-
-# level2(AI)
-#do_game_main "2_ai"
-
-# level3
-#do_game_main 3
-
-# level3(3_ryuo)
-#do_game_main "3_ryuo"
-
+do_game_main
 echo "end"
 
 
