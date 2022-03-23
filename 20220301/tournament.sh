@@ -74,8 +74,9 @@ function do_game(){
     popd
 
     ###### wait game -->
-    #WAIT_TIME=30
-    #python score.py -u ${UNAME} -p ${PROGRAM_NAME} -l ${LEVEL} -t ${WAIT_TIME}
+    WAIT_TIME=30
+    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -l ${LEVEL} -t ${WAIT_TIME} &
+    python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -l ${LEVEL} -t ${WAIT_TIME}
     ###### wait game <--
 
     # start sound
@@ -145,6 +146,11 @@ function do_game(){
     bash stop.sh
 
     # show result
+    echo "-- player1(${UNAME}) score"
+    jq .judge_info.score ${LOGFILE}
+    echo "-- player2(${UNAME_2}) score"
+    jq .judge_info.score ${LOGFILE_2}
+
     return 0
 }
 
@@ -154,9 +160,9 @@ function do_game_main(){
 
     ## 2
     PLAYER1="mattshamrock@master@高まるフォイ"
-    PLAYER2="usamin24@Lv2@チョコ&レート2号"
+    #PLAYER2="usamin24@Lv2@チョコ&レート2号"
     #PLAYER1="isshy-you@ish05c@いっしー5号"
-    #PLAYER1="yuin0@tetris_second@CrackedEgg_v1.9"
+    PLAYER2="yuin0@tetris_second@CrackedEgg_v1.9"
 
     ## 2_ai
     #PLAYER1="neteru141@master@たいちとだいち４号"
