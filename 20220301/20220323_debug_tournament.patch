@@ -1,0 +1,42 @@
+diff --git a/20220301/score_attack.sh b/20220301/score_attack.sh
+index 36bb58c..0c367df 100755
+--- a/20220301/score_attack.sh
++++ b/20220301/score_attack.sh
+@@ -33,7 +33,7 @@ function do_game(){
+     local SCORE_WINDOW_Y="${9}"
+ 
+     local LOGFILE="${HOME}/tmp/resultlog_${UNAME}.json"
+-    local GAME_TIME=180
++    local GAME_TIME=10  #180
+     local RANDOM_SEED=2022031811111
+     if [ "${LEVEL}" == "1" ]; then
+ 	RANDOM_SEED=0
+@@ -66,8 +66,8 @@ function do_game(){
+     ###### wait game <--
+ 
+     # start sound
+-    play ${SOUNDFILE_PATH} &
+-    PID_PLAY_SOUND=$!
++#    play ${SOUNDFILE_PATH} &
++#    PID_PLAY_SOUND=$!
+     # start image
+     eog ${IMAGE_NAME} &
+     
+@@ -111,7 +111,7 @@ function do_game(){
+     sleep ${GAME_TIME}
+ 
+     # wait finish
+-    wait ${PID_PLAY_SOUND}
++#    wait ${PID_PLAY_SOUND}
+ 
+     # kill image
+     bash stop.sh
+@@ -136,7 +136,7 @@ function do_game(){
+ 
+     ###### wait game -->
+     WAIT_TIME=30
+-    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -l ${LEVEL} -f ${LOGFILE} -t ${WAIT_TIME}
++#    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -l ${LEVEL} -f ${LOGFILE} -t ${WAIT_TIME}
+     ###### wait game <--
+     
+     # show result

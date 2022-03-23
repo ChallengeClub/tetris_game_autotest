@@ -12,14 +12,15 @@ function GET_COMMAND(){
 
     if [ "${UNAME}" == "seigot" ]; then
 	# 機械学習用のファイルをダウンロードして、game_managerの下におく
-	ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/ai_tmp/game_manager/machine_learning/block_controller_train_sample.py &&\
-	mv block_controller_train_sample.py game_manager/machine_learning/. &&\
-	curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/ai_tmp/game_manager/machine_learning/deep_q_network.py &&\
-	mv deep_q_network.py game_manager/machine_learning/. &&\
-	mkdir trained_models &&\
-	curl -LJO https://github.com/seigot/tools/raw/master/tetris/ai_tmp/trained_models/tetris &&\
-	cp tetris trained_models/."
-	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m predict_sample"
+#	ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/ai_tmp/game_manager/machine_learning/block_controller_train_sample.py &&\
+#	mv block_controller_train_sample.py game_manager/machine_learning/. &&\
+#	curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/ai_tmp/game_manager/machine_learning/deep_q_network.py &&\
+#	mv deep_q_network.py game_manager/machine_learning/. &&\
+#	mkdir trained_models &&\
+#	curl -LJO https://github.com/seigot/tools/raw/master/tetris/ai_tmp/trained_models/tetris &&\
+#	cp tetris trained_models/."
+#	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m predict_sample"
+	EXEC_COMMAND="python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"
 	
     elif [ "${UNAME}" == "neteru141" ]; then
 	# neteru141さん用のtetris
@@ -47,7 +48,22 @@ function GET_COMMAND(){
 	
 	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m predict"
 
+    elif [ "${UNAME}" == "mattshamrock" ]; then
+
+	# mattshamrockさん用のtetris
+	if [ "${LEVEL}" == "2" ]; then
+	    # level2
+	    ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/mattshamrock/tetris2/main/block_controller.py &&\
+	    mv block_controller.py game_manager/."
+	else
+	    # level3
+	    ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/mattshamrock/tetris3/main/block_controller.py &&\
+	    mv block_controller.py game_manager/."
+	fi
+	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m predict"
+	
     else
+	# other
 	EXEC_COMMAND="python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"
     fi
 

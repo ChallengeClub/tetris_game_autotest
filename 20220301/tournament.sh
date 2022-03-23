@@ -16,6 +16,7 @@ SOUNDFILE_LIST=(
 
 CURRENT_DIR=`pwd`
 RESULT_LOG="${CURRENT_DIR}/result.log"
+RESULT_ALL_LOG="${CURRENT_DIR}/result_all.log"
 
 function do_game(){
 
@@ -75,8 +76,13 @@ function do_game(){
 
     ###### wait game -->
     WAIT_TIME=30
-    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -l ${LEVEL} -t ${WAIT_TIME} &
-    python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -l ${LEVEL} -t ${WAIT_TIME}
+    python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -l ${LEVEL} -t ${WAIT_TIME} &
+    sleep 1
+    # move window
+    local SCORE_WINDOW_NAME_2="Score_${UNAME_2}"
+    SCORE_WINDOWID_2=`xdotool search --onlyvisible --name "${SCORE_WINDOW_NAME_2}"`
+    xdotool windowmove ${SCORE_WINDOWID_2} 500 100 &
+    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -l ${LEVEL} -t ${WAIT_TIME}
     ###### wait game <--
 
     # start sound
@@ -146,10 +152,13 @@ function do_game(){
     bash stop.sh
 
     # show result
-    echo "-- player1(${UNAME}) score"
-    jq .judge_info.score ${LOGFILE}
-    echo "-- player2(${UNAME_2}) score"
-    jq .judge_info.score ${LOGFILE_2}
+    DATE=`date '+%Y%m%d%H%m'`
+    echo "-- $DATE" >> ${RESULT_ALL_LOG}
+    echo "-- player1(${UNAME}) score" >> ${RESULT_ALL_LOG}
+    jq .judge_info.score ${LOGFILE} >> ${RESULT_ALL_LOG}
+    echo "-- player2(${UNAME_2}) score" >> ${RESULT_ALL_LOG}
+    jq .judge_info.score ${LOGFILE_2} >> ${RESULT_ALL_LOG}
+    tail -5 ${RESULT_ALL_LOG}
 
     return 0
 }
@@ -158,37 +167,39 @@ function do_game_main(){
 
     echo -n >| ${RESULT_LOG}
 
+    ## sample
+    PLAYER1="seigot@master@せいご-program"
+    PLAYER2="isshy-you@master@isshy-program"
+    
     ## 2
-    PLAYER1="mattshamrock@master@高まるフォイ"
-    #PLAYER2="usamin24@Lv2@チョコ&レート2号"
-    #PLAYER1="isshy-you@ish05c@いっしー5号"
-    PLAYER2="yuin0@tetris_second@CrackedEgg_v1.9"
+#    PLAYER1="yuin0@tetris_second@CrackedEgg_v1.9"
+#    PLAYER1="isshy-you@ish05h3@いっしー5号ぷらす"
+#    PLAYER2="4321623@v2.0@勇者ちゃん2号"
+#    PLAYER1="usamin24@Lv2@チョコ&レート2号改"
+#    PLAYER2="mattshamrock@master@高まるフォイ"
+
 
     ## 2_ai
-    #PLAYER1="neteru141@master@たいちとだいち４号"
-    #PLAYER1="EndoNrak@submit1@bushioさんありがとう"
-    #PLAYER1="bushio@submit_level2@AIでテトリス"
+#    PLAYER1="bushio@submit_level2@AIでテトリス"
+#    PLAYER1="EndoNrak@submit1@bushioさんありがとう"
+#    PLAYER2="neteru141@master@たいちとだいち４号"
 
     ## 3
-    #PLAYER1="usamin24@Lv2@チョコ&レート2号"
-    #PLAYER1="isshy-you@ish05c@いっしー5号"
-    #PLAYER1="yuin0@tetris_second@CrackedEgg_v1.9"
-    #PLAYER1="bushio@submit_level3@AIでテトリス"
+#    PLAYER1="bushio@submit_level3@AIでテトリス"
+#    PLAYER1="usamin24@Lv3@チョコ&レート3号"
+#    PLAYER2="mattshamrock@master@困るフォイ"
+#    PLAYER1="isshy-you@ish05h3@いっしー5号ぷらす"
+#    PLAYER2="yuin0@tetris_second@CrackedEgg_v1.9"
+
+    ## ryuo
+#    PLAYER1="bushio@submit_level3@AIでテトリス"
+#    PLAYER1="isshy-you@ish05c@いっしー5号"
+#    PLAYER2="usamin24@Lv3@チョコ&レート3号"
 
     #---
     LEVEL="2"
-    DROP_SPEED="1000"   #"1"#"1000"
+    DROP_SPEED="1000" #"1000"   #"1"#"1000"
     #---
-    #PLAYER1="bushio@submit_level3@AIでテトリス"
-    #PLAYER1="yuin0@tetris_second@tetris_second"
-    #PLAYER1="isshy-you@ish05c@いっしー5号"
-    #PLAYER1="seigot@master@せいご-program"
-    #PLAYER2="isshy-you@master@isshy-program"
-    #PLAYER1=
-    #PLAYER2=
-    #PLAYER1="EndoNrak@submit1@bushioさんありがとう"
-    #PLAYER1="bushio@submit_level3@AIでテトリス"
-    #PLAYER2="isshy-you@ish05c@いっしー5号"
 
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
 }
