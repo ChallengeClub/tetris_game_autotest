@@ -166,10 +166,14 @@ function do_game_main(){
 	)
     elif [ "${LEVEL}" == "2" ]; then
 	REPOSITORY_LIST=(
+#	    "mattshamrock@master@高まるフォイ"
+#	    "usamin24@Lv2@チョコ&レート2号"
+#	    "isshy-you@ish05c@いっしー5号"
 	    "mattshamrock@master@高まるフォイ"
-	    "usamin24@Lv2@チョコ&レート2号"
-	    "isshy-you@ish05c@いっしー5号"
+	    "usamin24@Lv2@チョコ&レート2号改"
+	    "isshy-you@ish05h3@いっしー5号ぷらす"
 	    "yuin0@tetris_second@CrackedEgg_v1.9"
+	    "4321623@v2.0@勇者ちゃん2号"
 	)
     elif [ "${LEVEL}" == "2_ai" ]; then
 	LEVEL="2"
@@ -181,18 +185,19 @@ function do_game_main(){
 	)
     elif [ "${LEVEL}" == "3" ]; then
 	REPOSITORY_LIST=(
-	    "usamin24@Lv2@チョコ&レート2号"
-	    "isshy-you@ish05c@いっしー5号"
+	    "usamin24@Lv3@チョコ&レート3号"
+	    "isshy-you@ish05h3@いっしー5号ぷらす"
 	    "yuin0@tetris_second@CrackedEgg_v1.9"
 	    "bushio@submit_level3@AIでテトリス"
+	    "mattshamrock@master@困るフォイ"
 	)
     elif [ "${LEVEL}" == "3_ryuo" ]; then
 	LEVEL="3"
 	DROP_SPEED=1
 	REPOSITORY_LIST=(
 	    "bushio@submit_level3@AIでテトリス"
-	    "yuin0@tetris_second@tetris_second"
 	    "isshy-you@ish05c@いっしー5号"
+	    "usamin24@Lv3@チョコ&レート3号"
 	)
     elif [ "${LEVEL}" == "777" ]; then
 	# forever branch
@@ -225,16 +230,16 @@ echo "start"
 #do_game_main 1
 
 # level2
-#do_game_main 2
+do_game_main 2
 
 # level2(AI)
 do_game_main "2_ai"
 
 # level3
-#do_game_main 3
+do_game_main 3
 
 # level3(3_ryuo)
-#do_game_main "3_ryuo"
+do_game_main "3_ryuo"
 
 echo "end"
 
