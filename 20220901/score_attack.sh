@@ -24,6 +24,8 @@ function do_game(){
     local UNAME=`echo ${USER_NAME_BRANCH} | cut -d'@' -f1`
     local BRANCH=`echo ${USER_NAME_BRANCH} | cut -d'@' -f2`
     local PROGRAM_NAME=`echo ${USER_NAME_BRANCH} | cut -d'@' -f3`
+    local MODE=`echo ${USER_NAME_BRANCH} | cut -d'@' -f4`
+    local PREDICT_WEIGHT=`echo ${USER_NAME_BRANCH} | cut -d'@' -f5`
     local DROP_SPEED="${3}"
     local WINDOW_X="${4}"
     local WINDOW_Y="${5}"
@@ -32,9 +34,11 @@ function do_game(){
     local SCORE_WINDOW_X="${8}"
     local SCORE_WINDOW_Y="${9}"
 
-    local LOGFILE="${HOME}/tmp/resultlog_${UNAME}.json"
-    local GAME_TIME=180
-    local RANDOM_SEED=2022031811111
+    local LOGFILE="${CURRENT_DIR}/resultlog_${UNAME}.json"
+    local SCORE_LIST_FILE="${CURRENT_DIR}/scorelistfile_${UNAME}.txt"
+    local GAME_TIME=180 #180
+    local GAME_WAITTIME=30 #30
+    local RANDOM_SEED=2022090111111
     if [ "${LEVEL}" == "1" ]; then
 	RANDOM_SEED=0
     fi
@@ -59,12 +63,13 @@ function do_game(){
     ## xxx
     ## additional setting <--
     popd
+    rm -f ${LOGFILE}
+    rm -f ${SCORE_LIST_FILE}
 
     ###### wait game -->
-    WAIT_TIME=30
-#    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -l ${LEVEL} -t ${WAIT_TIME}
+    WAIT_TIME=${GAME_WAITTIME}
+    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -t ${WAIT_TIME}
     ###### wait game <--
-
     # start sound
     play ${SOUNDFILE_PATH} &
     PID_PLAY_SOUND=$!
@@ -72,17 +77,16 @@ function do_game(){
     eog ${IMAGE_NAME} &
     
     # start game
-    local EXEC_COMMAND=`GET_COMMAND ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME} ${LOGFILE} ${TETRIS_DIR}`
+    local EXEC_COMMAND=`GET_COMMAND ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME} ${LOGFILE} ${TETRIS_DIR} ${MODE} ${PREDICT_WEIGHT}`
     local COMMAND="source ~/venvtest/bin/activate && \
 	    cd ${TETRIS_DIR}/tetris && \
 	    ${EXEC_COMMAND}"
-    #python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"
-    #gnome-terminal -- bash -c "${COMMAND}" &
+
     # download github profile image
     curl https://avatars.githubusercontent.com/${UNAME} --output "${UNAME}.png"
     convert -resize 160x "${UNAME}.png" "${UNAME}2.png"
     bash -c "${COMMAND}" &
-    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -l ${LEVEL} -f ${LOGFILE} -e ${WAIT_TIME} &
+    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -f ${LOGFILE} -e ${WAIT_TIME} -s ${SCORE_LIST_FILE} --use_elapsed_time True &
     python image.py -u ${UNAME} -i "${UNAME}2.png" &
     sleep 2
 
@@ -105,7 +109,7 @@ function do_game(){
     ## adjust meigen image
     local MEIGEN_WINDOW_NAME=`basename ${IMAGE_NAME}`
     WINDOWID=`xdotool search --onlyvisible --name "${MEIGEN_WINDOW_NAME}"`
-    xdotool windowmove ${WINDOWID} 900 100
+    xdotool windowmove ${WINDOWID} 900 100 &
 
     # sleep until game end
     sleep ${GAME_TIME}
@@ -115,7 +119,6 @@ function do_game(){
 
     # kill image
     bash stop.sh
-    pkill "eog"
 
     # show result
     SCORE=`jq .judge_info.score ${LOGFILE}`
@@ -135,8 +138,20 @@ function do_game(){
     echo " ----"
 
     ###### wait game -->
-    WAIT_TIME=30
-    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -l ${LEVEL} -f ${LOGFILE} -t ${WAIT_TIME}
+    WAIT_TIME=${GAME_WAITTIME}
+    ## display/adjust scorelist image
+    DISPLAY_OUTPUTFILE="display_graph.png"
+    python display_graph.py --file1 ${SCORE_LIST_FILE} --outputfile "tmp.png"
+    convert -resize 640x480 "tmp.png" ${DISPLAY_OUTPUTFILE}
+    eog ${DISPLAY_OUTPUTFILE} &
+    sleep 1
+    local DISPLAYSCORE_WINDOW_NAME=`basename ${DISPLAY_OUTPUTFILE}`
+    WINDOWID=`xdotool search --onlyvisible --name "${DISPLAYSCORE_WINDOW_NAME}"`
+    xdotool windowmove ${WINDOWID} 500 150
+    ## diplay score
+    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -f ${LOGFILE} -t ${WAIT_TIME}
+    ## kil display
+    pkill "eog"
     ###### wait game <--
     
     # show result
@@ -158,11 +173,35 @@ function do_game_main(){
     #   repository_name@branch@free_string
     if [ "${LEVEL}" == "1" ]; then
 	REPOSITORY_LIST=(
-	    "churi-maya@master@スリザリンのchuriさん"
-	    "mattshamrock@master@あまるフォイ"
-	    "4321623@v1.0@勇者ちゃんv1.0"
-	    "usamin24@v1.0.0@チョコ&レート1号"
-	    "isshy-you@ish05b@いっしー5号Lv1変異株"
+	    # "user_name @ branch_name @ program_name @ mode @ predict_weight"
+	    "bushio@master@testname@predict_sample@weight/DQN/sample_weight.pt"
+	    "seigot@master@testname@predict_sample2@weight/MLP/sample_weight.pt"
+	    "AtsutoshiNaraki@master@testname@default@default"
+	    "0829Rinoue@master@testname@default@default"
+	    "cookie4869@master@testname@default@default"
+	    "isshy-you@master@testname@default@default"
+	    "jap-kmk@master@testname@default@default"
+	    "Jumpeipei@master@testname@default@default"
+	    "kodamanfamily@master@testname@default@default"
+	    "koro298@master@testname@default@default"
+	    "koubG@master@testname@default@default"
+	    "krymt28@master@testname@default@default"
+	    "n-nooobu@master@testname@default@default"
+	    "n-yasunami@master@testname@default@default"
+	    "nabehiko0523@master@testname@default@default"
+	    "obo-koki@master@testname@default@default"
+	    "qbi-sui@master@testname@default@default"
+	    "RogerTokunaga@master@testname@default@default"
+	    "ryochinbo@master@testname@default@default"
+	    "skyblueline8@master@testname@default@default"
+	    "sota1111@master@testname@default@default"
+	    "taika-izumi@master@testname@default@default"
+	    "yuta002@master@testname@default@default"
+	    "zaki1010@master@testname@default@default"
+	    "TsuchiyaYosuke@master@testname@default@default"
+	    "mattshamrock@master@testname@default@default"
+	    "usamin24@master@testname@default@default"
+	    "yuin0@master@testname@default@default"
 	)
     elif [ "${LEVEL}" == "2" ]; then
 	REPOSITORY_LIST=(
@@ -224,22 +263,22 @@ function do_game_main(){
 echo "start"
 
 # level777
-do_game_main 777
+#do_game_main 777
 
 # level1
 do_game_main 1
 
 # level2
-do_game_main 2
+#do_game_main 2
 
 # level2(AI)
-do_game_main "2_ai"
+#do_game_main "2_ai"
 
 # level3
-do_game_main 3
+#do_game_main 3
 
 # level3(3_ryuo)
-do_game_main "3_ryuo"
+#do_game_main "3_ryuo"
 
 echo "end"
 

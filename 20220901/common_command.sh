@@ -9,9 +9,11 @@ function GET_COMMAND(){
     UNAME=${5}
     LOGFILE=${6}
     TETRIS_DIR=${7}
+    MODE=${8}           # -m "${MODE}" --predict_weight "${PREDICT_WEIGHT}"
+    PREDICT_WEIGHT=${9} # -m "${MODE}" --predict_weight "${PREDICT_WEIGHT}"
 
     if [ "${UNAME}" == "seigot" ]; then
-	# 機械学習用のファイルをダウンロードして、game_managerの下におく
+	# ex)機械学習用のファイルをダウンロードして、game_managerの下におく
 #	ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/ai_tmp/game_manager/machine_learning/block_controller_train_sample.py &&\
 #	mv block_controller_train_sample.py game_manager/machine_learning/. &&\
 #	curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/ai_tmp/game_manager/machine_learning/deep_q_network.py &&\
@@ -20,8 +22,11 @@ function GET_COMMAND(){
 #	curl -LJO https://github.com/seigot/tools/raw/master/tetris/ai_tmp/trained_models/tetris &&\
 #	cp tetris trained_models/."
 #	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m predict_sample"
-	EXEC_COMMAND="python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"
-	
+#	ADD_COMMAND="ls"
+	ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/20220901_cuda_unavailable.patch &&\
+	patch -p1 < 20220901_cuda_unavailable.patch"
+	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m ${MODE} --predict_weight ${PREDICT_WEIGHT}"
+
     elif [ "${UNAME}" == "neteru141" ]; then
 	# neteru141さん用のtetris
 	ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/ai_tmp/game_manager/machine_learning/block_controller_train_sample.py &&\
@@ -37,36 +42,18 @@ function GET_COMMAND(){
 
     elif [ "${UNAME}" == "bushio" ]; then
 	# bushioさん用のtetris
-	ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/20220315_disable_cuda.patch &&\
-	patch -p1 < 20220315_disable_cuda.patch"
-	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m predict"
-
-    elif [ "${UNAME}" == "EndoNrak" ]; then
-	# neteru141さん用のtetris
-	ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/20220318_endo.patch &&\
-	patch -p1 < 20220318_endo.patch"
-	
-	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m predict"
+	ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/20220901_cuda_unavailable.patch &&\
+	patch -p1 < 20220901_cuda_unavailable.patch"
+	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m ${MODE} --predict_weight ${PREDICT_WEIGHT}"
 
     elif [ "${UNAME}" == "mattshamrock" ]; then
-
-	# mattshamrockさん用のtetris
-#	if [ "${LEVEL}" == "2" ]; then
-	    # level2
-	    ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/mattshamrock/tetris2/main/block_controller.py &&\
-	    mv block_controller.py game_manager/."
-#	else
-#	    # level3
-#	    ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/mattshamrock/tetris3/main/block_controller.py &&\
-#	    mv block_controller.py game_manager/."
-#	fi
-	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m predict"
-	
+	ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/mattshamrock/tetris2/main/block_controller.py &&\
+	             mv block_controller.py game_manager/."
+	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m ${MODE} --predict_weight ${PREDICT_WEIGHT}"
     else
 	# other
-	EXEC_COMMAND="python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"
+	EXEC_COMMAND="python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m ${MODE} --predict_weight ${PREDICT_WEIGHT}"
     fi
-
     echo ${EXEC_COMMAND}
 }
 

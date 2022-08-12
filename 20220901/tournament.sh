@@ -25,10 +25,14 @@ function do_game(){
     local UNAME=`echo ${USER_NAME_BRANCH} | cut -d'@' -f1`
     local BRANCH=`echo ${USER_NAME_BRANCH} | cut -d'@' -f2`
     local PROGRAM_NAME=`echo ${USER_NAME_BRANCH} | cut -d'@' -f3`
+    local MODE=`echo ${USER_NAME_BRANCH} | cut -d'@' -f4`
+    local PREDICT_WEIGHT=`echo ${USER_NAME_BRANCH} | cut -d'@' -f5`
     local USER_NAME_BRANCH_2="${3}"
     local UNAME_2=`echo ${USER_NAME_BRANCH_2} | cut -d'@' -f1`
     local BRANCH_2=`echo ${USER_NAME_BRANCH_2} | cut -d'@' -f2`
     local PROGRAM_NAME_2=`echo ${USER_NAME_BRANCH_2} | cut -d'@' -f3`
+    local MODE2=`echo ${USER_NAME_BRANCH_2} | cut -d'@' -f4`
+    local PREDICT_WEIGHT2=`echo ${USER_NAME_BRANCH_2} | cut -d'@' -f5`
     local DROP_SPEED="${4}"
 
     # window coordinate
@@ -46,10 +50,14 @@ function do_game(){
     local IMAGE_WINDOW_Y_2=50
     local SCORE_WINDOW_X_2=1200
     local SCORE_WINDOW_Y_2=300
+    local GRAPH_WINDOW_X=350
+    local GRAPH_WINDOW_Y=150
 
-    local LOGFILE="${HOME}/tmp/resultlog_${UNAME}.json"
-    local LOGFILE_2="${HOME}/tmp/resultlog_${UNAME_2}.json"
-
+    local LOGFILE="${CURRENT_DIR}/resultlog_${UNAME}.json"
+    local LOGFILE_2="${CURRENT_DIR}/resultlog_${UNAME_2}.json"
+    local SCORE_LIST_FILE="${CURRENT_DIR}/scorelistfile_${UNAME}.txt"
+    local SCORE_LIST_FILE_2="${CURRENT_DIR}/scorelistfile_${UNAME_2}.txt"
+    
     local GAME_TIME=180
     local EXTERNAL_SLEEP_TIME=30
     #local RANDOM_SEED=1111
@@ -70,6 +78,10 @@ function do_game(){
     echo ${UNAME} ${BRANCH}
     git clone https://github.com/${UNAME}/tetris -b ${BRANCH} tetris_${UNAME}
     git clone https://github.com/${UNAME_2}/tetris -b ${BRANCH_2} tetris_${UNAME_2}
+    rm -f ${LOGFILE}
+    rm -f ${LOGFILE_2}
+    rm -f ${SCORE_LIST_FILE}
+    rm -f ${SCORE_LIST_FILE_2}
     ## additional setting -->
     ## xxx
     ## additional setting <--
@@ -77,13 +89,13 @@ function do_game(){
 
     ###### wait game -->
     WAIT_TIME=30
-    python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -l ${LEVEL} -t ${WAIT_TIME} &
+    python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -m ${MODE2} -w ${PREDICT_WEIGHT} -l ${LEVEL} -t ${WAIT_TIME} &
     sleep 1
     # move window
     local SCORE_WINDOW_NAME_2="Score_${UNAME_2}"
     SCORE_WINDOWID_2=`xdotool search --onlyvisible --name "${SCORE_WINDOW_NAME_2}"`
     xdotool windowmove ${SCORE_WINDOWID_2} 500 100 &
-    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -l ${LEVEL} -t ${WAIT_TIME}
+    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -m ${MODE} -w ${PREDICT_WEIGHT2} -l ${LEVEL} -t ${WAIT_TIME}
     ###### wait game <--
 
     # start sound
@@ -91,11 +103,11 @@ function do_game(){
     PID_PLAY_SOUND=$!
     
     # start game
-    local EXEC_COMMAND=`GET_COMMAND ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME} ${LOGFILE} ${TETRIS_DIR}`
+    local EXEC_COMMAND=`GET_COMMAND ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME} ${LOGFILE} ${TETRIS_DIR} ${MODE} ${PREDICT_WEIGHT}`
     local COMMAND="source ~/venvtest/bin/activate && \
 	    cd ${TETRIS_DIR}/tetris_${UNAME} && \
 	    ${EXEC_COMMAND}"
-    local EXEC_COMMAND_2=`GET_COMMAND ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME_2} ${LOGFILE_2} ${TETRIS_DIR}`
+    local EXEC_COMMAND_2=`GET_COMMAND ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME_2} ${LOGFILE_2} ${TETRIS_DIR} ${MODE2} ${PREDICT_WEIGHT2}`
     local COMMAND_2="source ~/venvtest/bin/activate && \
 	    cd ${TETRIS_DIR}/tetris_${UNAME_2} && \
 	    ${EXEC_COMMAND_2}"
@@ -109,9 +121,9 @@ function do_game(){
     convert -resize 160x "${UNAME_2}.png" "${UNAME_2}2.png"    
     bash -c "${COMMAND}" &
     bash -c "${COMMAND_2}" &
-    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -l ${LEVEL} -f ${LOGFILE} -e ${EXTERNAL_SLEEP_TIME} &
+    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -f ${LOGFILE} -e ${EXTERNAL_SLEEP_TIME} -s ${SCORE_LIST_FILE} --use_elapsed_time True &
     python image.py -u ${UNAME} -i "${UNAME}2.png" &
-    python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -b ${BRANCH_2} -l ${LEVEL} -f ${LOGFILE_2} -e ${EXTERNAL_SLEEP_TIME} &
+    python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -b ${BRANCH_2} -w ${PREDICT_WEIGHT2} -m ${MODE2} -l ${LEVEL} -f ${LOGFILE_2} -e ${EXTERNAL_SLEEP_TIME} -s ${SCORE_LIST_FILE_2} --use_elapsed_time True &
     python image.py -u ${UNAME_2} -i "${UNAME_2}2.png" &    
     sleep 2
 
@@ -147,6 +159,16 @@ function do_game(){
     wait ${PID_PLAY_SOUND}
 
     # wait
+    ## display/adjust scorelist image
+    DISPLAY_OUTPUTFILE="display_graph.png"
+    python display_graph.py --file1 ${SCORE_LIST_FILE} --file2 ${SCORE_LIST_FILE_2} --outputfile "tmp.png"
+    convert -resize 500x400 "tmp.png" ${DISPLAY_OUTPUTFILE}
+    eog ${DISPLAY_OUTPUTFILE} &
+    sleep 1
+    local DISPLAYSCORE_WINDOW_NAME=`basename ${DISPLAY_OUTPUTFILE}`
+    WINDOWID=`xdotool search --onlyvisible --name "${DISPLAYSCORE_WINDOW_NAME}"`
+    xdotool windowmove ${WINDOWID} ${GRAPH_WINDOW_X} ${GRAPH_WINDOW_Y}
+    ## sleep..
     sleep ${EXTERNAL_SLEEP_TIME}
 
     # kill image
@@ -169,37 +191,40 @@ function do_game_main(){
     echo -n >| ${RESULT_LOG}
 
     ## sample
-#    PLAYER1="seigot@master@せいご-program"
-#    PLAYER2="isshy-you@master@isshy-program"
-    
+    # "user_name @ branch_name @ program_name @ mode @ predict_weight"
+    #PLAYER1="seigot@master@せいご-program@default@default"
+    #PLAYER2="isshy-you@master@isshy-program@default@default"
+    PLAYER1="bushio@master@testname@predict_sample@weight/DQN/sample_weight.pt"
+    PLAYER2="seigot@master@testname@predict_sample2@weight/MLP/sample_weight.pt"
+	    
     ## 2
-    PLAYER1="yuin0@tetris_second@CrackedEgg_v1.9"
-#    PLAYER1="isshy-you@ish05h3@いっしー5号ぷらす"
-#    PLAYER2="4321623@v2.0@勇者ちゃん2号"
-#    PLAYER2="usamin24@Lv2@チョコ&レート2号改"
-    PLAYER2="mattshamrock@master@高まるフォイ"
+#    PLAYER1="yuin0@tetris_second@CrackedEgg_v1.9@default@default"
+#    PLAYER1="isshy-you@ish05h3@いっしー5号ぷらす@default@default"
+#    PLAYER2="4321623@v2.0@勇者ちゃん2号@default@default"
+#    PLAYER2="usamin24@Lv2@チョコ&レート2号改@default@default"
+#    PLAYER2="mattshamrock@master@高まるフォイ@default@default"
 
 
     ## 2_ai
-#    PLAYER1="bushio@submit_level2@AIでテトリス"
-#    PLAYER1="EndoNrak@submit1@bushioさんありがとう"
-#    PLAYER2="neteru141@master@たいちとだいち４号"
+#    PLAYER1="bushio@submit_level2@AIでテトリス@default@default"
+#    PLAYER1="EndoNrak@submit1@bushioさんありがとう@default@default"
+#    PLAYER2="neteru141@master@たいちとだいち４号@default@default"
 
-    ## 3
-#    PLAYER1="bushio@submit_level3@AIでテトリス"
-#    PLAYER1="usamin24@Lv3@チョコ&レート3号"
-#    PLAYER1="mattshamrock@master@困るフォイ"
-#    PLAYER2="isshy-you@ish05h3@いっしー5号ぷらす"
-#    PLAYER2="yuin0@tetris_second@CrackedEgg_v1.9"
+    ## 3(ai vs human)
+#    PLAYER1="bushio@submit_level3@AIでテトリス@default@default"
+#    PLAYER1="usamin24@Lv3@チョコ&レート3号@default@default"
+#    PLAYER1="mattshamrock@master@困るフォイ@default@default"
+#    PLAYER2="isshy-you@ish05h3@いっしー5号ぷらす@default@default"
+#    PLAYER2="yuin0@tetris_second@CrackedEgg_v1.9@default@default"
 
-    ## ryuo
-#    PLAYER1="bushio@submit_level3@AIでテトリス"
-#    PLAYER2="isshy-you@ish05c@いっしー5号"
-#    PLAYER2="usamin24@Lv3@チョコ&レート3号"
+    ## ryuo(ai vs human)
+#    PLAYER1="bushio@submit_level3@AIでテトリス@default@default"
+#    PLAYER2="isshy-you@ish05c@いっしー5号@default@default"
+#    PLAYER2="usamin24@Lv3@チョコ&レート3号@default@default"
 
     #---
-    LEVEL="2"
-    DROP_SPEED="1000" #"1000"   #"1"#"1000"
+    LEVEL=3 #"2"
+    DROP_SPEED="1000"   #"1"#"1000"
     #---
 
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
