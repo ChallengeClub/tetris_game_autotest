@@ -224,10 +224,10 @@ function do_game_main(){
 echo "start"
 
 # level777
-#do_game_main 777
+do_game_main 777
 
 # level1
-#do_game_main 1
+do_game_main 1
 
 # level2
 do_game_main 2
