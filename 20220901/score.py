@@ -132,7 +132,8 @@ class Window(QMainWindow):
             self.mode = args.mode
         if len(args.weight) != 0:
             self.weight = args.weight
-            
+            # get last value by split "/"
+            self.weight = self.weight.split("/")[-1]
         if args.max_time >= 0:
             self.max_timer_count = args.max_time * 10
         if args.external_game_time >= 0:
