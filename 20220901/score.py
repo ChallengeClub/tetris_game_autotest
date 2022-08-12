@@ -9,8 +9,9 @@ import sys
 from argparse import ArgumentParser
 import subprocess
 import os
+import pickle
 
-def get_option(user_name, program_name, level, branch_name, mode, weight, max_time, external_game_time, logfilejson):
+def get_option(user_name, program_name, level, branch_name, mode, weight, max_time, external_game_time, logfilejson, score_list_file):
     argparser = ArgumentParser()
     argparser.add_argument('-u', '--user_name', type=str,
                            default=user_name,
@@ -39,6 +40,12 @@ def get_option(user_name, program_name, level, branch_name, mode, weight, max_ti
     argparser.add_argument('-f', '--logfilejson', type=str,
                            default=logfilejson,
                            help='log file (.json) name')
+    argparser.add_argument('-s', '--score_list_file', type=str,
+                           default=score_list_file,
+                           help='score output file (.txt) name')
+    argparser.add_argument('--use_elapsed_time', type=str,
+                           default="False",
+                           help='use elapsed time(True/False)')        
     return argparser.parse_args()
 
 def res_cmd(cmd):
@@ -48,7 +55,7 @@ def get_line_score(logfile):
     LOGFILE=logfile
 
     if os.path.exists(LOGFILE) == False:
-        return 0, 0, 0, 0, 0, 0, 0
+        return 0, 0, 0, 0, 0, 0, 0, 0
 
     cmd1 = ("jq .debug_info.line_score_stat[0] " + LOGFILE)
     cmd2 = ("jq .debug_info.line_score_stat[1] " + LOGFILE)
@@ -63,6 +70,7 @@ def get_line_score(logfile):
     cmd9 = ("jq .debug_info.line_score.\"line4\" " + LOGFILE)
     GAMEOVER_SCORE_CMD = ("jq .debug_info.line_score.gameover " + LOGFILE)
     BLOCK_INDEX_CMD= ("jq .judge_info.block_index " + LOGFILE)
+    ELAPSED_TIME_CMD= ("jq .judge_info.elapsed_time " + LOGFILE)    
     
     res1 = res_cmd(cmd1)
     res2 = res_cmd(cmd2)
@@ -78,6 +86,7 @@ def get_line_score(logfile):
     GAMEOVER_COUNT_CMD_RES = res_cmd(GAMEOVER_COUNT_CMD)
     GAMEOVER_SCORE_CMD_RES = res_cmd(GAMEOVER_SCORE_CMD)
     BLOCK_INDEX_CMD_RES = res_cmd(BLOCK_INDEX_CMD)
+    ELAPSED_TIME_CMD_RES = res_cmd(ELAPSED_TIME_CMD)
     try:
         _1line_score = int(res1)*int(res6)#*100
         _2line_score = int(res2)*int(res7)#*300
@@ -86,10 +95,11 @@ def get_line_score(logfile):
         _total_score = int(res5)
         _gameover_score = int(GAMEOVER_COUNT_CMD_RES)*int(GAMEOVER_SCORE_CMD_RES)#*1200
         block_index = int(BLOCK_INDEX_CMD_RES)
+        elapsed_time = float(ELAPSED_TIME_CMD_RES)
     except:
-        return -1, -1, -1, -1, -1, -1, -1
+        return -1, -1, -1, -1, -1, -1, -1, -1
 
-    return _1line_score, _2line_score, _3line_score, _4line_score,_total_score, _gameover_score, block_index
+    return _1line_score, _2line_score, _3line_score, _4line_score,_total_score, _gameover_score, block_index, elapsed_time
 
 class Window(QMainWindow): 
 
@@ -105,11 +115,17 @@ class Window(QMainWindow):
         self.weight = "---"
         self.max_time = 180
         self.external_game_time = 0
+        self.total_score = 0
+        self.lap_score = 0
+        self.lap_count = 0
+        self.lap_interval_sec = 60
         self.max_timer_count = self.max_time * 10
         self.external_game_time_count = self.external_game_time * 10
         self.logfilejson = "/home/ubuntu/xxx"
+        self.score_list_file = "test.txt"
         self.current_txt = ""
-        
+        self.use_elapsed_time = False
+
         args = get_option(self.user_name,
                           self.program_name,
                           self.level,
@@ -118,7 +134,8 @@ class Window(QMainWindow):
                           self.weight,
                           self.max_time,
                           self.external_game_time,
-                          self.logfilejson)
+                          self.logfilejson,
+                          self.score_list_file)
 
         if len(args.user_name) != 0:
             self.user_name = args.user_name
@@ -141,7 +158,11 @@ class Window(QMainWindow):
         if len(args.logfilejson) != 0:
             self.logfilejson = args.logfilejson
             print("logfile: " + args.logfilejson)
-
+        if args.score_list_file != "---":
+            self.score_list_file = args.score_list_file
+        if args.use_elapsed_time == "True":
+            self.use_elapsed_time = True
+            
         # setting title
         windowtitle="Player_information"
         if len(args.user_name) != 0:
@@ -165,7 +186,9 @@ class Window(QMainWindow):
     def UiComponents(self): 
 
         # timer parameter
-        self.timer_count = 40.0 #0.0
+        self.timer_count_init = 40.0
+        self.timer_count = self.timer_count_init
+        self.timer_count_prev = self.timer_count_init
         self.timer_flag = True
         # LAP parameter
         self.lap_count = 0
@@ -179,7 +202,7 @@ class Window(QMainWindow):
                                label_width_height[0], label_width_height[1]) 
         self.label.setStyleSheet("border : 4px solid black;") 
         self.label.setText(self.gettimertext())
-        self.label.setFont(QFont('Arial', 20))
+        self.label.setFont(QFont('Arial', 18))
         self.label.setAlignment(Qt.AlignCenter) 
 
         # creating a timer object 
@@ -202,16 +225,29 @@ class Window(QMainWindow):
 
     def gettimertext(self):
 
-        _1line_score, _2line_score, _3line_score , _4line_score, _total_score, _gameover_score, block_index = get_line_score(self.logfilejson)
+        _1line_score, _2line_score, _3line_score , _4line_score, _total_score, _gameover_score, block_index, elapsed_time = get_line_score(self.logfilejson)
         if _1line_score < 0:
+            # if get line score returns error..
+            # for example, .
             return self.current_txt
+
+        # get timer_value
+        time_str = str('{:.01f}'.format(self.timer_count/10))
+        if self.use_elapsed_time == True:
+            time_str = str('{:.01f}'.format(elapsed_time + 0.5))
+
+        # get lap_score
+        self.total_score = _total_score
+        if float(time_str) >= self.lap_interval_sec * (self.lap_count+1):
+            self.lap_count += 1
+            self.lap_score = self.total_score
         
         self.current_text = "Player: " + self.user_name + "\n" \
         + self.branch_name + "\n" \
         + self.program_name + "\n" \
         + "Mode: " + self.mode + "\n" \
-        + "Weight: " + self.weight + "\n" \
-        + "TIME: " + str('{:.01f}'.format(self.timer_count / 10)) + "/" + str(int(self.max_timer_count/10)) + " (s)" + "\n" \
+        + self.weight + "\n" \
+        + "TIME: " + time_str + "/" + str(int(self.max_timer_count/10)) + " (s)" + "\n" \
         + "BLOCK: " + str(block_index) + "\n" \
         + "LEVEL: " + str(self.level) + "\n" \
         + "SCORE: " + str(_total_score) + "\n" \
@@ -219,8 +255,25 @@ class Window(QMainWindow):
         + "  2line: " + str(_2line_score) + "\n" \
         + "  3line: " + str(_3line_score) + "\n" \
         + "  4line: " + str(_4line_score) + "\n" \
-        + "  gameover: " + str(_gameover_score)
+        + "  gameover: " + str(_gameover_score) + "\n" \
+        + "  lap_score(" + str(self.lap_count) + "/" + str(self.max_time//self.lap_interval_sec) + "): " + str(self.lap_score)
 
+        if self.score_list_file != "---":
+            # save score_list_file to prepare to display score list.
+            if self.timer_count >= self.timer_count_prev + 10:
+                self.timer_count_prev = self.timer_count
+                try:
+                    # try to open current file
+                    with open(self.score_list_file, 'rb') as f:
+                        score_list = pickle.load(f)
+                except:
+                    # if no file, create new file
+                    score_list = []
+                finally:
+                    score_list.append( _total_score )
+                    with open(self.score_list_file, 'wb') as f:
+                        pickle.dump(score_list, f)
+                
         return self.current_text
 
 # create pyqt5 app 
