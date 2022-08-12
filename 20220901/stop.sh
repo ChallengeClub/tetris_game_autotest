@@ -23,6 +23,8 @@ function stop_process(){
     try_kill_process "image.py"
     try_kill_process "score.py"
     try_kill_process "megen"
+    try_kill_process "display_graph.py"
+    try_kill_process "eog"
 }
 
 stop_process
