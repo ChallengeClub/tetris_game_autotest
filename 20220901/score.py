@@ -188,7 +188,7 @@ class Window(QMainWindow):
         # timer parameter
         self.timer_count_init = 40.0
         self.timer_count = self.timer_count_init
-        self.timer_count_prev = self.timer_count_init
+        self.timer_prev = -1
         self.timer_flag = True
         # LAP parameter
         self.lap_count = 0
@@ -231,12 +231,12 @@ class Window(QMainWindow):
             # for example, .
             return self.current_txt
 
-        # get timer_value
+        # get timer_value from elapsed time in json
         time_str = str('{:.01f}'.format(self.timer_count/10))
         if self.use_elapsed_time == True:
             time_str = str('{:.01f}'.format(elapsed_time + 0.5))
 
-        # get lap_score
+        # get lap_score(ex. 0/3,1/3,2/3,)
         self.total_score = _total_score
         if float(time_str) >= self.lap_interval_sec * (self.lap_count+1):
             self.lap_count += 1
@@ -260,8 +260,8 @@ class Window(QMainWindow):
 
         if self.score_list_file != "---":
             # save score_list_file to prepare to display score list.
-            if self.timer_count >= self.timer_count_prev + 10:
-                self.timer_count_prev = self.timer_count
+            if int(float(time_str)) >= self.timer_prev + 1:
+                self.timer_prev = int(float(time_str))
                 try:
                     # try to open current file
                     with open(self.score_list_file, 'rb') as f:
