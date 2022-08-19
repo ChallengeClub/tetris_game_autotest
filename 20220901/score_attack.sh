@@ -164,7 +164,7 @@ function do_game_main(){
     #UNAME=${2} # "isshy-you@master@isshy-program"
 
     # create empty file
-    RESULT_LEVEL_LOG="${HOME}/result_level${LEVEL}.log"
+    RESULT_LEVEL_LOG="${CURRENT_DIR}/result_level${LEVEL}.log"
     echo -n >| ${RESULT_LEVEL_LOG}
     echo -n >| ${RESULT_LOG}
 
@@ -208,40 +208,41 @@ function do_game_main(){
 #	    "mattshamrock@master@高まるフォイ"
 #	    "usamin24@Lv2@チョコ&レート2号"
 #	    "isshy-you@ish05c@いっしー5号"
-	    "mattshamrock@master@高まるフォイ"
-	    "usamin24@Lv2@チョコ&レート2号改"
-	    "isshy-you@ish05h3@いっしー5号ぷらす"
-	    "yuin0@tetris_second@CrackedEgg_v1.9"
-	    "4321623@v2.0@勇者ちゃん2号"
+	    "yuin0@tetris_second@CrackedEgg_v1.9@default@default"
+	    "mattshamrock@master@高まるフォイ@default@default"
+	    "usamin24@Lv2@チョコ&レート2号改@default@default"
+	    "isshy-you@ish05h3@いっしー5号ぷらす@default@default"
+	    "4321623@v2.0@勇者ちゃん2号@default@default"
 	)
     elif [ "${LEVEL}" == "2_ai" ]; then
 	LEVEL="2"
 	REPOSITORY_LIST=(
-	    "neteru141@master@たいちとだいち４号"
-	    "EndoNrak@submit1@bushioさんありがとう"
-	    "bushio@submit_level2@AIでテトリス"
+	    "neteru141@master@たいちとだいち４号@default@default"
+	    "EndoNrak@submit1@bushioさんありがとう@default@default"
+	    "bushio@master@AIでテトリス@default@default"
+#	    "bushio@submit_level2@AIでテトリス"
 #	    "seigot@master@neteru141さんリスペクトAI"
 	)
     elif [ "${LEVEL}" == "3" ]; then
 	REPOSITORY_LIST=(
-	    "usamin24@Lv3@チョコ&レート3号"
-	    "isshy-you@ish05h3@いっしー5号ぷらす"
-	    "yuin0@tetris_second@CrackedEgg_v1.9"
-	    "bushio@submit_level3@AIでテトリス"
-	    "mattshamrock@master@困るフォイ"
+	    "usamin24@Lv3@チョコ&レート3号@default@default"
+	    "isshy-you@ish05h3@いっしー5号ぷらす@default@default"
+	    "yuin0@tetris_second@CrackedEgg_v1.9@default@default"
+	    "bushio@submit_level3@AIでテトリス@default@default"
+	    "mattshamrock@master@困るフォイ@default@default"
 	)
     elif [ "${LEVEL}" == "3_ryuo" ]; then
 	LEVEL="3"
 	DROP_SPEED=1
 	REPOSITORY_LIST=(
-	    "bushio@submit_level3@AIでテトリス"
-	    "isshy-you@ish05c@いっしー5号"
-	    "usamin24@Lv3@チョコ&レート3号"
+	    "bushio@submit_level3@AIでテトリス@default@default"
+	    "isshy-you@ish05c@いっしー5号@default@default"
+	    "usamin24@Lv3@チョコ&レート3号@default@default"
 	)
     elif [ "${LEVEL}" == "777" ]; then
 	# forever branch
 	REPOSITORY_LIST=(
-	    "kyad@forever-branch@無限テトリス"
+	    "kyad@forever-branch@無限テトリス@default@default"
 	)
     else
 	echo "invalid level ${LEVEL}"
@@ -269,16 +270,16 @@ echo "start"
 do_game_main 1
 
 # level2
-#do_game_main 2
+do_game_main 2
 
 # level2(AI)
-#do_game_main "2_ai"
+do_game_main "2_ai"
 
 # level3
-#do_game_main 3
+do_game_main 3
 
 # level3(3_ryuo)
-#do_game_main "3_ryuo"
+do_game_main "3_ryuo"
 
 echo "end"
 
