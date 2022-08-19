@@ -31,7 +31,8 @@ MEGEN_LIST=(
 )
 
 CURRENT_DIR=`pwd`
-RESULT_LOG="${CURRENT_DIR}/result.log"
+RESULT_LOG_DIR="${CURRENT_DIR}/result"
+RESULT_LOG="${RESULT_LOG_DIR}/result.log"
 
 function do_game(){
 
@@ -50,8 +51,9 @@ function do_game(){
     local SCORE_WINDOW_X="${8}"
     local SCORE_WINDOW_Y="${9}"
 
-    local LOGFILE="${CURRENT_DIR}/resultlog_${UNAME}.json"
-    local SCORE_LIST_FILE="${CURRENT_DIR}/scorelistfile_${UNAME}.txt"
+    local TETRIS_DIR="${CURRENT_DIR}/tetris_dir"
+    local LOGFILE="${RESULT_LOG_DIR}/resultlog_${UNAME}.json"
+    local SCORE_LIST_FILE="${RESULT_LOG_DIR}/scorelistfile_${UNAME}.txt"
     local GAME_TIME=180 #180
     local GAME_WAITTIME=30 #30
     local RANDOM_SEED=2022090111111
@@ -69,7 +71,7 @@ function do_game(){
     local IMAGE_NAME=${MEGEN_LIST[$IMAGE_NUMBER]}
     
     # prepare
-    TETRIS_DIR="${HOME}/tmp/tetris_dir"
+    mkdir -p ${RESULT_LOG_DIR}
     mkdir -p ${TETRIS_DIR}
     pushd ${TETRIS_DIR}
     rm -rf tetris
@@ -99,11 +101,11 @@ function do_game(){
 	    ${EXEC_COMMAND}"
 
     # download github profile image
-    curl https://avatars.githubusercontent.com/${UNAME} --output "${UNAME}.png"
-    convert -resize 160x "${UNAME}.png" "${UNAME}2.png"
+    curl https://avatars.githubusercontent.com/${UNAME} --output "${RESULT_LOG_DIR}/${UNAME}.png"
+    convert -resize 160x "${RESULT_LOG_DIR}/${UNAME}.png" "${RESULT_LOG_DIR}/${UNAME}2.png"
     bash -c "${COMMAND}" &
     python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -f ${LOGFILE} -e ${WAIT_TIME} -s ${SCORE_LIST_FILE} --use_elapsed_time True &
-    python image.py -u ${UNAME} -i "${UNAME}2.png" &
+    python image.py -u ${UNAME} -i "${RESULT_LOG_DIR}/${UNAME}2.png" &
     sleep 2
 
     # adjust window
@@ -180,7 +182,7 @@ function do_game_main(){
     #UNAME=${2} # "isshy-you@master@isshy-program"
 
     # create empty file
-    RESULT_LEVEL_LOG="${CURRENT_DIR}/result_level${LEVEL}.log"
+    RESULT_LEVEL_LOG="${RESULT_LOG_DIR}/result_level${LEVEL}.log"
     echo -n >| ${RESULT_LEVEL_LOG}
     echo -n >| ${RESULT_LOG}
 
