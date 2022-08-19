@@ -13,6 +13,22 @@ SOUNDFILE_LIST=(
     "~/Downloads/troika.wav"
     "~/Downloads/kalinka.wav"
 )
+# "${HOME}/Downloads/megen${IMAGE_NUMBER}.jpg"
+MEGEN_LIST=(
+    "Downloads/megen0.jpg"
+    "Downloads/megen1.jpg"
+    "Downloads/megen2.jpg"
+    "Downloads/megen3.jpg"
+    "Downloads/megen4.jpg"
+    "Downloads/megen5.jpg"
+    "Downloads/megen6.jpg"
+    "Downloads/megen7.jpg"
+    "Downloads/megen8.jpg"
+    "Downloads/megen9.jpg"
+    "Downloads/megen10.jpg"
+    "Downloads/megen11.jpg"
+    "Downloads/megen12.jpg"
+)
 
 CURRENT_DIR=`pwd`
 RESULT_LOG="${CURRENT_DIR}/result.log"
@@ -50,8 +66,8 @@ function do_game(){
     local SOUNDFILE_PATH=${SOUNDFILE_LIST[$SOUND_NUMBER]}
     # image name
     local IMAGE_NUMBER=`echo $((RANDOM%+13))` # 0-12 random value
-    local IMAGE_NAME="${HOME}/Downloads/megen${IMAGE_NUMBER}.jpg"
-
+    local IMAGE_NAME=${MEGEN_LIST[$IMAGE_NUMBER]}
+    
     # prepare
     TETRIS_DIR="${HOME}/tmp/tetris_dir"
     mkdir -p ${TETRIS_DIR}
