@@ -158,9 +158,11 @@ function do_game(){
     ###### wait game -->
     WAIT_TIME=${GAME_WAITTIME}
     ## display/adjust scorelist image
-    DISPLAY_OUTPUTFILE="display_graph.png"
-    python display_graph.py --file1 ${SCORE_LIST_FILE} --outputfile "tmp.png"
-    convert -resize 640x480 "tmp.png" ${DISPLAY_OUTPUTFILE}
+    DISPLAY_OUTPUTFILE="${RESULT_LOG_DIR}/display_graph.png"
+    TMP_FILE="tmp.png"
+    python display_graph.py --file1 ${SCORE_LIST_FILE} --outputfile ${TMP_FILE}
+    convert -resize 640x480 ${TMP_FILE} ${DISPLAY_OUTPUTFILE}
+    rm ${TMP_FILE}
     eog ${DISPLAY_OUTPUTFILE} &
     sleep 1
     local DISPLAYSCORE_WINDOW_NAME=`basename ${DISPLAY_OUTPUTFILE}`
