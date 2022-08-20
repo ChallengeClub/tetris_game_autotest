@@ -122,7 +122,7 @@ class Window(QMainWindow):
         self.max_timer_count = self.max_time * 10
         self.external_game_time_count = self.external_game_time * 10
         self.logfilejson = "/home/ubuntu/xxx"
-        self.score_list_file = "test.txt"
+        self.score_list_file = "---"
         self.current_txt = ""
         self.use_elapsed_time = False
 
