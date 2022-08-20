@@ -15,8 +15,9 @@ SOUNDFILE_LIST=(
 )
 
 CURRENT_DIR=`pwd`
-RESULT_LOG="${CURRENT_DIR}/result.log"
-RESULT_ALL_LOG="${CURRENT_DIR}/result_all.log"
+RESULT_LOG_DIR="${CURRENT_DIR}/result"
+RESULT_LOG="${RESULT_LOG_DIR}/result.log"
+RESULT_ALL_LOG="${RESULT_LOG_DIR}/result_all.log"
 
 function do_game(){
 
@@ -53,10 +54,11 @@ function do_game(){
     local GRAPH_WINDOW_X=350
     local GRAPH_WINDOW_Y=150
 
-    local LOGFILE="${CURRENT_DIR}/resultlog_${UNAME}.json"
-    local LOGFILE_2="${CURRENT_DIR}/resultlog_${UNAME_2}.json"
-    local SCORE_LIST_FILE="${CURRENT_DIR}/scorelistfile_${UNAME}.txt"
-    local SCORE_LIST_FILE_2="${CURRENT_DIR}/scorelistfile_${UNAME_2}.txt"
+    local TETRIS_DIR="${CURRENT_DIR}/tetris_dir"
+    local LOGFILE="${RESULT_LOG_DIR}/resultlog_${UNAME}.json"
+    local LOGFILE_2="${RESULT_LOG_DIR}/resultlog_${UNAME_2}.json"
+    local SCORE_LIST_FILE="${RESULT_LOG_DIR}/scorelistfile_${UNAME}.txt"
+    local SCORE_LIST_FILE_2="${RESULT_LOG_DIR}/scorelistfile_${UNAME_2}.txt"
     
     local GAME_TIME=180
     local EXTERNAL_SLEEP_TIME=30
@@ -70,7 +72,6 @@ function do_game(){
     local SOUNDFILE_PATH=${SOUNDFILE_LIST[$SOUND_NUMBER]}
 
     # prepare
-    TETRIS_DIR="${HOME}/tmp/tetris_dir"
     mkdir -p ${TETRIS_DIR}
     pushd ${TETRIS_DIR}
     rm -rf tetris_${UNAME}
@@ -115,16 +116,16 @@ function do_game(){
     #python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"
     #gnome-terminal -- bash -c "${COMMAND}" &
     # download github profile image
-    curl https://avatars.githubusercontent.com/${UNAME} --output "${UNAME}.png"
-    convert -resize 160x "${UNAME}.png" "${UNAME}2.png"
-    curl https://avatars.githubusercontent.com/${UNAME_2} --output "${UNAME_2}.png"
-    convert -resize 160x "${UNAME_2}.png" "${UNAME_2}2.png"    
+    curl https://avatars.githubusercontent.com/${UNAME} --output "${RESULT_LOG_DIR}/${UNAME}.png"
+    convert -resize 160x "${RESULT_LOG_DIR}/${UNAME}.png" "${RESULT_LOG_DIR}/${UNAME}2.png"
+    curl https://avatars.githubusercontent.com/${UNAME_2} --output "${RESULT_LOG_DIR}/${UNAME_2}.png"
+    convert -resize 160x "${RESULT_LOG_DIR}/${UNAME_2}.png" "${RESULT_LOG_DIR}/${UNAME_2}2.png"    
     bash -c "${COMMAND}" &
     bash -c "${COMMAND_2}" &
     python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -f ${LOGFILE} -e ${EXTERNAL_SLEEP_TIME} -s ${SCORE_LIST_FILE} --use_elapsed_time True &
-    python image.py -u ${UNAME} -i "${UNAME}2.png" &
+    python image.py -u ${UNAME} -i "${RESULT_LOG_DIR}/${UNAME}2.png" &
     python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -b ${BRANCH_2} -w ${PREDICT_WEIGHT2} -m ${MODE2} -l ${LEVEL} -f ${LOGFILE_2} -e ${EXTERNAL_SLEEP_TIME} -s ${SCORE_LIST_FILE_2} --use_elapsed_time True &
-    python image.py -u ${UNAME_2} -i "${UNAME_2}2.png" &    
+    python image.py -u ${UNAME_2} -i "${RESULT_LOG_DIR}/${UNAME_2}2.png" &    
     sleep 2
 
     # adjust window
@@ -160,9 +161,11 @@ function do_game(){
 
     # wait
     ## display/adjust scorelist image
-    DISPLAY_OUTPUTFILE="display_graph.png"
-    python display_graph.py --file1 ${SCORE_LIST_FILE} --file2 ${SCORE_LIST_FILE_2} --outputfile "tmp.png"
-    convert -resize 500x400 "tmp.png" ${DISPLAY_OUTPUTFILE}
+    DISPLAY_OUTPUTFILE="${RESULT_LOG_DIR}/display_graph_${UNAME}_${UNAME_2}.png"
+    TMP_FILE="tmp.png"    
+    python display_graph.py --file1 ${SCORE_LIST_FILE} --file2 ${SCORE_LIST_FILE_2} --outputfile ${TMP_FILE}
+    convert -resize 500x400 ${TMP_FILE} ${DISPLAY_OUTPUTFILE}
+    rm ${TMP_FILE}
     eog ${DISPLAY_OUTPUTFILE} &
     sleep 1
     local DISPLAYSCORE_WINDOW_NAME=`basename ${DISPLAY_OUTPUTFILE}`
@@ -224,7 +227,7 @@ function do_game_main(){
 
     #---
     LEVEL=3 #"2"
-    DROP_SPEED="1000"   #"1"#"1000"
+    DROP_SPEED="1"   #"1"#"1000"
     #---
 
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
