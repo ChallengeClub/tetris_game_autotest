@@ -41,7 +41,6 @@ bash score_attack.sh
 
 # tournament
 bash tournament.sh
-
 ```
 
 for test sub-programs
