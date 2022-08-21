@@ -33,6 +33,8 @@ pip install opencv-python
 
 ### programs
 
+execute programs for score attack, tournaments
+
 ```
 # score attack
 bash score_attack.sh
