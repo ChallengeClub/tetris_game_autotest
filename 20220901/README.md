@@ -33,7 +33,7 @@ pip install opencv-python
 
 ### programs
 
-execute programs for score attack, tournaments
+execute programs for score attack, tournament
 
 ```
 # score attack
@@ -49,7 +49,6 @@ for test sub-programs
 ```
 python image.py -u hoge -i imagename.img  # display User image
 python score.py -u hoge -p testname       # display User score
-python score_attack.py                    # run tetris for score attack
-python tournament.py                      # run tetris for tournament
-python display_graph.py                      # run tetris for tournament
+python display_graph.py                   # display score graph
+bash stop.sh                              # stop programs
 ```
