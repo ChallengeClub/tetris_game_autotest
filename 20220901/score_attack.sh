@@ -13,7 +13,7 @@ SOUNDFILE_LIST=(
     "Downloads/troika.wav"
     "Downloads/kalinka.wav"
 )
-# "${HOME}/Downloads/megen${IMAGE_NUMBER}.jpg"
+# "Downloads/megen${IMAGE_NUMBER}.jpg"
 MEGEN_LIST=(
     "Downloads/megen0.jpg"
     "Downloads/megen1.jpg"
@@ -29,7 +29,12 @@ MEGEN_LIST=(
     "Downloads/megen11.jpg"
     "Downloads/megen12.jpg"
 )
-
+# lmino${NUMBER}.gif
+LMINO_LIST=(
+    "Downloads/lmino1_75%.gif"
+    "Downloads/lmino2_75%.gif"
+    "Downloads/lmino3_75%.gif"
+)
 CURRENT_DIR=`pwd`
 RESULT_LOG_DIR="${CURRENT_DIR}/result"
 RESULT_LOG="${RESULT_LOG_DIR}/result.log"
@@ -69,6 +74,9 @@ function do_game(){
     # image name
     local IMAGE_NUMBER=`echo $((RANDOM%+13))` # 0-12 random value
     local IMAGE_NAME=${MEGEN_LIST[$IMAGE_NUMBER]}
+    # lmino name
+    local LMINO_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value
+    local LMINO_PATH=${LMINO_LIST[$LMINO_NUMBER]}
     
     # prepare
     mkdir -p ${RESULT_LOG_DIR}
@@ -85,9 +93,13 @@ function do_game(){
     rm -f ${SCORE_LIST_FILE}
 
     ###### wait game -->
+    eog ${LMINO_PATH} &
     WAIT_TIME=${GAME_WAITTIME}
     python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -t ${WAIT_TIME}
+    bash stop.sh
     ###### wait game <--
+
+
     # start sound
     play ${SOUNDFILE_PATH} &
     PID_PLAY_SOUND=$!
@@ -262,7 +274,7 @@ function do_game_main(){
     elif [ "${LEVEL}" == "777" ]; then
 	# forever branch
 	REPOSITORY_LIST=(
-	    "kyad@forever-branch@無限テトリス@default@default"
+	    "kyad@forever-branch@無限テトリス(tutorial)@default@default"
 	)
     else
 	echo "invalid level ${LEVEL}"
@@ -283,8 +295,8 @@ function do_game_main(){
 
 echo "start"
 
-# level777
-#do_game_main 777
+# level777(tutorial)
+do_game_main 777
 
 # level1
 do_game_main 1

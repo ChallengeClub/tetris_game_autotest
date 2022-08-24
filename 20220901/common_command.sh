@@ -46,7 +46,7 @@ function GET_COMMAND(){
 	patch -p1 < 20220901_cuda_unavailable.patch"
 	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m ${MODE} --predict_weight ${PREDICT_WEIGHT}"
 
-    elif [ "${UNAME}" == "mattshamrock" -o "${UNAME}" == "usamin24" -o  "${UNAME}" == "isshy-you" -o "${UNAME}" == "yuin0" -o "${UNAME}" == "4321623" ]; then
+    elif [ "${UNAME}" == "mattshamrock" -o "${UNAME}" == "usamin24" -o  "${UNAME}" == "isshy-you" -o "${UNAME}" == "yuin0" -o "${UNAME}" == "4321623" -o "${UNAME}" == "kyad" ]; then
 	ADD_COMMAND="ls"
 	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE}"
     else
