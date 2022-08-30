@@ -90,13 +90,13 @@ function do_game(){
 
     ###### wait game -->
     WAIT_TIME=30
-    python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -m ${MODE2} -w ${PREDICT_WEIGHT} -l ${LEVEL} -t ${WAIT_TIME} &
+    python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -m ${MODE2} -w ${PREDICT_WEIGHT2} -l ${LEVEL} -t ${WAIT_TIME} &
     sleep 1
     # move window
     local SCORE_WINDOW_NAME_2="Score_${UNAME_2}"
     SCORE_WINDOWID_2=`xdotool search --onlyvisible --name "${SCORE_WINDOW_NAME_2}"`
     xdotool windowmove ${SCORE_WINDOWID_2} 500 100 &
-    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -m ${MODE} -w ${PREDICT_WEIGHT2} -l ${LEVEL} -t ${WAIT_TIME}
+    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -t ${WAIT_TIME}
     ###### wait game <--
 
     # start sound
@@ -197,8 +197,8 @@ function do_game_main(){
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
     #PLAYER1="seigot@master@せいご-program@default@default"
     #PLAYER2="isshy-you@master@isshy-program@default@default"
-    PLAYER1="bushio@master@testname@predict_sample@weight/DQN/sample_weight.pt"
-    PLAYER2="seigot@master@testname@predict_sample2@weight/MLP/sample_weight.pt"
+#    PLAYER1="bushio@master@testname@predict_sample@weight/DQN/sample_weight.pt"
+#    PLAYER2="seigot@master@testname@predict_sample2@weight/MLP/sample_weight.pt"
 	    
     ## 2
 #    PLAYER1="yuin0@tetris_second@CrackedEgg_v1.9@default@default"
@@ -221,6 +221,9 @@ function do_game_main(){
 #    PLAYER2="yuin0@tetris_second@CrackedEgg_v1.9@default@default"
 
     ## ryuo(ai vs human)
+    PLAYER1="cookie4869@cookie_branch@コツコツテトリス@predict@outputs/2022-08-16-23-07-28/trained_model/tetris_epoch192_score176400.pt"
+    #PLAYER2="krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
+    PLAYER2="bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
 #    PLAYER1="bushio@submit_level3@AIでテトリス@default@default"
 #    PLAYER2="isshy-you@ish05c@いっしー5号@default@default"
 #    PLAYER2="usamin24@Lv3@チョコ&レート3号@default@default"
@@ -236,5 +239,3 @@ function do_game_main(){
 echo "start"
 do_game_main
 echo "end"
-
-
