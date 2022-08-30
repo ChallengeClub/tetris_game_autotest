@@ -115,6 +115,7 @@ function do_game(){
     # download github profile image
     curl https://avatars.githubusercontent.com/${UNAME} --output "${RESULT_LOG_DIR}/${UNAME}.png"
     convert -resize 160x "${RESULT_LOG_DIR}/${UNAME}.png" "${RESULT_LOG_DIR}/${UNAME}2.png"
+    echo "${COMMAND}"
     bash -c "${COMMAND}" &
     python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -f ${LOGFILE} -e ${WAIT_TIME} -s ${SCORE_LIST_FILE} --use_elapsed_time True &
     python image.py -u ${UNAME} -i "${RESULT_LOG_DIR}/${UNAME}2.png" &
@@ -206,70 +207,91 @@ function do_game_main(){
     if [ "${LEVEL}" == "1" ]; then
 	REPOSITORY_LIST=(
 	    # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-	    "bushio@master@testname@predict_sample@weight/DQN/sample_weight.pt"
-	    "seigot@master@testname@predict_sample2@weight/MLP/sample_weight.pt"
-	    "AtsutoshiNaraki@master@testname@default@default"
-	    "0829Rinoue@master@testname@default@default"
-	    "cookie4869@master@testname@default@default"
-	    "isshy-you@master@testname@default@default"
-	    "jap-kmk@master@testname@default@default"
-	    "Jumpeipei@master@testname@default@default"
-	    "kodamanfamily@master@testname@default@default"
-	    "koro298@master@testname@default@default"
-	    "koubG@master@testname@default@default"
-	    "krymt28@master@testname@default@default"
-	    "n-nooobu@master@testname@default@default"
-	    "n-yasunami@master@testname@default@default"
-	    "nabehiko0523@master@testname@default@default"
-	    "obo-koki@master@testname@default@default"
-	    "qbi-sui@master@testname@default@default"
-	    "RogerTokunaga@master@testname@default@default"
-	    "ryochinbo@master@testname@default@default"
-	    "skyblueline8@master@testname@default@default"
-	    "sota1111@master@testname@default@default"
-	    "taika-izumi@master@testname@default@default"
-	    "yuta002@master@testname@default@default"
-	    "zaki1010@master@testname@default@default"
-	    "TsuchiyaYosuke@master@testname@default@default"
-	    "mattshamrock@master@testname@default@default"
-	    "usamin24@master@testname@default@default"
-	    "yuin0@master@testname@default@default"
+#	    "bushio@master@testname@predict_sample@weight/DQN/sample_weight.pt"
+#	    "seigot@master@testname@predict_sample2@weight/MLP/sample_weight.pt"
+	    "obo-koki@genetic_algorithm@testname@default@default"
+	    "isshy-you@ish04d1@いっしー１号@default@default"
+	    "RogerTokunaga@master@アベレージ侍@default@default"
+	    "AtsutoshiNaraki@master@レインボーたろう@default@default"
+
+#	    "koro298@master@testname@default@default"
+#	    "0829Rinoue@master@testname@default@default"
+#	    "isshy-you@master@testname@default@default"
+#	    "jap-kmk@master@testname@default@default"
+#	    "Jumpeipei@master@testname@default@default"
+#	    "kodamanfamily@master@testname@default@default"
+#	    "koubG@master@testname@default@default"
+#	    "krymt28@master@testname@default@default"
+#	    "n-nooobu@master@testname@default@default"
+#	    "n-yasunami@master@testname@default@default"
+#	    "nabehiko0523@master@testname@default@default"
+#	    "ryochinbo@master@testname@default@default"
+#	    "skyblueline8@master@testname@default@default"
+#	    "sota1111@master@testname@default@default"
+#	    "taika-izumi@master@testname@default@default"
+#	    "yuta002@master@testname@default@default"
+#	    "zaki1010@master@testname@default@default"
+#	    "TsuchiyaYosuke@master@testname@default@default"
+#	    "mattshamrock@master@testname@default@default"
+#	    "usamin24@master@testname@default@default"
+#	    "yuin0@master@testname@default@default"
 	)
     elif [ "${LEVEL}" == "2" ]; then
 	REPOSITORY_LIST=(
+	    "obo-koki@genetic_algorithm@testname@default@default"
+	    "isshy-you@ish06b@いっしー２号@default@default"
+	    "RogerTokunaga@master@アベレージ侍@default@default"
+	    "AtsutoshiNaraki@master@レインボーたろう@default@default"
+
 #	    "mattshamrock@master@高まるフォイ"
 #	    "usamin24@Lv2@チョコ&レート2号"
 #	    "isshy-you@ish05c@いっしー5号"
-	    "yuin0@tetris_second@CrackedEgg_v1.9@default@default"
-	    "mattshamrock@master@高まるフォイ@default@default"
-	    "usamin24@Lv2@チョコ&レート2号改@default@default"
-	    "isshy-you@ish05h3@いっしー5号ぷらす@default@default"
-	    "4321623@v2.0@勇者ちゃん2号@default@default"
+#	    "yuin0@tetris_second@CrackedEgg_v1.9@default@default"
+#	    "mattshamrock@master@高まるフォイ@default@default"
+#	    "usamin24@Lv2@チョコ&レート2号改@default@default"
+#	    "isshy-you@ish05h3@いっしー5号ぷらす@default@default"
+#	    "4321623@v2.0@勇者ちゃん2号@default@default"
 	)
     elif [ "${LEVEL}" == "2_ai" ]; then
 	LEVEL="2"
 	REPOSITORY_LIST=(
-	    "neteru141@master@たいちとだいち４号@default@default"
-	    "EndoNrak@submit1@bushioさんありがとう@default@default"
-	    "bushio@master@AIでテトリス@default@default"
+	    "bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
+#	    "krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
+#	    "qbi-sui@master@シラカバ@predict@./best_weight.pt"
+#	    "cookie4869@cookie_branch@コツコツテトリス@predict@outputs/2022-08-16-23-07-28/trained_model/tetris_epoch192_score176400.pt"
+
+#	    "neteru141@master@たいちとだいち４号@default@default"
+#	    "EndoNrak@submit1@bushioさんありがとう@default@default"
+#	    "bushio@master@AIでテトリス@default@default"
 #	    "bushio@submit_level2@AIでテトリス"
 #	    "seigot@master@neteru141さんリスペクトAI"
 	)
     elif [ "${LEVEL}" == "3" ]; then
 	REPOSITORY_LIST=(
-	    "usamin24@Lv3@チョコ&レート3号@default@default"
-	    "isshy-you@ish05h3@いっしー5号ぷらす@default@default"
-	    "yuin0@tetris_second@CrackedEgg_v1.9@default@default"
-	    "bushio@submit_level3@AIでテトリス@default@default"
-	    "mattshamrock@master@困るフォイ@default@default"
+#	    "obo-koki@genetic_algorithm@testname@default@default"
+#	    "isshy-you@ish06c@いっしー３号@default@default"
+#	    "AtsutoshiNaraki@master@レインボーたろう@default@default"	    
+#	    "krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
+#	    "qbi-sui@master@シラカバ@predict@./best_weight.pt"
+#	    "cookie4869@cookie_branch@コツコツテトリス@predict@outputs/2022-08-16-23-07-28/trained_model/tetris_epoch192_score176400.pt"
+	    "bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
+
+#	    "usamin24@Lv3@チョコ&レート3号@default@default"
+#	    "isshy-you@ish05h3@いっしー5号ぷらす@default@default"
+#	    "yuin0@tetris_second@CrackedEgg_v1.9@default@default"
+#	    "bushio@submit_level3@AIでテトリス@default@default"
+#	    "mattshamrock@master@困るフォイ@default@default"
 	)
     elif [ "${LEVEL}" == "3_ryuo" ]; then
 	LEVEL="3"
 	DROP_SPEED=1
 	REPOSITORY_LIST=(
-	    "bushio@submit_level3@AIでテトリス@default@default"
-	    "isshy-you@ish05c@いっしー5号@default@default"
-	    "usamin24@Lv3@チョコ&レート3号@default@default"
+	    "qbi-sui@master@シラカバ@predict@./best_weight.pt"
+	    "cookie4869@cookie_branch@コツコツテトリス@predict@outputs/2022-08-16-23-07-28/trained_model/tetris_epoch192_score176400.pt"
+	    "krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
+#	    "bushio@submit_level3@AIでテトリス@default@default"
+#	    "isshy-you@ish05c@いっしー5号@default@default"
+#	    "usamin24@Lv3@チョコ&レート3号@default@default"
 	)
     elif [ "${LEVEL}" == "777" ]; then
 	# forever branch
@@ -296,22 +318,22 @@ function do_game_main(){
 echo "start"
 
 # level777(tutorial)
-do_game_main 777
+#do_game_main 777
 
 # level1
-do_game_main 1
+#do_game_main 1
 
 # level2
-do_game_main 2
+#do_game_main 2
 
 # level2(AI)
-do_game_main "2_ai"
+#do_game_main "2_ai"
 
 # level3
 do_game_main 3
 
 # level3(3_ryuo)
-do_game_main "3_ryuo"
+#do_game_main "3_ryuo"
 
 echo "end"
 
