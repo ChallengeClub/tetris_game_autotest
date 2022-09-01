@@ -48,6 +48,12 @@ function GET_COMMAND(){
 	patch -p1 < ${PATCH_NAME}"
 	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m ${MODE} --predict_weight ${PREDICT_WEIGHT}"
 
+    elif [ "${UNAME}" == "tuyosi1227" ]; then
+	# cuda patch
+	#PATCH_NAME="20220901_cuda_unavailable_${UNAME}.patch"
+	ADD_COMMAND="ls -l"
+	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -d ${DROP_SPEED} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m ${MODE} --predict_weight ${PREDICT_WEIGHT}"
+
     elif [ "${UNAME}" == "bushio" ]; then
 	# bushioさん用のtetris
 	ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/20220901_cuda_unavailable.patch &&\
