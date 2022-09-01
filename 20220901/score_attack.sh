@@ -84,7 +84,13 @@ function do_game(){
     pushd ${TETRIS_DIR}
     rm -rf tetris
     echo ${UNAME} ${BRANCH}
-    git clone https://github.com/${UNAME}/tetris -b ${BRANCH}
+    if [ ${UNAME} == "tuyosi1227" ]; then
+	# tuyosi1227/tetris_wood
+	git clone https://github.com/${UNAME}/tetris_wood -b ${BRANCH} tetris
+    else
+	git clone https://github.com/${UNAME}/tetris -b ${BRANCH}
+    fi
+
     ## additional setting -->
     ## xxx
     ## additional setting <--
@@ -209,14 +215,15 @@ function do_game_main(){
 	    # "user_name @ branch_name @ program_name @ mode @ predict_weight"
 #	    "bushio@master@testname@predict_sample@weight/DQN/sample_weight.pt"
 #	    "seigot@master@testname@predict_sample2@weight/MLP/sample_weight.pt"
-	    "obo-koki@genetic_algorithm@testname@default@default"
-	    "isshy-you@ish04d1@いっしー１号@default@default"
+#	    "koro298@ikemi1@testname@default@default"
+
+	    "isshy-you@ish04d1@いっしー１号@default@default"	    
 	    "RogerTokunaga@master@アベレージ侍@default@default"
+	    "taika-izumi@master@[速報]アーニャがpython触ってみた結果ww@default@default"
+	    "obo-koki@level1@obot_level1@default@default"
 	    "AtsutoshiNaraki@master@レインボーたろう@default@default"
 
-#	    "koro298@master@testname@default@default"
 #	    "0829Rinoue@master@testname@default@default"
-#	    "isshy-you@master@testname@default@default"
 #	    "jap-kmk@master@testname@default@default"
 #	    "Jumpeipei@master@testname@default@default"
 #	    "kodamanfamily@master@testname@default@default"
@@ -238,9 +245,12 @@ function do_game_main(){
 	)
     elif [ "${LEVEL}" == "2" ]; then
 	REPOSITORY_LIST=(
-	    "obo-koki@genetic_algorithm@testname@default@default"
+#	    "koro298@ikemi1@testname@default@default"
+#	    "obo-koki@genetic_algorithm@testname@default@default"
+
 	    "isshy-you@ish06b@いっしー２号@default@default"
 	    "RogerTokunaga@master@アベレージ侍@default@default"
+	    "taika-izumi@master@[速報]アーニャがpython触ってみた結果ww@default@default"
 	    "AtsutoshiNaraki@master@レインボーたろう@default@default"
 
 #	    "mattshamrock@master@高まるフォイ"
@@ -255,26 +265,26 @@ function do_game_main(){
     elif [ "${LEVEL}" == "2_ai" ]; then
 	LEVEL="2"
 	REPOSITORY_LIST=(
-	    "bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
-#	    "krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
-#	    "qbi-sui@master@シラカバ@predict@./best_weight.pt"
-#	    "cookie4869@cookie_branch@コツコツテトリス@predict@outputs/2022-08-16-23-07-28/trained_model/tetris_epoch192_score176400.pt"
+	    "qbi-sui@master@シラカバ@predict@./best_weight.pt"
+	    "tuyosi1227@main@きらっせウッド村ファーム@predict_sample@weight/DQN/best_weight.pt"
+	    "krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
+            "bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
+	    "cookie4869@Qual4@コツコツテトリス@predict@outputs/2022-08-31-08-05-53/trained_model/tetris_epoch1701_score189000.pt"
 
 #	    "neteru141@master@たいちとだいち４号@default@default"
 #	    "EndoNrak@submit1@bushioさんありがとう@default@default"
-#	    "bushio@master@AIでテトリス@default@default"
-#	    "bushio@submit_level2@AIでテトリス"
 #	    "seigot@master@neteru141さんリスペクトAI"
 	)
     elif [ "${LEVEL}" == "3" ]; then
 	REPOSITORY_LIST=(
-#	    "obo-koki@genetic_algorithm@testname@default@default"
-#	    "isshy-you@ish06c@いっしー３号@default@default"
-#	    "AtsutoshiNaraki@master@レインボーたろう@default@default"	    
-#	    "krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
-#	    "qbi-sui@master@シラカバ@predict@./best_weight.pt"
-#	    "cookie4869@cookie_branch@コツコツテトリス@predict@outputs/2022-08-16-23-07-28/trained_model/tetris_epoch192_score176400.pt"
+	    "isshy-you@ish06c@いっしー３号@default@default"
+	    "AtsutoshiNaraki@master@レインボーたろう@default@default"	    
+	    "qbi-sui@master@シラカバ@predict@./best_weight.pt"
+	    "tuyosi1227@main@きらっせウッド村ファーム@predict_sample@weight/DQN/best_weight.pt"
+	    "krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
 	    "bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
+	    "cookie4869@Qual4@コツコツテトリス@predict@outputs/2022-08-31-08-05-53/trained_model/tetris_epoch1701_score189000.pt"
+
 
 #	    "usamin24@Lv3@チョコ&レート3号@default@default"
 #	    "isshy-you@ish05h3@いっしー5号ぷらす@default@default"
@@ -318,16 +328,16 @@ function do_game_main(){
 echo "start"
 
 # level777(tutorial)
-#do_game_main 777
+do_game_main 777
 
 # level1
-#do_game_main 1
+do_game_main 1
 
 # level2
-#do_game_main 2
+do_game_main 2
 
 # level2(AI)
-#do_game_main "2_ai"
+do_game_main "2_ai"
 
 # level3
 do_game_main 3
