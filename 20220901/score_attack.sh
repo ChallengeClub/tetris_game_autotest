@@ -217,9 +217,11 @@ function do_game_main(){
 #	    "seigot@master@testname@predict_sample2@weight/MLP/sample_weight.pt"
 #	    "koro298@ikemi1@testname@default@default"
 
-	    "isshy-you@ish04d1@いっしー１号@default@default"	    
+	    "isshy-you@ish04d1@いっしー１号@default@default"
+	    "Jumpeipei@test@ver1@default@default"
 	    "RogerTokunaga@master@アベレージ侍@default@default"
 	    "taika-izumi@master@[速報]アーニャがpython触ってみた結果ww@default@default"
+	    "zawa-cpu@master@アナログいのち@sample@default"
 	    "obo-koki@level1@obot_level1@default@default"
 	    "AtsutoshiNaraki@master@レインボーたろう@default@default"
 
@@ -251,6 +253,7 @@ function do_game_main(){
 	    "isshy-you@ish06b@いっしー２号@default@default"
 	    "RogerTokunaga@master@アベレージ侍@default@default"
 	    "taika-izumi@master@[速報]アーニャがpython触ってみた結果ww@default@default"
+	    "zawa-cpu@master@アナログいのち@sample@default"
 	    "AtsutoshiNaraki@master@レインボーたろう@default@default"
 
 #	    "mattshamrock@master@高まるフォイ"
@@ -265,6 +268,7 @@ function do_game_main(){
     elif [ "${LEVEL}" == "2_ai" ]; then
 	LEVEL="2"
 	REPOSITORY_LIST=(
+	    "TsuchiyaYosuke@master@TsuchiyaYosuke!!@predict_sample_qlearning@weight/DQN/sample_weight.pt"
 	    "qbi-sui@master@シラカバ@predict@./best_weight.pt"
 	    "tuyosi1227@main@きらっせウッド村ファーム@predict_sample@weight/DQN/best_weight.pt"
 	    "krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
@@ -328,19 +332,19 @@ function do_game_main(){
 echo "start"
 
 # level777(tutorial)
-do_game_main 777
+#do_game_main 777
 
 # level1
-do_game_main 1
+#do_game_main 1
 
 # level2
-do_game_main 2
+#do_game_main 2
 
 # level2(AI)
 do_game_main "2_ai"
 
 # level3
-do_game_main 3
+#do_game_main 3
 
 # level3(3_ryuo)
 #do_game_main "3_ryuo"
