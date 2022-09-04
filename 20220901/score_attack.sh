@@ -332,19 +332,19 @@ function do_game_main(){
 echo "start"
 
 # level777(tutorial)
-#do_game_main 777
+do_game_main 777
 
 # level1
-#do_game_main 1
+do_game_main 1
 
 # level2
-#do_game_main 2
+do_game_main 2
 
 # level2(AI)
 do_game_main "2_ai"
 
 # level3
-#do_game_main 3
+do_game_main 3
 
 # level3(3_ryuo)
 #do_game_main "3_ryuo"
