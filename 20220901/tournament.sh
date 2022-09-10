@@ -13,6 +13,12 @@ SOUNDFILE_LIST=(
     "~/Downloads/troika.wav"
     "~/Downloads/kalinka.wav"
 )
+# lmino${NUMBER}.gif
+LMINO_LIST=(
+    "Downloads/lmino1_75%.gif"
+    "Downloads/lmino2_75%.gif"
+    "Downloads/lmino3_75%.gif"
+)
 
 CURRENT_DIR=`pwd`
 RESULT_LOG_DIR="${CURRENT_DIR}/result"
@@ -62,14 +68,18 @@ function do_game(){
     
     local GAME_TIME=180
     local EXTERNAL_SLEEP_TIME=30
-    #local RANDOM_SEED=1111
+
     local RANDOM_SEED=${RANDOM}
-    #local PROGRAM_NAME="sample_program"
+    if [ "${LEVEL}" == "1" ]; then
+	RANDOM_SEED=0
+    fi
 
     # sound name
     local SOUND_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value
-#    local SOUND_NUMBER=`echo $(( $[SOUND_NUMBER] % ${#SOUNDFILE_LIST[@]} ))`
     local SOUNDFILE_PATH=${SOUNDFILE_LIST[$SOUND_NUMBER]}
+    # lmino name
+    local LMINO_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value
+    local LMINO_PATH=${LMINO_LIST[$LMINO_NUMBER]}
 
     # prepare
     mkdir -p ${TETRIS_DIR}
@@ -77,8 +87,23 @@ function do_game(){
     rm -rf tetris_${UNAME}
     rm -rf tetris_${UNAME_2}    
     echo ${UNAME} ${BRANCH}
-    git clone https://github.com/${UNAME}/tetris -b ${BRANCH} tetris_${UNAME}
-    git clone https://github.com/${UNAME_2}/tetris -b ${BRANCH_2} tetris_${UNAME_2}
+
+    if [ ${UNAME} == "tuyosi1227" ]; then
+	# tuyosi1227/tetris_wood
+	git clone https://github.com/${UNAME}/tetris_wood -b ${BRANCH} tetris_${UNAME}
+    else
+	git clone https://github.com/${UNAME}/tetris -b ${BRANCH} tetris_${UNAME}
+#	git clone https://github.com/${UNAME}/tetris -b ${BRANCH}
+    fi
+
+    if [ ${UNAME_2} == "tuyosi1227" ]; then
+	# tuyosi1227/tetris_wood
+	git clone https://github.com/${UNAME_2}/tetris_wood -b ${BRANCH_2} tetris_${UNAME_2}
+    else
+	git clone https://github.com/${UNAME_2}/tetris -b ${BRANCH_2} tetris_${UNAME_2}
+#	git clone https://github.com/${UNAME}/tetris -b ${BRANCH}
+    fi
+    
     rm -f ${LOGFILE}
     rm -f ${LOGFILE_2}
     rm -f ${SCORE_LIST_FILE}
@@ -89,20 +114,22 @@ function do_game(){
     popd
 
     ###### wait game -->
+    eog ${LMINO_PATH} &
     WAIT_TIME=30
     python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -m ${MODE2} -w ${PREDICT_WEIGHT2} -l ${LEVEL} -t ${WAIT_TIME} &
     sleep 1
     # move window
     local SCORE_WINDOW_NAME_2="Score_${UNAME_2}"
     SCORE_WINDOWID_2=`xdotool search --onlyvisible --name "${SCORE_WINDOW_NAME_2}"`
-    xdotool windowmove ${SCORE_WINDOWID_2} 500 100 &
+    xdotool windowmove ${SCORE_WINDOWID_2} 1000 100 &
     python score.py -u ${UNAME} -p ${PROGRAM_NAME} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -t ${WAIT_TIME}
+    bash stop.sh
     ###### wait game <--
 
     # start sound
     play ${SOUNDFILE_PATH} &
     PID_PLAY_SOUND=$!
-    
+
     # start game
     local EXEC_COMMAND=`GET_COMMAND ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME} ${LOGFILE} ${TETRIS_DIR} ${MODE} ${PREDICT_WEIGHT}`
     local COMMAND="source ~/venvtest/bin/activate && \
@@ -199,38 +226,54 @@ function do_game_main(){
     #PLAYER2="isshy-you@master@isshy-program@default@default"
 #    PLAYER1="bushio@master@testname@predict_sample@weight/DQN/sample_weight.pt"
 #    PLAYER2="seigot@master@testname@predict_sample2@weight/MLP/sample_weight.pt"
-	    
-    ## 2
-#    PLAYER1="yuin0@tetris_second@CrackedEgg_v1.9@default@default"
-#    PLAYER1="isshy-you@ish05h3@いっしー5号ぷらす@default@default"
-#    PLAYER2="4321623@v2.0@勇者ちゃん2号@default@default"
-#    PLAYER2="usamin24@Lv2@チョコ&レート2号改@default@default"
-#    PLAYER2="mattshamrock@master@高まるフォイ@default@default"
 
+    ## 1
+#    PLAYER1="seigot@master@サンプル@sample@default"
+#    PLAYER2="isshy-you@ish04d1@いっしー１号@default@default"
+    #PLAYER1="Jumpeipei@test@ver1@default@default"
+    #PLAYER2="RogerTokunaga@master@アベレージ侍@default@default"
+    #PLAYER1="taika-izumi@master@[速報]アーニャがpython触ってみた結果ww@default@default"
+    #PLAYER2="zawa-cpu@master@アナログいのち@sample@default"
+    #PLAYER1="obo-koki@level1@obot_level1@default@default"
+    #PLAYER2="AtsutoshiNaraki@master@レインボーたろう@default@default"    
+
+    ## 2
+    #PLAYER1=
+    #PLAYER2=
+#    PLAYER1="isshy-you@ish06b@いっしー２号@default@default"
+#    PLAYER2="RogerTokunaga@master@アベレージ侍@default@default"
+#   PLAYER2="taika-izumi@master@[速報]アーニャがpython触ってみた結果ww@default@default"
+#    PLAYER2="zawa-cpu@master@アナログいのち@sample@default"
+#    PLAYER2="AtsutoshiNaraki@master@レインボーたろう@default@default"
 
     ## 2_ai
-#    PLAYER1="bushio@submit_level2@AIでテトリス@default@default"
-#    PLAYER1="EndoNrak@submit1@bushioさんありがとう@default@default"
-#    PLAYER2="neteru141@master@たいちとだいち４号@default@default"
+#    PLAYER1="TsuchiyaYosuke@master@TsuchiyaYosuke!!@predict_sample_qlearning@weight/DQN/sample_weight.pt"
+#    PLAYER1="qbi-sui@master@シラカバ@predict@./best_weight.pt"
+#    PLAYER1="tuyosi1227@main@きらっせウッド村ファーム@predict_sample@weight/DQN/best_weight.pt"
+#    PLAYER1="krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
+#    PLAYER2="bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
+#    PLAYER2="cookie4869@Final_Lv2a@ガンガンテトリス@predict@outputs/2022-08-31-08-05-53/trained_model/tetris_epoch1701_score189000.pt"
 
     ## 3(ai vs human)
-#    PLAYER1="bushio@submit_level3@AIでテトリス@default@default"
-#    PLAYER1="usamin24@Lv3@チョコ&レート3号@default@default"
-#    PLAYER1="mattshamrock@master@困るフォイ@default@default"
-#    PLAYER2="isshy-you@ish05h3@いっしー5号ぷらす@default@default"
-#    PLAYER2="yuin0@tetris_second@CrackedEgg_v1.9@default@default"
+    PLAYER1="isshy-you@ish06c@いっしー３号@default@default"
+#    PLAYER2="AtsutoshiNaraki@master@レインボーたろう@default@default"	    
+    PLAYER2="qbi-sui@master@シラカバ@predict@./best_weight.pt"
+#    PLAYER2="tuyosi1227@main@きらっせウッド村ファーム@predict_sample@weight/DQN/best_weight.pt"
+#    PLAYER2="krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
+#    PLAYER1="bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
+#    PLAYER2="cookie4869@Final_Lv3a@コツガンテトリス@predict@outputs/2022-09-06-08-01-43/trained_model/tetris_epoch2577_score71800.pt"
+
 
     ## ryuo(ai vs human)
-    PLAYER1="cookie4869@cookie_branch@コツコツテトリス@predict@outputs/2022-08-16-23-07-28/trained_model/tetris_epoch192_score176400.pt"
-    #PLAYER2="krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
-    PLAYER2="bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
-#    PLAYER1="bushio@submit_level3@AIでテトリス@default@default"
-#    PLAYER2="isshy-you@ish05c@いっしー5号@default@default"
-#    PLAYER2="usamin24@Lv3@チョコ&レート3号@default@default"
+#    PLAYER1="isshy-you@ish06c@いっしー３号@default@default"
+#    PLAYER2="AtsutoshiNaraki@master@レインボーたろう@default@default"
+#    PLAYER1="cookie4869@Final_Lv3a@コツガンテトリス@predict@outputs/2022-09-06-08-01-43/trained_model/tetris_epoch2577_score71800.pt"
+#    PLAYER1="krymt28@master@ウッド_桐山_壱号@predict_sample@./M2_tetris_epoch68_score192800.pt"
+#    PLAYER2="bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
 
     #---
     LEVEL=3 #"2"
-    DROP_SPEED="1"   #"1"#"1000"
+    DROP_SPEED="1000"   #"1"#"1000"
     #---
 
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
