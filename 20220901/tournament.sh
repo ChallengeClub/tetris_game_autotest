@@ -67,7 +67,7 @@ function do_game(){
     local SCORE_LIST_FILE_2="${RESULT_LOG_DIR}/scorelistfile_${UNAME_2}.txt"
     
     local GAME_TIME=180
-    local EXTERNAL_SLEEP_TIME=30
+    local EXTERNAL_SLEEP_TIME=20
 
     local RANDOM_SEED=${RANDOM}
     if [ "${LEVEL}" == "1" ]; then
@@ -115,7 +115,7 @@ function do_game(){
 
     ###### wait game -->
     eog ${LMINO_PATH} &
-    WAIT_TIME=30 #10 #30
+    WAIT_TIME=20 #10 #30
     python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -m ${MODE2} -w ${PREDICT_WEIGHT2} -l ${LEVEL} -t ${WAIT_TIME} &
     sleep 1
     # move window
@@ -228,45 +228,57 @@ function do_game_main(){
 #    PLAYER2="seigot@master@testname@predict_sample2@weight/MLP/sample_weight.pt"
 
     ## 1
-#    PLAYER1="seigot@master@サンプル@sample@default"
 #    PLAYER1="isshy-you@3rd_Lv1_2@いっしー７号Lv1@default@default"
-#    PLAYER1="Jumpeipei@test@ver1@default@default"
-#    PLAYER2="RogerTokunaga@master@アベレージ侍@default@default"
-#    PLAYER1="taika-izumi@master@[速報]アーニャがpython触ってみた結果ww@default@default"
-#    PLAYER2="zawa-cpu@master@アナログいのち@sample@default"
+#    PLAYER2="Jumpeipei@test@たいしん一号@default@default"
+#    PLAYER1="RogerTokunaga@master@アベレージ侍@default@default"
+#    PLAYER2="taika-izumi@master@[速報]アーニャがpython触ってみた結果ww@default@default"
+#    PLAYER1="zawa-cpu@master@アナログいのち@sample@default"
+#    PLAYER2="koro298@sample最強@ikemi1@default@default"
 #    PLAYER1="obo-koki@level1@obot_level1@default@default"
 #    PLAYER2="AtsutoshiNaraki@Level1@レインボー初号機@default@default"    
 
     ## 2
-#    PLAYER1="isshy-you@3rd_Lv2_2@いっしー７号Lv2@default@default"
-#    PLAYER2="RogerTokunaga@master@アベレージ侍@default@default"
-#   PLAYER2="taika-izumi@master@[速報]アーニャがpython触ってみた結果ww@default@default"
-#    PLAYER2="zawa-cpu@master@アナログいのち@sample@default"
+#    PLAYER1="taika-izumi@master@[速報]アーニャがpython触ってみた結果ww@default@default"
+#    PLAYER2="koro298@LV2チューニング@ikemi1@default@default"
+#    PLAYER1="obo-koki@level2@obot_level2@default@default"
+#    PLAYER2="isshy-you@3rd_Lv2_2@いっしー７号Lv2@default@default"
+#    PLAYER1="zawa-cpu@master@アナログいのち@sample@default"
 #    PLAYER2="AtsutoshiNaraki@master@レインボーたろう@default@default"
+#    PLAYER1="Jumpeipei@test@たいしん一号@default@default"
+#    PLAYER2="RogerTokunaga@master@アベレージ侍@default@default"
+
 
     ## 2_ai
+#    PLAYER1="cookie4869@Final_Lv2a@ガンガンテトリス@predict@outputs/2022-08-31-08-05-53/trained_model/tetris_epoch1701_score189000.pt"
 #    PLAYER1="TsuchiyaYosuke@master@TsuchiyaYosuke!!@predict_sample_qlearning@weight/DQN/sample_weight.pt"
-#    PLAYER1="qbi-sui@master@シラカバv2@predict@./best_weight.pt"
-#    PLAYER1="tuyosi1227@main@きらっせウッド村ファーム@predict_sample@weight/DQN/best_weight.pt"
-#    PLAYER2="krymt28@master@リーゼット君１号@predict_sample@./M2_tetris_epoch68_score192800.pt"
+#    PLAYER2="tuyosi1227@main@ウッディタウン中央@predict_sample@weight/DQN/best_weight_2.pt"
+#    PLAYER1="krymt28@master@リーゼット君１号@predict_sample@./M2_tetris_epoch68_score192800.pt"
+#    PLAYER2="qbi-sui@master@シラカバv2@predict@./best_weight.pt"
 #    PLAYER2="bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
-#    PLAYER2="cookie4869@Final_Lv2a@ガンガンテトリス@predict@outputs/2022-08-31-08-05-53/trained_model/tetris_epoch1701_score189000.pt"
+
 
     ## 3(ai vs human)
 #    PLAYER1="isshy-you@3rd_Lv3_2@いっしー７号Lv3@default@default"
+#    PLAYER2="obo-koki@level3@obot_level3@default@default"
+#    PLAYER1="Jumpeipei@test@たいしん一号@default@default"
 #    PLAYER2="AtsutoshiNaraki@master@レインボーたろう@default@default"
+#    PLAYER1="ryochinbo@master@python勉強しようと思いました@default@default"
+
 #    PLAYER1="qbi-sui@master@シラカバ@predict@./best_weight.pt"
-#    PLAYER2="tuyosi1227@main@きらっせウッド村ファーム@predict_sample@weight/DQN/best_weight.pt"
+#    PLAYER1="tuyosi1227@main@ウッディタウン中央@predict_sample@weight/DQN/best_weight_2.pt"
 #    PLAYER2="krymt28@master@リーゼット君１号@predict_sample@./M2_tetris_epoch68_score192800.pt"
 #    PLAYER2="bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
 #    PLAYER2="cookie4869@Final_Lv3c@ガンガンコツコツテトリス@predict@outputs/latest/best_weight.pt"
 
     ## ryuo(ai vs human)
 #    PLAYER1="isshy-you@3rd_Lv3_2@イッシー７号Lv3@default@default"
-#    PLAYER1="AtsutoshiNaraki@Ryuoh@レインボーじろう@default@default"
-#    PLAYER2="tuyosi1227@main@きらっせウッド村ファーム@predict_sample@weight/DQN/best_weight.pt"
-#    PLAYER2="bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
+#    PLAYER1="obo-koki@ryuou@obot_ryuou@default@default"
+#    PLAYER2="AtsutoshiNaraki@Ryuoh@レインボーじろう@default@default"
+    
+#    PLAYER1="tuyosi1227@main@ウッディタウン中央@predict_sample@weight/DQN/best_weight_2.pt"
 #    PLAYER2="cookie4869@Final_Lv3pa@サクサクテトリス@predict@outputs/2022-09-13-00-28-28/trained_model/tetris_epoch3741_score138100.pt"
+#    PLAYER2="bushio@submit_level2@DQNでテトリス@predict_sample@weight/DQN/best_weight.pt"
+
 
     #---
     LEVEL=1 #2 #3 #"2"
