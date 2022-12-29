@@ -31,6 +31,8 @@ pip -r requirements.txt
 
 # for score_attack
 pip install opencv-python
+# for display graph
+pip install matplotlib
 ```
 
 install tools
