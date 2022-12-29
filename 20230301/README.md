@@ -24,11 +24,24 @@ install library
 
 ```
 # for basic functions
+pip install pyqt5
+pip install numpy
 # for machine learning
 pip -r requirements.txt
 
 # for score_attack
 pip install opencv-python
+```
+
+install tools
+
+```
+sudo apt install xdotool -y  # gui command
+sudo apt install sox -y      # sound command
+sudo apt install imagemagick -y # graphics command
+sudo apt install python-is-python3 -y
+sudo apt install python3.8-venv -y
+sudo apt install python3-pyqt5 
 ```
 
 ### programs
