@@ -46,6 +46,13 @@ sudo apt install python3.8-venv -y
 sudo apt install python3-pyqt5 
 ```
 
+download data
+
+```
+wget https://github.com/seigot/tetris_game_autotest/releases/download/20220901/Downloads.tgz
+tar zxvf Downloads.tgz
+```
+
 ### programs
 
 execute programs for score attack, tournament
