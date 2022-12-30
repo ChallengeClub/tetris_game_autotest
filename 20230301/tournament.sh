@@ -9,9 +9,9 @@ source common_command.sh
 # ffmpeg -i *.mp4 -ac 1 *.wav
 # ffmpeg -i *.mp3 *.wav
 SOUNDFILE_LIST=(
-    "~/Downloads/technotris.wav"
-    "~/Downloads/troika.wav"
-    "~/Downloads/kalinka.wav"
+    "Downloads/technotris.wav"
+    "Downloads/troika.wav"
+    "Downloads/kalinka.wav"
 )
 # lmino${NUMBER}.gif
 LMINO_LIST=(
