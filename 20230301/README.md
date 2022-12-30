@@ -10,17 +10,21 @@ for ubuntu18.04 or upper version
 
 ### prepare
 
+(recommend) install python3.10 venv  
+https://qiita.com/murakami77/items/b612734ff209cbb22afb
+
 set venv
 
 ```
 # set venv (only first time)
-python3 -m venv ~/venvtest
+mkdir -p ~/venv
+python3 -m venv ~/venv/python3.10-test
 
 # activate
-source ~/venvtest/bin/activate
+source ~/venv/python3.10-test/bin/activate
 ```
 
-install library
+pip install library
 
 ```
 # for basic functions
