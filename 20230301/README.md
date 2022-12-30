@@ -6,7 +6,7 @@ https://github.com/seigot/tetris
 
 ### environment
 
-for ubuntu18.04 or upper version
+for ubuntu20.04 or upper version
 
 ### prepare
 
