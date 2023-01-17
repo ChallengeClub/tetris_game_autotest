@@ -31,7 +31,7 @@ pip install library
 pip install pyqt5
 pip install numpy
 # for machine learning
-pip -r requirements.txt
+pip -r requirements.pytorch.txt
 
 # for score_attack
 pip install opencv-python
