@@ -19,6 +19,7 @@ set venv
 # set venv (only first time)
 mkdir -p ~/venv
 python3 -m venv ~/venv/python3.10-test
+ln -s venv/python3.10-test venvtest
 
 # activate
 source ~/venv/python3.10-test/bin/activate
