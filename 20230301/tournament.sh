@@ -115,7 +115,7 @@ function do_game(){
 
     ###### wait game -->
     eog ${LMINO_PATH} &
-    WAIT_TIME=20 #10 #30
+    WAIT_TIME=10 #10 #30
     python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -m ${MODE2} -w ${PREDICT_WEIGHT2} -l ${LEVEL} -t ${WAIT_TIME} &
     sleep 1
     # move window
@@ -132,11 +132,11 @@ function do_game(){
 
     # start game
     local EXEC_COMMAND=`GET_COMMAND ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME} ${LOGFILE} ${TETRIS_DIR} ${MODE} ${PREDICT_WEIGHT}`
-    local COMMAND="source ~/venvtest/bin/activate && \
+    local COMMAND="source ~/venv/python3.10-test/bin/activate && \
 	    cd ${TETRIS_DIR}/tetris_${UNAME} && \
 	    ${EXEC_COMMAND}"
     local EXEC_COMMAND_2=`GET_COMMAND ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME_2} ${LOGFILE_2} ${TETRIS_DIR} ${MODE2} ${PREDICT_WEIGHT2}`
-    local COMMAND_2="source ~/venvtest/bin/activate && \
+    local COMMAND_2="source ~/venv/python3.10-test/bin/activate && \
 	    cd ${TETRIS_DIR}/tetris_${UNAME_2} && \
 	    ${EXEC_COMMAND_2}"
 
@@ -222,8 +222,9 @@ function do_game_main(){
 
     ## sample
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-    PLAYER1="seigot@master@seigot-sample-demo@sample@default"
-    PLAYER2="isshy-you@master@isshy-sample-demo@default@default"
+#    PLAYER1="seigot@master@seigot-sample-demo@sample@default"
+#    PLAYER2="isshy-you@master@isshy-sample-demo@sample@default"
+#    PLAYER2="isshy-you@master@isshy-sample-demo@default@default"
 #    PLAYER1="bushio@master@testname@predict_sample@weight/DQN/sample_weight.pt"
 #    PLAYER2="seigot@master@testname@predict_sample2@weight/MLP/sample_weight.pt"
 
@@ -238,16 +239,13 @@ function do_game_main(){
 #    PLAYER2="AtsutoshiNaraki@Level1@レインボー初号機@default@default"    
 
     ## 2
-#    PLAYER1="taika-izumi@master@[速報]アーニャがpython触ってみた結果ww@default@default"
-#    PLAYER2="koro298@LV2チューニング@ikemi1@default@default"
-#    PLAYER1="obo-koki@level2@obot_level2@default@default"
-#    PLAYER2="isshy-you@3rd_Lv2_2@いっしー７号Lv2@default@default"
-#    PLAYER1="zawa-cpu@master@アナログいのち@sample@default"
-#    PLAYER2="AtsutoshiNaraki@master@レインボーたろう@default@default"
-#    PLAYER1="Jumpeipei@test@たいしん一号@default@default"
-#    PLAYER2="RogerTokunaga@master@アベレージ侍@default@default"
-
-
+#    PLAYER1="seigot@master@seigot-sample-demo@sample@default"
+#    PLAYER1="kokko1023@reward@kokko@predict@outputs/2023-03-10-01-14-33/trained_model/best_weight.pt"
+#    PLAYER2="Kenta-Se@master@Seiki@default@default"
+#    PLAYER1="Takomaron@設定Gブランチ@Takomaron@predict@weight/DQN/best_weight_I2.pt"
+    PLAYER1="yuin0@master@yuin0@default@default"
+    PLAYER2="nishidasat@master@SatomiNishida@sample@default"
+    
     ## 2_ai
 #    PLAYER1="cookie4869@Final_Lv2a@ガンガンテトリス@predict@outputs/2022-08-31-08-05-53/trained_model/tetris_epoch1701_score189000.pt"
 #    PLAYER1="TsuchiyaYosuke@master@TsuchiyaYosuke!!@predict_sample_qlearning@weight/DQN/sample_weight.pt"
@@ -281,7 +279,7 @@ function do_game_main(){
 
 
     #---
-    LEVEL=1 #2 #3 #"2"
+    LEVEL=2 #"2"
     DROP_SPEED="1000"   #"1"#"1000"
     #---
 
