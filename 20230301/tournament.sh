@@ -115,7 +115,7 @@ function do_game(){
 
     ###### wait game -->
     eog ${LMINO_PATH} &
-    WAIT_TIME=10 #10 #30
+    WAIT_TIME=30 #10 #30
     python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -m ${MODE2} -w ${PREDICT_WEIGHT2} -l ${LEVEL} -t ${WAIT_TIME} &
     sleep 1
     # move window
@@ -237,15 +237,18 @@ function do_game_main(){
 #    PLAYER2="koro298@sample最強@ikemi1@default@default"
 #    PLAYER1="obo-koki@level1@obot_level1@default@default"
 #    PLAYER2="AtsutoshiNaraki@Level1@レインボー初号機@default@default"    
+#    PLAYER1="yuin0@master@yuin0@default@default"
 
     ## 2
-#    PLAYER1="seigot@master@seigot-sample-demo@sample@default"
-#    PLAYER1="kokko1023@reward@kokko@predict@outputs/2023-03-10-01-14-33/trained_model/best_weight.pt"
-#    PLAYER2="Kenta-Se@master@Seiki@default@default"
-#    PLAYER1="Takomaron@設定Gブランチ@Takomaron@predict@weight/DQN/best_weight_I2.pt"
-    PLAYER1="yuin0@master@yuin0@default@default"
-    PLAYER2="nishidasat@master@SatomiNishida@sample@default"
-    
+######
+#    PLAYER1="Takomaron@master@Takomaron@predict@weight/DQN/best_weight.pt"
+    PLAYER1="Kenta-Se@master@Seiki@default@default"
+#    PLAYER1="nishidasat@master@SatomiNishida@sample@default"
+#    PLAYER2="iguzzi@iguzzi01@iguzzi@default@default"
+#    PLAYER1="GRAV1ER@shimizu2@shimizu@default@default"
+#    PLAYER2="Noriomusubi@test_n1@Noriomusubi@default@default"
+    PLAYER2="kokko1023@unstable4lines@kokko@predict@outputs/2023-03-14-01-28-24/trained_model/best_weight.pt"
+
     ## 2_ai
 #    PLAYER1="cookie4869@Final_Lv2a@ガンガンテトリス@predict@outputs/2022-08-31-08-05-53/trained_model/tetris_epoch1701_score189000.pt"
 #    PLAYER1="TsuchiyaYosuke@master@TsuchiyaYosuke!!@predict_sample_qlearning@weight/DQN/sample_weight.pt"
