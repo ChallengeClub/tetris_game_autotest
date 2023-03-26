@@ -216,13 +216,16 @@ function do_art_1(){
 
     ## sample
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-    PLAYER1="seigot@master@sample_art_mouri-san@art@config/art/art_config_sample_fireflower.json"
+    PLAYER1="seigot@master@sample_art@art@config/art/art_config_sample8.json"
+    PLAYER2="N0S0@master@sample_art_N0S0@art@config/art/art_config_sample_sonoda1.json"
+#    PLAYER1="seigot@master@sample_art_mouri-san@art@config/art/art_config_sample_fireflower.json"
+#    PLAYER2="Tananken@master@sample_art_tananken@art@config/art/art_config_sample_tanaka_2.json"
 #    PLAYER1="seigot@master@sample_art1号@art@config/art/art_config_sample2.json"
-    PLAYER2="Tananken@master@sample_art_tananken@art@config/art/art_config_sample_tanaka_2.json"
+
     #---
     LEVEL=1 #"2"
     DROP_SPEED="1000" #"1000"   #"1"#"1000"
-    GAME_TIME="180"
+    GAME_TIME="160"
     #---
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED} ${GAME_TIME}
 }
@@ -232,8 +235,8 @@ function do_art_2(){
     echo -n >| ${RESULT_LOG}
     ## sample
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-    PLAYER1="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/slime.json"
-    PLAYER2="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/metalslime.json"    
+    PLAYER1="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/pikachu.json"
+    PLAYER2="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/pikachu.json"    
     #---
     LEVEL=1 #"2"
     DROP_SPEED="350" #"1000"   #"1"#"1000"
@@ -242,7 +245,25 @@ function do_art_2(){
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED} ${GAME_TIME}
 }
 
+function do_art_3(){
+
+    echo -n >| ${RESULT_LOG}
+
+    ## sample
+    # "user_name @ branch_name @ program_name @ mode @ predict_weight"
+    PLAYER1="seigot@master@sample_art@art@config/art/art_config_sample_ruigi.json"
+    PLAYER2="Tananken@master@sample_art_tananken@art@config/art/art_config_sample_tanaka_2.json"
+
+    #---
+    LEVEL=1
+    DROP_SPEED="1000" #"1000"   #"1"#"1000"
+    GAME_TIME="180"
+    #---
+    do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED} ${GAME_TIME}
+}
+
 echo "start"
 do_art_1
 #do_art_2
+#do_art_3
 echo "end"
