@@ -235,11 +235,11 @@ function do_art_2(){
     echo -n >| ${RESULT_LOG}
     ## sample
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-    PLAYER1="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/pikachu.json"
+    PLAYER1="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/squirtle.json"
     PLAYER2="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/pikachu.json"    
     #---
     LEVEL=1 #"2"
-    DROP_SPEED="350" #"1000"   #"1"#"1000"
+    DROP_SPEED="250" #"1000"   #"1"#"1000"
     GAME_TIME="200"
     #---
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED} ${GAME_TIME}
@@ -263,7 +263,7 @@ function do_art_3(){
 }
 
 echo "start"
-do_art_1
-#do_art_2
+#do_art_1
+do_art_2
 #do_art_3
 echo "end"
