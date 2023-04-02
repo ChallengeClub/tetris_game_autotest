@@ -18,6 +18,7 @@ LMINO_LIST=(
     "Downloads/lmino1_75%.gif"
     "Downloads/lmino2_75%.gif"
     "Downloads/lmino3_75%.gif"
+    "Downloads/charactor_2.gif"
 )
 
 CURRENT_DIR=`pwd`
@@ -78,7 +79,7 @@ function do_game(){
     local SOUND_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value
     local SOUNDFILE_PATH=${SOUNDFILE_LIST[$SOUND_NUMBER]}
     # lmino name
-    local LMINO_NUMBER=`echo $((RANDOM%+3))` # 0-2 random value
+    local LMINO_NUMBER=`echo $((RANDOM%+4))` # 0-2 random value
     local LMINO_PATH=${LMINO_LIST[$LMINO_NUMBER]}
 
     # prepare
@@ -115,7 +116,7 @@ function do_game(){
 
     ###### wait game -->
     eog ${LMINO_PATH} &
-    WAIT_TIME=20 #30
+    WAIT_TIME=15 #30
     python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -m ${MODE2} -w ${PREDICT_WEIGHT2} -l ${LEVEL} -t ${WAIT_TIME} &
     sleep 1
     # move window
@@ -227,55 +228,62 @@ function do_game_main(){
 #    PLAYER1="seigot@master@seigot-sample-demo@sample@default"
 #    PLAYER2="isshy-you@master@isshy-sample-demo@sample@default"
 
-    ## 1
+    ## 1 5
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-#    PLAYER1="Noriomusubi@test_n2@Noriomusubi@default@default"
-#    PLAYER2="seigot@master@tomaemon@default@default"
 #    PLAYER1="Tackey07@master@Tackey@default@default"
 #    PLAYER2="nishidasat@master@NishidaSat@sample@default"
-
+#    PLAYER1="Noriomusubi@test_n2@Noriomusubi@default@default"
+#    PLAYER2="tomaemon@master@tomaemon@default@default"
+#    PLAYER1="mattshamrock@level_1@masato@default@default"
+#    PLAYER2="isshy-you@master@isshy-sample-demo@sample@default"
+    
     ## 2
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-#    PLAYER1="cheerful-0329@chipL2@chip@predict@weight/DQN/best_weight.pt"
-#    PLAYER2="Takomaron@Retry07@Takomaron@predict@weight/DQN/best_weight.pt"
+    # hatsu-sanka 9
 #    PLAYER1="Noriomusubi@test_n2@Noriomusubi@default@default"
 #    PLAYER2="HideOkuda@master@hideokuda@default@default"
-#    PLAYER1="km-mssh@test@km-mssh@predict@default"
-#    PLAYER2="obo-koki@level2_v4@obo@default@default"
-#    PLAYER1="yuin0@master@yuin0@default@default"
-#    PLAYER2="Tackey07@master@Tackey@default@default"
-#    PLAYER1="nishidasat@master@NishidaSat@sample@default"
-#    PLAYER2="cookie4869@cookie04_01@ガンガンテトリス@predict@default"
-#    PLAYER1="mattshamrock@level_2@masato@default@default"
-#    PLAYER2="kokko1023@unstable4lines@kokko@predict@outputs/2023-03-14-01-28-24/trained_model/best_weight.pt"
 #    PLAYER1="iguzzi@iguzzi01@iguzzi@default@default"
+#    PLAYER2="Tackey07@over_l2@Tackey@default@default"
+#    PLAYER2="nishidasat@master@NishidaSat@sample@default"
 #    PLAYER2="GRAV1ER@shimizu2@shimizu@default@default"
+#    PLAYER1="kobuchirikiya@master@kobuchi@default@default"
+#    PLAYER1="akomastr@master@otani@default@default"
 #    PLAYER2="Kenta-Se@master@Seiki@default@default"
+     # keiken-sha 3
+#    PLAYER2="yuin0@master@yuin0@default@default"
+#    PLAYER1="mattshamrock@level_2@masato@default@default"
+#    PLAYER2="obo-koki@level2_v4@obo@default@default"
 
-    ## 2_ai
-#    PLAYER1="cookie4869@Final_Lv2a@ガンガンテトリス@predict@outputs/2022-08-31-08-05-53/trained_model/tetris_epoch1701_score189000.pt"
-#    PLAYER1="TsuchiyaYosuke@master@TsuchiyaYosuke!!@predict_sample_qlearning@weight/DQN/sample_weight.pt"
+    ## 2_ai 7
+#    PLAYER1="cheerful-0329@chipL2@chip@predict@weight/DQN/best_weight.pt"
+#    PLAYER1="km-mssh@test@km-mssh@predict@default"
+#    PLAYER1="kokko1023@unstable4lines@kokko@predict@outputs/2023-03-14-01-28-24/trained_model/best_weight.pt"
+#    PLAYER2="Takomaron@Final01@Takomaron@predict@weight/DQN/best_weight_25.B.pt"
+#    PLAYER2="m-nishidon@master@m-nishidon@predict@outputs/2023-03-24-13-13-10/trained_model/best_weight.pt"
+#    PLAYER2="cookie4869@cookie04_01@ガンガンテトリス@predict@default"
 
-    ## 3(ai vs human)
+    ## 3(ai vs human) 10
 #    PLAYER1="kokko1023@dev-lv3@kokko@predict@outputs/2023-03-19-10-35-46/trained_model/best_weight.pt"
-#    PLAYER2="cheerful-0329@chipL3@chip@predict@weight/DQN/best_weight.pt"
+#    PLAYER2="yuin0@master@yuin0@default@default"
 #    PLAYER1="iguzzi@iguzzi02@iguzzi@default@default"
-#    PLAYER2="Takomaron@Retry07@Takomaron@predict@weight/DQN/best_weight.pt"
-#    PLAYER2="obo-koki@level3_v4@obo@default@default"
-#    PLAYER1="yuin0@master@yuin0@default@default"
-#    PLAYER1="Tackey07@master@Tackey@default@default"
-#    PLAYER2="cookie4869@cookie04_03@ガンコツテトリス@predict@default"
+#    PLAYER1="cheerful-0329@chipL3@chip@predict@weight/DQN/best_weight.pt"
+#    PLAYER1="obo-koki@level3_v4@obo@default@default"
+#    PLAYER1="m-nishidon@master@m-nishidon@predict@outputs/2023-03-24-13-13-10/trained_model/best_weight.pt"
 #    PLAYER2="mattshamrock@level_3@masato@default@default"
+#    PLAYER1="Tackey07@over_l2@Tackey@default@default"
+#    PLAYER2="Takomaron@Final01@Takomaron@predict@weight/DQN/best_weight_h3.pt"
+#    PLAYER2="cookie4869@cookie04_03@ガンコツテトリス@predict@default"
 
-    ## ryuo(ai vs human)
-#    PLAYER1="kokko1023@dev-lv3@kokko@predict@outputs/2023-03-19-10-35-46/trained_model/best_weight.pt"
-#    PLAYER2="iguzzi@iguzzi02@iguzzi@default@default"
-#    PLAYER1="Takomaron@Retry07@Takomaron@predict@weight/DQN/best_weight.pt"
+    ## ryuo(ai vs human) 9
+#    PLAYER1="kokko1023@dev-lv4@kokko@predict@outputs/2023-03-19-10-35-46/trained_model/best_weight.pt"
+#    PLAYER1="iguzzi@iguzzi02@iguzzi@default@default"
+#    PLAYER1="m-nishidon@master@m-nishidon@predict@outputs/2023-03-24-13-13-10/trained_model/best_weight.pt"
+#    PLAYER2="Takomaron@Retry07@Takomaron@predict@weight/DQN/best_weight.pt"
+    PLAYER1="isshy-you@ish08b@isshy-you@default@default"
 #    PLAYER2="obo-koki@level4@obo@default@default"    
-#    PLAYER1="narumakky@master@narumaki@predict@weight/DQN/best_weight.pt"
-#    PLAYER2="yuin0@master@tetris_v4@default@default"
-#    PLAYER1="isshy-you@ish08b@isshy-you@default@default"
-#    PLAYER2="mattshamrock@level_4@masato@default@default"
+#    PLAYER2="narumakky@master@narumaki@predict@weight/DQN/best_weight.pt"
+#    PLAYER1="yuin0@tetris_v4@tetris_v4@predict@weight/DQN/best_weight.pt"
+    PLAYER2="mattshamrock@level_4@masato@default@default"
 
     #---
     LEVEL=4 #"2"
