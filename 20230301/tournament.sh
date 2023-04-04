@@ -279,14 +279,14 @@ function do_game_main(){
 #    PLAYER1="iguzzi@iguzzi02@iguzzi@default@default"
 #    PLAYER1="m-nishidon@master@m-nishidon@predict@outputs/2023-03-24-13-13-10/trained_model/best_weight.pt"
 #    PLAYER2="Takomaron@Retry07@Takomaron@predict@weight/DQN/best_weight.pt"
-    PLAYER1="isshy-you@ish08b@isshy-you@default@default"
+#    PLAYER1="isshy-you@ish08b@isshy-you@default@default"
 #    PLAYER2="obo-koki@level4@obo@default@default"    
 #    PLAYER2="narumakky@master@narumaki@predict@weight/DQN/best_weight.pt"
 #    PLAYER1="yuin0@tetris_v4@tetris_v4@predict@weight/DQN/best_weight.pt"
-    PLAYER2="mattshamrock@level_4@masato@default@default"
+#    PLAYER2="mattshamrock@level_4@masato@default@default"
 
     #---
-    LEVEL=4 #"2"
+    LEVEL=2 #"2"
     DROP_SPEED="777" #"invalid"
     #---
 
