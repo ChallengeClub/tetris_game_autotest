@@ -15,10 +15,10 @@ SOUNDFILE_LIST=(
 )
 # lmino${NUMBER}.gif
 LMINO_LIST=(
-    "Downloads/lmino1_75%.gif"
-    "Downloads/lmino2_75%.gif"
-    "Downloads/lmino3_75%.gif"
-    "Downloads/charactor_2.gif"
+    "Downloads/MFK2023_Badge.jpeg"
+    "Downloads/MFK2023_Badge.jpeg"
+    "Downloads/MFK2023_Badge.jpeg"
+    "Downloads/MFK2023_Badge.jpeg"
 )
 
 CURRENT_DIR=`pwd`
@@ -47,19 +47,21 @@ function do_game(){
     # 350 150 0   0  50   300
     # 700 150 1200 50 1200 300
     local WINDOW_X=350
-    local WINDOW_Y=150
+    local WINDOW_Y=300
     local IMAGE_WINDOW_X=0
     local IMAGE_WINDOW_Y=0
     local SCORE_WINDOW_X=50
     local SCORE_WINDOW_Y=300
     local WINDOW_X_2=700
-    local WINDOW_Y_2=150
+    local WINDOW_Y_2=300
     local IMAGE_WINDOW_X_2=1200
     local IMAGE_WINDOW_Y_2=50
     local SCORE_WINDOW_X_2=1200
     local SCORE_WINDOW_Y_2=300
     local GRAPH_WINDOW_X=350
     local GRAPH_WINDOW_Y=150
+    local SUMMARY_WINDOW_X=450
+    local SUMMARY_WINDOW_Y=0
 
     local TETRIS_DIR="${CURRENT_DIR}/tetris_dir"
     local LOGFILE="${RESULT_LOG_DIR}/resultlog_${UNAME}.json"
@@ -68,7 +70,7 @@ function do_game(){
     local SCORE_LIST_FILE_2="${RESULT_LOG_DIR}/scorelistfile_${UNAME_2}.txt"
     
     local GAME_TIME=180
-    local EXTERNAL_SLEEP_TIME=20
+    local EXTERNAL_SLEEP_TIME=8
 
     local RANDOM_SEED=${RANDOM}
     if [ "${LEVEL}" == "1" ]; then
@@ -151,7 +153,8 @@ function do_game(){
     python score.py -u ${UNAME} -p ${PROGRAM_NAME} -b ${BRANCH} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -f ${LOGFILE} -e ${EXTERNAL_SLEEP_TIME} -s ${SCORE_LIST_FILE} --use_elapsed_time True &
     python image.py -u ${UNAME} -i "${RESULT_LOG_DIR}/${UNAME}2.png" &
     python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -b ${BRANCH_2} -w ${PREDICT_WEIGHT2} -m ${MODE2} -l ${LEVEL} -f ${LOGFILE_2} -e ${EXTERNAL_SLEEP_TIME} -s ${SCORE_LIST_FILE_2} --use_elapsed_time True &
-    python image.py -u ${UNAME_2} -i "${RESULT_LOG_DIR}/${UNAME_2}2.png" &    
+    python image.py -u ${UNAME_2} -i "${RESULT_LOG_DIR}/${UNAME_2}2.png" &
+    python summary.py &
     sleep 2
 
     # adjust window
@@ -178,6 +181,11 @@ function do_game(){
     local SCORE_WINDOW_NAME_2="Score_${UNAME_2}"
     SCORE_WINDOWID_2=`xdotool search --onlyvisible --name "${SCORE_WINDOW_NAME_2}"`
     xdotool windowmove ${SCORE_WINDOWID_2} ${SCORE_WINDOW_X_2} ${SCORE_WINDOW_Y_2} &
+
+    ## adjust summary window
+    local WINDOW_NAME="summary"
+    WINDOWID=`xdotool search --onlyvisible --name "${WINDOW_NAME}"`
+    xdotool windowmove ${WINDOWID} ${SUMMARY_WINDOW_X} ${SUMMARY_WINDOW_Y} &
 
     # sleep until game end
     sleep ${GAME_TIME}
@@ -211,6 +219,29 @@ function do_game(){
     echo "-- player2(${UNAME_2}) score" >> ${RESULT_ALL_LOG}
     jq .judge_info.score ${LOGFILE_2} >> ${RESULT_ALL_LOG}
     tail -5 ${RESULT_ALL_LOG}
+
+    # win count
+    ## file check
+    FILE1="${RESULT_LOG_DIR}/win_count_${UNAME}.log"
+    if [ ! -e "${FILE1}" ]; then    
+	echo 0 > ${FILE1}
+    fi
+    FILE2="${RESULT_LOG_DIR}/win_count_${UNAME_2}.log"
+    if [ ! -e "${FILE2}" ]; then    
+	echo 0 > ${FILE2}
+    fi
+    ## count up
+    SCORE1=`jq .judge_info.score ${LOGFILE}`
+    SCORE2=`jq .judge_info.score ${LOGFILE_2}`
+    if [ "${SCORE1}" -ge "${SCORE2}" ]; then
+	WINNER_UNAME=`echo ${UNAME}`
+    else
+	WINNER_UNAME=`echo ${UNAME_2}`
+    fi
+    WIN_COUNT_LOG="${RESULT_LOG_DIR}/win_count_${WINNER_UNAME}.log"
+    WIN_COUNT=`cat ${WIN_COUNT_LOG}`
+    WIN_COUNT=`expr $WIN_COUNT + 1`
+    echo $WIN_COUNT > ${WIN_COUNT_LOG}
 
     return 0
 }
@@ -272,16 +303,26 @@ function do_game_main(){
     LEVEL=2
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
     #---
-    PLAYER1="kokko1023@dev-lv3@kokko@predict@outputs/2023-03-19-10-35-46/trained_model/best_weight.pt"
-    PLAYER2="Takomaron@Final01@Takomaron@predict@weight/DQN/best_weight_h3.pt"
-    LEVEL=3
+    PLAYER1="kokko1023@unstable4lines@kokko@predict@outputs/2023-03-14-01-28-24/trained_model/best_weight.pt"
+    PLAYER2="km-mssh@test@km-mssh@predict@default"
+    LEVEL=2
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
     #---
-    PLAYER1="cheerful-0329@chipL3@chip@predict@weight/DQN/best_weight.pt"
-    PLAYER2="cookie4869@cookie04_03@ガンコツテトリス@predict@default"
-    LEVEL=3
+    PLAYER1="kokko1023@unstable4lines@kokko@predict@outputs/2023-03-14-01-28-24/trained_model/best_weight.pt"
+    PLAYER2="cookie4869@cookie04_01@ガンガンテトリス@predict@default"
+    LEVEL=2
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
-    #---    
+    #---
+    PLAYER1="Takomaron@Final01@Takomaron@predict@weight/DQN/best_weight_25.B.pt"
+    PLAYER2="km-mssh@test@km-mssh@predict@default"
+    LEVEL=2
+    do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
+    #---
+    PLAYER1="Takomaron@Final01@Takomaron@predict@weight/DQN/best_weight_25.B.pt"
+    PLAYER2="cookie4869@cookie04_01@ガンガンテトリス@predict@default"
+    LEVEL=2
+    do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
+    #---
 }
 
 echo "start"
