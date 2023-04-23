@@ -25,6 +25,7 @@ function stop_process(){
     try_kill_process "megen"
     try_kill_process "display_graph.py"
     try_kill_process "eog"
+    try_kill_process "summary.py"
 }
 
 stop_process
