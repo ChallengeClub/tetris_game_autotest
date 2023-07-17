@@ -35,7 +35,8 @@ pip install library
 
 ```
 # for basic functions
-# sudo apt install -y python3-pyqt5 if use jetson-nano
+# sudo apt install python3-pip python3-venv -y  # if use jetson-nano
+# sudo apt install -y python3-pyqt5             # if use jetson-nano
 pip install pyqt5
 pip install numpy
 
