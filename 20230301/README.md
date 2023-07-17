@@ -23,6 +23,8 @@ https://qiita.com/murakami77/items/b612734ff209cbb22afb
 sudo apt update -y
 sudo apt install python3-venv
 sudo apt install curl -y
+sudo apt install python3-pip python3-venv -y  # if use jetson-nano
+sudo apt install -y python3-pyqt5             # if use jetson-nano
 ```
 
 set venv
@@ -36,14 +38,15 @@ ln -s venv/python3.10-test venvtest
 
 # activate
 source ~/venv/python3.10-test/bin/activate
+# if jetson nano, dont use venv activate. use dummy file..
+# mv ~/venv/python3.10-test/bin/activate ~/venv/python3.10-test/bin/activate.org
+# touch ~/venv/python3.10-test/bin/activate
 ```
 
 pip install library
 
 ```
 # for basic functions
-# sudo apt install python3-pip python3-venv -y  # if use jetson-nano
-# sudo apt install -y python3-pyqt5             # if use jetson-nano
 pip install pyqt5
 pip install numpy
 
