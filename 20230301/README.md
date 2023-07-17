@@ -24,7 +24,7 @@ set venv
 # set venv (only first time)
 mkdir -p ~/venv
 python3 -m venv ~/venv/python3.10-test
-cd ~/venv
+cd ~
 ln -s venv/python3.10-test venvtest
 
 # activate
@@ -76,6 +76,9 @@ bash score_attack.sh
 
 # tournament
 bash tournament.sh
+
+# demo_art
+bash demo_art.sh
 ```
 
 for test sub-programs
