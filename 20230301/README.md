@@ -35,8 +35,10 @@ pip install library
 
 ```
 # for basic functions
+# sudo apt install -y python3-pyqt5 if use jetson-nano
 pip install pyqt5
 pip install numpy
+
 # for machine learning
 #pip -r requirements.pytorch.txt
 wget https://raw.githubusercontent.com/seigot/tetris/master/requirements.pytorch.txt
