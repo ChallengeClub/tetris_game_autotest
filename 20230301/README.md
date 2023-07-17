@@ -38,7 +38,9 @@ pip install library
 pip install pyqt5
 pip install numpy
 # for machine learning
-pip -r requirements.pytorch.txt
+#pip -r requirements.pytorch.txt
+wget https://raw.githubusercontent.com/seigot/tetris/master/requirements.pytorch.txt
+pip install -r requirements.pytorch.txt
 
 # for score_attack
 pip install opencv-python
