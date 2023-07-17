@@ -10,6 +10,12 @@ for ubuntu20.04 or upper version
 
 ### prepare
 
+clone
+
+```
+git clone https://github.com/ChallengeClub/tetris_game_autotest
+```
+
 (recommend) install python3.10 venv  
 https://qiita.com/murakami77/items/b612734ff209cbb22afb
 
