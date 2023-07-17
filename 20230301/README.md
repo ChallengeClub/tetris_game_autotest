@@ -13,12 +13,18 @@ for ubuntu20.04 or upper version
 (recommend) install python3.10 venv  
 https://qiita.com/murakami77/items/b612734ff209cbb22afb
 
+```
+sudo apt update -y
+sudo apt install python3-venv
+```
+
 set venv
 
 ```
 # set venv (only first time)
 mkdir -p ~/venv
 python3 -m venv ~/venv/python3.10-test
+cd ~/venv
 ln -s venv/python3.10-test venvtest
 
 # activate
