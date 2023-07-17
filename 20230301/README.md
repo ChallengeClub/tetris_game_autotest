@@ -22,6 +22,7 @@ https://qiita.com/murakami77/items/b612734ff209cbb22afb
 ```
 sudo apt update -y
 sudo apt install python3-venv
+sudo apt install curl -y
 ```
 
 set venv
