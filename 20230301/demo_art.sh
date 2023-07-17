@@ -16,6 +16,20 @@ function func_exec_command(){
     bash -c "${COMMAND}" &
 }
 
+function func_exec_command_2(){
+    local TETRIS_DIR="${CURRENT_DIR}/tetris_dir"
+    CONFIG_NAME=${1}
+    DURATION=${2}
+    USER_NAME=${3}
+
+    local EXEC_COMMAND_00="python start.py -m art -l1 --art_config_filepath config/art/${CONFIG_NAME} -d ${DURATION} -u ${USER_NAME}"
+    echo "EXEC_COMMAND(1):${EXEC_COMMAND_00}"
+    local COMMAND="source ~/venv/python3.10-test/bin/activate && 
+	    cd ${TETRIS_DIR}/tetris_mattshamrock_2 && \
+	    ${EXEC_COMMAND_00}"
+    bash -c "${COMMAND}" &
+}
+
 function adjust_window(){
     local NAME=${1}
     local WINDOW_X=${2}
@@ -73,8 +87,9 @@ function do_game(){
     func_exec_command "art_config_sample_t.json" "1000" "art_16"
     func_exec_command "art_config_sample_o.json" "1000" "art_17"
     func_exec_command "art_config_sample8.json" "1000" "art_18"
+    func_exec_command_2 "pikachu.json" "150" "art_19"
 #    eog Downloads/MFK2023_Badge_small2 &
-    eog Downloads/challenge_club.png &
+#    eog Downloads/challenge_club.png &
     sleep 10 # 4sec for PC, 10sec for jetson nano, because of delay
    
     # adjust window
@@ -96,12 +111,14 @@ function do_game(){
     adjust_window "art_16" ${WINDOW_06_X} ${WINDOW_10_Y}
     adjust_window "art_17" ${WINDOW_07_X} ${WINDOW_10_Y}
     adjust_window "art_18" ${WINDOW_08_X} ${WINDOW_10_Y}
+    adjust_window "art_19" ${WINDOW_08_X} ${WINDOW_00_Y}
 #    local WINDOW_NAME="MFK2023_Badge_small"
 #    WINDOWID=`xdotool search --onlyvisible --name "${WINDOW_NAME}"`
 #    xdotool windowmove ${WINDOWID} ${WINDOW_08_X} ${WINDOW_01_Y} &
-    local WINDOW_NAME="challenge_club"
-    WINDOWID=`xdotool search --onlyvisible --name "${WINDOW_NAME}"`
-    xdotool windowmove ${WINDOWID} ${WINDOW_08_X} ${WINDOW_01_Y} &
+
+#    local WINDOW_NAME="challenge_club"
+#    WINDOWID=`xdotool search --onlyvisible --name "${WINDOW_NAME}"`
+#    xdotool windowmove ${WINDOWID} ${WINDOW_08_X} ${WINDOW_01_Y} &
     
     
     sleep 179
