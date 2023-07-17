@@ -75,7 +75,7 @@ function do_game(){
     func_exec_command "art_config_sample8.json" "1000" "art_18"
 #    eog Downloads/MFK2023_Badge_small2 &
     eog Downloads/challenge_club.png &
-    sleep 4
+    sleep 10 # 4sec for PC, 10sec for jetson nano, because of delay
    
     # adjust window
     ## adjust tetris window
