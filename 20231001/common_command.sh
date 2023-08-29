@@ -11,7 +11,7 @@ function GET_COMMAND(){
     TETRIS_DIR=${7}
     MODE=${8}           # -m "${MODE}" --predict_weight "${PREDICT_WEIGHT}"
     PREDICT_WEIGHT=${9} # -m "${MODE}" --predict_weight "${PREDICT_WEIGHT}"
-
+    
     if [ "${UNAME}" == "seigot" ]; then
 	# ex)機械学習用のファイルをダウンロードして、game_managerの下におく
 	ADD_COMMAND="ls"
@@ -47,10 +47,10 @@ function GET_COMMAND_ART(){
     TETRIS_DIR=${7}
     MODE=${8}
     ART_CONFIG_FILEPATH=${9}
-
+    BLOCK_NUM_MAX=${10}
     # other
     # -d ${DROP_SPEED}
-    EXEC_COMMAND="python3 start.py -l ${LEVEL} -t ${GAME_TIME} -d ${DROP_SPEED} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m ${MODE} --art_config_filepath ${ART_CONFIG_FILEPATH}"
+    EXEC_COMMAND="python3 start.py -l ${LEVEL} -t ${GAME_TIME} -d ${DROP_SPEED} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m ${MODE} --art_config_filepath ${ART_CONFIG_FILEPATH} --BlockNumMax ${BLOCK_NUM_MAX}"
     echo ${EXEC_COMMAND}
 }
 

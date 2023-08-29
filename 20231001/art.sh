@@ -34,12 +34,16 @@ function do_game(){
     local PROGRAM_NAME=`echo ${USER_NAME_BRANCH} | cut -d'@' -f3`
     local MODE=`echo ${USER_NAME_BRANCH} | cut -d'@' -f4`
     local PREDICT_WEIGHT=`echo ${USER_NAME_BRANCH} | cut -d'@' -f5`
+    local BLOCK_NUM_MAX=`echo ${USER_NAME_BRANCH} | cut -d'@' -f6`
+
     local USER_NAME_BRANCH_2="${3}"
     local UNAME_2=`echo ${USER_NAME_BRANCH_2} | cut -d'@' -f1`
     local BRANCH_2=`echo ${USER_NAME_BRANCH_2} | cut -d'@' -f2`
     local PROGRAM_NAME_2=`echo ${USER_NAME_BRANCH_2} | cut -d'@' -f3`
     local MODE2=`echo ${USER_NAME_BRANCH_2} | cut -d'@' -f4`
     local PREDICT_WEIGHT2=`echo ${USER_NAME_BRANCH_2} | cut -d'@' -f5`
+    local BLOCK_NUM_MAX2=`echo ${USER_NAME_BRANCH_2} | cut -d'@' -f6`
+    
     local DROP_SPEED="${4}"
     local GAME_TIME="${5}"
     # window name
@@ -106,30 +110,30 @@ function do_game(){
     popd
 
     ###### wait game -->
-    eog ${LMINO_PATH} &
-    WAIT_TIME=10 #10 #30
-    python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -m ${MODE2} -w ${PREDICT_WEIGHT2} -l ${LEVEL} -t ${WAIT_TIME} &
-    sleep 1
-    # move window
-    local SCORE_WINDOW_NAME_2="Score_${UNAME_2}"
-    SCORE_WINDOWID_2=`xdotool search --onlyvisible --name "${SCORE_WINDOW_NAME_2}"`
-    xdotool windowmove ${SCORE_WINDOWID_2} 1000 100 &
-    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -t ${WAIT_TIME}
-    bash stop.sh
-    ###### wait game <--
+#    eog ${LMINO_PATH} &
+#    WAIT_TIME=10 #10 #30
+#    python score.py -u ${UNAME_2} -p ${PROGRAM_NAME_2} -m ${MODE2} -w ${PREDICT_WEIGHT2} -l ${LEVEL} -t ${WAIT_TIME} &
+#    sleep 1
+#    # move window
+#    local SCORE_WINDOW_NAME_2="Score_${UNAME_2}"
+#    SCORE_WINDOWID_2=`xdotool search --onlyvisible --name "${SCORE_WINDOW_NAME_2}"`
+#    xdotool windowmove ${SCORE_WINDOWID_2} 1000 100 &
+#    python score.py -u ${UNAME} -p ${PROGRAM_NAME} -m ${MODE} -w ${PREDICT_WEIGHT} -l ${LEVEL} -t ${WAIT_TIME}
+#    bash stop.sh
+#    ###### wait game <--
 
     # start sound
     play ${SOUNDFILE_PATH} &
     PID_PLAY_SOUND=$!
 
     # start game
-    local EXEC_COMMAND=`GET_COMMAND_ART ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME}_1 ${LOGFILE} ${TETRIS_DIR} ${MODE} ${PREDICT_WEIGHT}`
+    local EXEC_COMMAND=`GET_COMMAND_ART ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME}_1 ${LOGFILE} ${TETRIS_DIR} ${MODE} ${PREDICT_WEIGHT} ${BLOCK_NUM_MAX}`
     local COMMAND="source ~/venv/python3.10-test/bin/activate && \
 	    cd ${TETRIS_DIR}/tetris_${UNAME}_1 && \
 	    ${EXEC_COMMAND}"
     echo ${COMMAND}
 
-    local EXEC_COMMAND_2=`GET_COMMAND_ART ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME_2}_2 ${LOGFILE_2} ${TETRIS_DIR} ${MODE2} ${PREDICT_WEIGHT2}`
+    local EXEC_COMMAND_2=`GET_COMMAND_ART ${LEVEL} ${DROP_SPEED} ${GAME_TIME} ${RANDOM_SEED} ${UNAME_2}_2 ${LOGFILE_2} ${TETRIS_DIR} ${MODE2} ${PREDICT_WEIGHT2} ${BLOCK_NUM_MAX2}`
     local COMMAND_2="source ~/venv/python3.10-test/bin/activate && \
 	    cd ${TETRIS_DIR}/tetris_${UNAME_2}_2 && \
 	    ${EXEC_COMMAND_2}"
@@ -213,21 +217,19 @@ function do_game(){
 function do_art_1(){
 
     echo -n >| ${RESULT_LOG}
-
     ## sample
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-    PLAYER1="seigot@master@sample_art@art@config/art/art_config_sample8.json"
-    PLAYER2="N0S0@master@sample_art_N0S0@art@config/art/art_config_sample_sonoda1.json"
-#    PLAYER1="seigot@master@sample_art_mouri-san@art@config/art/art_config_sample_fireflower.json"
-#    PLAYER2="Tananken@master@sample_art_tananken@art@config/art/art_config_sample_tanaka_2.json"
-#    PLAYER1="seigot@master@sample_art1号@art@config/art/art_config_sample2.json"
-
+    PLAYER1="seigot@art20230728@sample@art@config/art/art_config_sample34.json@900"
+    PLAYER2="seigot@art20230728@sample@art@config/art/art_config_sample35.json@900"
+#    PLAYER1="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/slime.json"
+#    PLAYER2="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/metalslime.json"
     #---
     LEVEL=1 #"2"
-    DROP_SPEED="1000" #"1000"   #"1"#"1000"
-    GAME_TIME="160"
+    DROP_SPEED="100" #"1000"   #"1"#"1000"
+    GAME_TIME="100"
     #---
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED} ${GAME_TIME}
+
 }
 
 function do_art_2(){
@@ -235,37 +237,39 @@ function do_art_2(){
     echo -n >| ${RESULT_LOG}
     ## sample
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-    PLAYER1="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/squirtle.json"
-    PLAYER2="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/pikachu.json"
+    PLAYER1="seigot@art20230728@sample@art@config/art/art_config_sample20.json@900"
+    PLAYER2="seigot@art20230728@sample@art@config/art/art_config_sample23.json@900"
 #    PLAYER1="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/slime.json"
 #    PLAYER2="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/metalslime.json"
     #---
     LEVEL=1 #"2"
-    DROP_SPEED="250" #"1000"   #"1"#"1000"
-    GAME_TIME="200"
+    DROP_SPEED="100" #"1000"   #"1"#"1000"
+    GAME_TIME="100"
     #---
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED} ${GAME_TIME}
+
 }
 
 function do_art_3(){
 
     echo -n >| ${RESULT_LOG}
-
     ## sample
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-    PLAYER1="seigot@master@sample_art@art@config/art/art_config_sample_ruigi.json"
-    PLAYER2="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/bulbasaur.json"
-
+    PLAYER1="seigot@art20230728@sample@art@config/art/art_config_sample11.json@900"
+    PLAYER2="seigot@art20230728@sample@art@config/art/art_config_sample12.json@900"
+#    PLAYER1="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/slime.json"
+#    PLAYER2="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/metalslime.json"
     #---
-    LEVEL=1
-    DROP_SPEED="250" #"1000"   #"1"#"1000"
-    GAME_TIME="170"
+    LEVEL=1 #"2"
+    DROP_SPEED="100" #"1000"   #"1"#"1000"
+    GAME_TIME="100"
     #---
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED} ${GAME_TIME}
+
 }
 
 echo "start"
 #do_art_1
-do_art_2
-#do_art_3
+#do_art_2
+do_art_3
 echo "end"
