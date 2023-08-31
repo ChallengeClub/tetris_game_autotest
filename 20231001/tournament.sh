@@ -89,20 +89,16 @@ function do_game(){
     rm -rf tetris_${UNAME_2}    
     echo ${UNAME} ${BRANCH}
 
-    if [ ${UNAME} == "narumakky" ]; then
-	# tuyosi1227/tetris_wood
-	git clone https://github.com/${UNAME}/passive_child -b ${BRANCH} tetris_${UNAME}
+    if [ ${UNAME} == "neonblue3" -o ${UNAME} == "Kurikuri33" ]; then
+	git clone https://github.com/seigot/tetris -b ${BRANCH} tetris_${UNAME}
     else
 	git clone https://github.com/${UNAME}/tetris -b ${BRANCH} tetris_${UNAME}
-#	git clone https://github.com/${UNAME}/tetris -b ${BRANCH}
     fi
 
-    if [ ${UNAME_2} == "narumakky" ]; then
-	# tuyosi1227/tetris_wood
-	git clone https://github.com/${UNAME_2}/passive_child -b ${BRANCH_2} tetris_${UNAME_2}
+    if [ ${UNAME_2} == "neonblue3" -o ${UNAME_2} == "Kurikuri33" ]; then
+	git clone https://github.com/seigot/tetris -b ${BRANCH_2} tetris_${UNAME_2}
     else
 	git clone https://github.com/${UNAME_2}/tetris -b ${BRANCH_2} tetris_${UNAME_2}
-#	git clone https://github.com/${UNAME}/tetris -b ${BRANCH}
     fi
     
     rm -f ${LOGFILE}
@@ -240,16 +236,18 @@ function do_game_main(){
     ## 2
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
     # hatsu-sanka 9
-#    PLAYER1="Noriomusubi@test_n2@Noriomusubi@default@default"
-#    PLAYER2="HideOkuda@master@hideokuda@default@default"
-#    PLAYER1="iguzzi@iguzzi01@iguzzi@default@default"
-#    PLAYER2="Tackey07@over_l2@Tackey@default@default"
-#    PLAYER2="nishidasat@master@NishidaSat@sample@default"
-#    PLAYER2="GRAV1ER@shimizu2@shimizu@default@default"
-#    PLAYER1="kobuchirikiya@master@kobuchi@default@default"
-#    PLAYER1="akomastr@master@otani@default@default"
-#    PLAYER2="Kenta-Se@master@Seiki@default@default"
-     # keiken-sha 3
+    PLAYER1="YTaku77@feature/self_development@TakumaYabuta@predict_sample3@outputs/2023-08-31-15-20-32/trained_model/best_weight.pt"
+    PLAYER2="tanahashi123@master@tanahashi@sample@default"
+#    PLAYER1="Kurikuri33@master@Kurikuri33@sample@default"
+#    PLAYER2="neonblue3@master@aoki@sample@default"
+#    PLAYER1="KA-penguin@master@kaneko@sample@default"
+#    PLAYER2="takenakayujiro-pana@develop@takenaka@predict@weight/DQN/best_weight.pt"
+#    PLAYER2="Squinkd@master@Squinkd@sample@default"
+
+
+
+    
+    # keiken-sha 3
 #    PLAYER2="yuin0@master@yuin0@default@default"
 #    PLAYER1="mattshamrock@level_2@masato@default@default"
 #    PLAYER2="obo-koki@level2_v4@obo@default@default"

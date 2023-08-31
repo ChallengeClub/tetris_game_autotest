@@ -269,7 +269,7 @@ function do_art_3(){
 }
 
 echo "start"
-#do_art_1
+do_art_1
 #do_art_2
-do_art_3
+#do_art_3
 echo "end"
