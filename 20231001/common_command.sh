@@ -23,10 +23,10 @@ function GET_COMMAND(){
 	patch -p1 < 20220901_cuda_unavailable.patch"
 	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m ${MODE} --predict_weight ${PREDICT_WEIGHT}"
 
-    elif [ "${UNAME}" == "neonblue3" ]; then
+    elif [ "${UNAME}" == "neonblue3___" -a "${LEVEL}" != "2" ]; then
 	# neonblue3さん用のtetris
-	ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/neonblue3/tetris/main/block_controller_sample.py &&\
-	cp block_controller_sample.py game_manager/."
+	ADD_COMMAND="curl -LJO https://raw.githubusercontent.com/seigot/tools/master/tetris/20231001_aoki.patch  &&\
+	patch -p1 < 20231001_aoki.patch"
 	EXEC_COMMAND="${ADD_COMMAND} && python3 start.py -l ${LEVEL} -t ${GAME_TIME} -r ${RANDOM_SEED} -u ${UNAME} -f ${LOGFILE} -m ${MODE} --predict_weight ${PREDICT_WEIGHT}"	
 	
     elif [ "${UNAME}" == "Kurikuri33" ]; then

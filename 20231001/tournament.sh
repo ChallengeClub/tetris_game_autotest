@@ -89,13 +89,13 @@ function do_game(){
     rm -rf tetris_${UNAME_2}    
     echo ${UNAME} ${BRANCH}
 
-    if [ ${UNAME} == "neonblue3" -o ${UNAME} == "Kurikuri33" ]; then
+    if [ ${UNAME} == "Kurikuri33" ]; then
 	git clone https://github.com/seigot/tetris -b ${BRANCH} tetris_${UNAME}
     else
 	git clone https://github.com/${UNAME}/tetris -b ${BRANCH} tetris_${UNAME}
     fi
 
-    if [ ${UNAME_2} == "neonblue3" -o ${UNAME_2} == "Kurikuri33" ]; then
+    if [ ${UNAME_2} == "Kurikuri33" ]; then
 	git clone https://github.com/seigot/tetris -b ${BRANCH_2} tetris_${UNAME_2}
     else
 	git clone https://github.com/${UNAME_2}/tetris -b ${BRANCH_2} tetris_${UNAME_2}
@@ -223,68 +223,46 @@ function do_game_main(){
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
 #    PLAYER1="seigot@master@seigot-sample-demo@sample@default"
 #    PLAYER2="isshy-you@master@isshy-sample-demo@sample@default"
-
-    ## 1 5
-    # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-#    PLAYER1="Tackey07@master@Tackey@default@default"
-#    PLAYER2="nishidasat@master@NishidaSat@sample@default"
-#    PLAYER1="Noriomusubi@test_n2@Noriomusubi@default@default"
-#    PLAYER2="tomaemon@master@tomaemon@default@default"
-#    PLAYER1="mattshamrock@level_1@masato@default@default"
+#    PLAYER1="seigot@master@seigot-sample-demo@sample@default"
 #    PLAYER2="isshy-you@master@isshy-sample-demo@sample@default"
-    
+
+    ## 1
+    # "user_name @ branch_name @ program_name @ mode @ predict_weight"
+#    PLAYER1="seigot@master@seigot-sample-demo@sample@default"
+#    PLAYER2="neonblue3@master@aoki@default@default"
+#    PLAYER1="tanahashi123@master@tanahashi123@sample@default"
+#    PLAYER2="ashitaba567@masterl1@VIVANT_C1_L1@default@default"
+#    PLAYER1="Tackey07@AI_BASE@Tackey07@predict@outputs/latest/best_weight.pt"
+#    PLAYER2="YTaku77@feature/self_development@TakumaYabuta@predict@outputs/latest/best_weight.pt"
+
     ## 2
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-    # hatsu-sanka 9
-    PLAYER1="YTaku77@feature/self_development@TakumaYabuta@predict_sample3@outputs/2023-08-31-15-20-32/trained_model/best_weight.pt"
-    PLAYER2="tanahashi123@master@tanahashi@sample@default"
-#    PLAYER1="Kurikuri33@master@Kurikuri33@sample@default"
-#    PLAYER2="neonblue3@master@aoki@sample@default"
-#    PLAYER1="KA-penguin@master@kaneko@sample@default"
-#    PLAYER2="takenakayujiro-pana@develop@takenaka@predict@weight/DQN/best_weight.pt"
+#    PLAYER1="tanahashi123@master@tanahashi123@sample@default"
 #    PLAYER2="Squinkd@master@Squinkd@sample@default"
-
-
-
-    
-    # keiken-sha 3
-#    PLAYER2="yuin0@master@yuin0@default@default"
-#    PLAYER1="mattshamrock@level_2@masato@default@default"
-#    PLAYER2="obo-koki@level2_v4@obo@default@default"
+#    PLAYER1="KA-penguin@master@kaneko@sample@default"
+#    PLAYER2="ashitaba567@master@VIVANT_C1_TEAM@default@default"
 
     ## 2_ai 7
-#    PLAYER1="cheerful-0329@chipL2@chip@predict@weight/DQN/best_weight.pt"
-#    PLAYER1="km-mssh@test@km-mssh@predict@default"
-#    PLAYER1="kokko1023@unstable4lines@kokko@predict@outputs/2023-03-14-01-28-24/trained_model/best_weight.pt"
-#    PLAYER2="Takomaron@Final01@Takomaron@predict@weight/DQN/best_weight_25.B.pt"
-#    PLAYER2="m-nishidon@master@m-nishidon@predict@outputs/2023-03-24-13-13-10/trained_model/best_weight.pt"
-#    PLAYER2="cookie4869@cookie04_01@ガンガンテトリス@predict@default"
+#    PLAYER1="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"    
+#    PLAYER2="YTaku77@feature/self_development@TakumaYabuta@predict@outputs/2023-08-31-15-20-32/trained_model/best_weight.pt"
+#    PLAYER1="KuriKuri33@master@KuriKuri33@predict@weight/DQN/best_weight.pt"
+#    PLAYER2="hotoun@master@hotani@predict@weight/DQN/best_weight.pt"
+#    PLAYER1="yamasanmars@master@yamato_higashimoto@predict@outputs/2023-09-24-20-37-59/trained_model/best_weight.pt"
+#    PLAYER2="neonblue3@predict@aoki@predict@weight/DQN/best_weight.pt"
+#    PLAYER2="takenakayujiro-pana@develop@takenaka@predict@weight/DQN/best_weight.pt"
 
     ## 3(ai vs human) 10
-#    PLAYER1="kokko1023@dev-lv3@kokko@predict@outputs/2023-03-19-10-35-46/trained_model/best_weight.pt"
-#    PLAYER2="yuin0@master@yuin0@default@default"
-#    PLAYER1="iguzzi@iguzzi02@iguzzi@default@default"
-#    PLAYER1="cheerful-0329@chipL3@chip@predict@weight/DQN/best_weight.pt"
-#    PLAYER1="obo-koki@level3_v4@obo@default@default"
-#    PLAYER1="m-nishidon@master@m-nishidon@predict@outputs/2023-03-24-13-13-10/trained_model/best_weight.pt"
-#    PLAYER2="mattshamrock@level_3@masato@default@default"
-#    PLAYER1="Tackey07@over_l2@Tackey@default@default"
-#    PLAYER2="Takomaron@Final01@Takomaron@predict@weight/DQN/best_weight_h3.pt"
-#    PLAYER2="cookie4869@cookie04_03@ガンコツテトリス@predict@default"
+#    PLAYER1="tanahashi123@master@tanahashi123@sample@default"
+#    PLAYER2="neonblue3@master@aoki@default@default"
+#    PLAYER1="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"
+#    PLAYER2="YTaku77@feature/self_development@TakumaYabuta@predict@outputs/latest/best_weight.pt"
 
     ## ryuo(ai vs human) 9
-#    PLAYER1="kokko1023@dev-lv4@kokko@predict@outputs/2023-03-19-10-35-46/trained_model/best_weight.pt"
-#    PLAYER1="iguzzi@iguzzi02@iguzzi@default@default"
-#    PLAYER1="m-nishidon@master@m-nishidon@predict@outputs/2023-03-24-13-13-10/trained_model/best_weight.pt"
-#    PLAYER2="Takomaron@Retry07@Takomaron@predict@weight/DQN/best_weight.pt"
-#    PLAYER1="isshy-you@ish08b@isshy-you@default@default"
-#    PLAYER2="obo-koki@level4@obo@default@default"    
-#    PLAYER2="narumakky@master@narumaki@predict@weight/DQN/best_weight.pt"
-#    PLAYER1="yuin0@tetris_v4@tetris_v4@predict@weight/DQN/best_weight.pt"
-#    PLAYER2="mattshamrock@level_4@masato@default@default"
+#    PLAYER1="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"
+#    PLAYER2="YTaku77@feature/self_development@TakuYabu@predict@outputs/latest/best_weight.pt"
 
     #---
-    LEVEL=2 #"2"
+    LEVEL=3 #3 #"2"
     DROP_SPEED="777" #"invalid"
     #---
 
