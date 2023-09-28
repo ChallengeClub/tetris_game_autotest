@@ -219,10 +219,12 @@ function do_art_1(){
     echo -n >| ${RESULT_LOG}
     ## sample
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-    PLAYER1="seigot@art20230728@sample@art@config/art/art_config_sample34.json@900"
-    PLAYER2="seigot@art20230728@sample@art@config/art/art_config_sample35.json@900"
+#    PLAYER1="seigot@art20230728@sample@art@config/art/art_config_sample34.json@900"
+#    PLAYER2="seigot@art20230728@sample@art@config/art/art_config_sample35.json@900"
 #    PLAYER1="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/slime.json"
 #    PLAYER2="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/metalslime.json"
+    PLAYER1="seigot@art20230728@sample@art@config/art/art_config_sample14.json@900"
+    PLAYER2="seigot@art20230728@sample@art@config/art/art_config_sample27.json@900"
     #---
     LEVEL=1 #"2"
     DROP_SPEED="100" #"1000"   #"1"#"1000"
@@ -237,10 +239,12 @@ function do_art_2(){
     echo -n >| ${RESULT_LOG}
     ## sample
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-    PLAYER1="seigot@art20230728@sample@art@config/art/art_config_sample20.json@900"
-    PLAYER2="seigot@art20230728@sample@art@config/art/art_config_sample23.json@900"
+#    PLAYER1="seigot@art20230728@sample@art@config/art/art_config_sample20.json@900"
+#    PLAYER2="seigot@art20230728@sample@art@config/art/art_config_sample23.json@900"
 #    PLAYER1="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/slime.json"
 #    PLAYER2="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/metalslime.json"
+    PLAYER1="seigot@art20230728@sample@art@config/art/art_config_sample28.json@900"
+    PLAYER2="seigot@art20230728@sample@art@config/art/art_config_sample29.json@900"
     #---
     LEVEL=1 #"2"
     DROP_SPEED="100" #"1000"   #"1"#"1000"
@@ -255,8 +259,8 @@ function do_art_3(){
     echo -n >| ${RESULT_LOG}
     ## sample
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
-    PLAYER1="seigot@art20230728@sample@art@config/art/art_config_sample11.json@900"
-    PLAYER2="seigot@art20230728@sample@art@config/art/art_config_sample12.json@900"
+    PLAYER1="seigot@art20230728@sample@art@config/art/art_config_sample36.json@900"
+    PLAYER2="seigot@art20230728@sample@art@config/art/art_config_sample37.json@900"
 #    PLAYER1="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/slime.json"
 #    PLAYER2="mattshamrock@art@sample_art_mattshamrockxs@art@config/art/metalslime.json"
     #---
@@ -268,8 +272,24 @@ function do_art_3(){
 
 }
 
+function do_art_4(){
+
+    echo -n >| ${RESULT_LOG}
+    ## sample
+    # "user_name @ branch_name @ program_name @ mode @ predict_weight"
+    PLAYER1="seigot@art20230728@sample@art@config/art/art_config_sample11.json@900"
+    PLAYER2="seigot@art20230728@sample@art@config/art/art_config_sample12.json@900"
+    #---
+    LEVEL=1 #"2"
+    DROP_SPEED="100" #"1000"   #"1"#"1000"
+    GAME_TIME="100"
+    #---
+    do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED} ${GAME_TIME}
+}
+
 echo "start"
 do_art_1
 #do_art_2
 #do_art_3
+#do_art_4
 echo "end"
