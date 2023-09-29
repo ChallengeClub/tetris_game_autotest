@@ -18,7 +18,7 @@ LMINO_LIST=(
     "Downloads/lmino1_75%.gif"
     "Downloads/lmino2_75%.gif"
     "Downloads/lmino3_75%.gif"
-    "Downloads/charactor_2.gif"
+    "Downloads/lmino3_75%.gif"
 )
 
 CURRENT_DIR=`pwd`
@@ -238,8 +238,8 @@ function do_game_main(){
     ## 2
     # "user_name @ branch_name @ program_name @ mode @ predict_weight"
 #    PLAYER1="tanahashi123@master@tanahashi123@sample@default"
-#    PLAYER2="Squinkd@master@Squinkd@sample@default"
-#    PLAYER1="KA-penguin@master@kaneko@sample@default"
+#    PLAYER1="Squinkd@master@Squinkd@sample@default"
+#    PLAYER2="KA-penguin@master@kaneko@sample@default"
 #    PLAYER2="ashitaba567@master@VIVANT_C1_TEAM@default@default"
 
     ## 2_ai 7
@@ -249,20 +249,21 @@ function do_game_main(){
 #    PLAYER2="hotoun@master@hotani@predict@weight/DQN/best_weight.pt"
 #    PLAYER1="yamasanmars@master@yamato_higashimoto@predict@outputs/2023-09-24-20-37-59/trained_model/best_weight.pt"
 #    PLAYER2="neonblue3@predict@aoki@predict@weight/DQN/best_weight.pt"
+#    PLAYER1="hourglass12@master@sasaki@predict@weight/DQN/best_weight.pt"
 #    PLAYER2="takenakayujiro-pana@develop@takenaka@predict@weight/DQN/best_weight.pt"
 
     ## 3(ai vs human) 10
 #    PLAYER1="tanahashi123@master@tanahashi123@sample@default"
-#    PLAYER2="neonblue3@master@aoki@default@default"
-#    PLAYER1="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"
+#    PLAYER1="neonblue3@master@aoki@default@default"
+#    PLAYER2="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"
 #    PLAYER2="YTaku77@feature/self_development@TakumaYabuta@predict@outputs/latest/best_weight.pt"
 
     ## ryuo(ai vs human) 9
-#    PLAYER1="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"
-#    PLAYER2="YTaku77@feature/self_development@TakuYabu@predict@outputs/latest/best_weight.pt"
+    PLAYER1="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"
+    PLAYER2="YTaku77@feature/self_development@TakuYabu@predict@outputs/latest/best_weight.pt"
 
     #---
-    LEVEL=3 #3 #"2"
+    LEVEL=4 #3 #"2"
     DROP_SPEED="777" #"invalid"
     #---
 
