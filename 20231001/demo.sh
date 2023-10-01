@@ -294,7 +294,7 @@ function do_game_main(){
     DROP_SPEED="777" #"invalid"
     #---
     PLAYER1="kokko1023@unstable4lines@kokko@predict@outputs/2023-03-14-01-28-24/trained_model/best_weight.pt"
-    PLAYER2="Takomaron@Final01@Takomaron@predict@weight/DQN/best_weight_25.B.pt"
+    PLAYER2="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"
     LEVEL=2
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
     #---
@@ -313,12 +313,12 @@ function do_game_main(){
     LEVEL=2
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
     #---
-    PLAYER1="Takomaron@Final01@Takomaron@predict@weight/DQN/best_weight_25.B.pt"
+    PLAYER1="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"
     PLAYER2="km-mssh@test@km-mssh@predict@default"
     LEVEL=2
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
     #---
-    PLAYER1="Takomaron@Final01@Takomaron@predict@weight/DQN/best_weight_25.B.pt"
+    PLAYER1="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"
     PLAYER2="cookie4869@cookie04_01@ガンガンテトリス@predict@default"
     LEVEL=2
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
