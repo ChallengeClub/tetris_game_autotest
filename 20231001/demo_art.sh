@@ -203,7 +203,7 @@ function do_game2(){
     adjust_window "art_18" ${WINDOW_08_X} ${WINDOW_10_Y}
     adjust_window "art_19" ${WINDOW_08_X} ${WINDOW_00_Y}
     
-    sleep 140
+    sleep 110
     return 0
 }
 
