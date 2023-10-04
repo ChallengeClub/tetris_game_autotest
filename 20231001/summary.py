@@ -17,7 +17,7 @@ def res_cmd(cmd):
 def get_line_score():
 
     cmd1 = ("cat ./result/win_count_kokko1023.log")
-    cmd2 = ("cat ./result/win_count_km-mssh.log")
+    cmd2 = ("cat ./result/win_count_takenakayujiro-pana.log")
     cmd3 = ("cat ./result/win_count_cookie4869.log")
     cmd4 = ("cat ./result/win_count_Takomaron.log")
     res1 = res_cmd(cmd1)
@@ -92,7 +92,7 @@ class Window(QMainWindow):
 
         self.current_text = "win_count: \n" \
         + "kokko1023: "  + str(_count1) + ", " \
-        + "km-mssh: "    + str(_count2) + "\n" \
+        + "takenakayujiro: "    + str(_count2) + "\n" \
         + "cookie4869: " + str(_count3) + ", " \
         + "Takomaron: "  + str(_count4)
 

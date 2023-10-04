@@ -15,10 +15,10 @@ SOUNDFILE_LIST=(
 )
 # lmino${NUMBER}.gif
 LMINO_LIST=(
-    "Downloads/MFK2023_Badge.jpeg"
-    "Downloads/MFK2023_Badge.jpeg"
-    "Downloads/MFK2023_Badge.jpeg"
-    "Downloads/MFK2023_Badge.jpeg"
+    "Downloads/MFT2023round.jpg"
+    "Downloads/MFT2023round.jpg"
+    "Downloads/MFT2023round.jpg"
+    "Downloads/MFT2023round.jpg"
 )
 
 CURRENT_DIR=`pwd`
@@ -293,18 +293,20 @@ function do_game_main(){
 
     DROP_SPEED="777" #"invalid"
     #---
-    PLAYER1="kokko1023@unstable4lines@kokko@predict@outputs/2023-03-14-01-28-24/trained_model/best_weight.pt"
-    PLAYER2="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"
-    LEVEL=2
-    do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
-    #---
-    PLAYER1="km-mssh@test@km-mssh@predict@default"
+    #PLAYER1="km-mssh@test@km-mssh@predict@default"
+    PLAYER1="takenakayujiro-pana@develop@takenaka@predict@weight/DQN/best_weight.pt"
     PLAYER2="cookie4869@cookie04_01@ガンガンテトリス@predict@default"
     LEVEL=2
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
     #---
     PLAYER1="kokko1023@unstable4lines@kokko@predict@outputs/2023-03-14-01-28-24/trained_model/best_weight.pt"
-    PLAYER2="km-mssh@test@km-mssh@predict@default"
+    PLAYER2="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"
+    LEVEL=2
+    do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
+    #---
+    PLAYER1="kokko1023@unstable4lines@kokko@predict@outputs/2023-03-14-01-28-24/trained_model/best_weight.pt"
+    PLAYER2="takenakayujiro-pana@develop@takenaka@predict@weight/DQN/best_weight.pt"
+    #PLAYER2="km-mssh@test@km-mssh@predict@default"
     LEVEL=2
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
     #---
@@ -314,7 +316,8 @@ function do_game_main(){
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
     #---
     PLAYER1="Takomaron@master@Takomaron@predict@weight/DQN/best_weight_Try09.pt"
-    PLAYER2="km-mssh@test@km-mssh@predict@default"
+    PLAYER2="takenakayujiro-pana@develop@takenaka@predict@weight/DQN/best_weight.pt"
+    #PLAYER2="km-mssh@test@km-mssh@predict@default"
     LEVEL=2
     do_game ${LEVEL} ${PLAYER1} ${PLAYER2} ${DROP_SPEED}
     #---
