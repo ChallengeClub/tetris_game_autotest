@@ -1,3 +1,5 @@
+[https://www.youtube.com/watch?v=UZq1FSk2Vyc](https://www.youtube.com/watch?v=UZq1FSk2Vyc)  
+
 ## about
 
 repository for tetris score_attack/tournament.
