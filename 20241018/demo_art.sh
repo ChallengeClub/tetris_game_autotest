@@ -9,6 +9,7 @@ function func_exec_command(){
     USER_NAME=${3}
 
     local EXEC_COMMAND_00="python start.py -m art -l1 --art_config_filepath config/art/${CONFIG_NAME} -d ${DURATION} -u ${USER_NAME}"
+#    local EXEC_COMMAND_00="/usr/local/bin/python3.10 start.py -m art -l1 --art_config_filepath config/art/${CONFIG_NAME} -d ${DURATION} -u ${USER_NAME}"
     echo "EXEC_COMMAND(1):${EXEC_COMMAND_00}"
     local COMMAND="source ~/venv/python3.10-test/bin/activate && 
 	    cd ${TETRIS_DIR}/tetris_seigot && \
@@ -23,6 +24,7 @@ function func_exec_command_2(){
     USER_NAME=${3}
 
     local EXEC_COMMAND_00="python start.py -m art -l1 --art_config_filepath config/art/${CONFIG_NAME} -d ${DURATION} -u ${USER_NAME}"
+#    local EXEC_COMMAND_00="/usr/local/bin/python3.10 start.py -m art -l1 --art_config_filepath config/art/${CONFIG_NAME} -d ${DURATION} -u ${USER_NAME}"
     echo "EXEC_COMMAND(1):${EXEC_COMMAND_00}"
     local COMMAND="source ~/venv/python3.10-test/bin/activate && 
 	    cd ${TETRIS_DIR}/tetris_mattshamrock_2 && \
@@ -37,6 +39,7 @@ function func_exec_command_3(){
     USER_NAME=${3}
 
     local EXEC_COMMAND_00="python start.py -m art -l1 --art_config_filepath config/art/${CONFIG_NAME} -d ${DURATION} -u ${USER_NAME} --BlockNumMax 1000"
+#    local EXEC_COMMAND_00="/usr/local/bin/python3.10 start.py -m art -l1 --art_config_filepath config/art/${CONFIG_NAME} -d ${DURATION} -u ${USER_NAME} --BlockNumMax 1000"
     echo "EXEC_COMMAND(1):${EXEC_COMMAND_00}"
     local COMMAND="source ~/venv/python3.10-test/bin/activate && 
 	    cd ${TETRIS_DIR}/tetris_seigot_2 && \
